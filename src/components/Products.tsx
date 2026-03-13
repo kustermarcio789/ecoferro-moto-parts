@@ -1,95 +1,73 @@
 import { motion } from "framer-motion";
-import { ShoppingCart, Star, Cog } from "lucide-react";
+import { ShoppingCart, Star, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+import imgSuporteBau from "@/assets/products/suporte-bau-lander.jpg";
+import imgSliderEscapamento from "@/assets/products/slider-escapamento-cb300f.jpg";
+import imgSliderMt07 from "@/assets/products/slider-mt07.jpg";
+import imgProtetorRadiador from "@/assets/products/protetor-radiador-cb650r.jpg";
+import imgSliderCb300r from "@/assets/products/slider-cb300r.jpg";
 
 const products = [
   {
     id: 1,
-    name: "Kit Relação CG 150 Titan",
-    category: "Transmissão",
-    price: 89.90,
-    originalPrice: 119.90,
+    name: "Suporte Baú Yamaha Lander 250 2023-2026",
+    category: "Suportes",
+    price: 189.90,
+    originalPrice: null,
     rating: 4.8,
-    reviews: 234,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=400&fit=crop",
-    badge: "Mais Vendido",
+    reviews: 156,
+    image: imgSuporteBau,
+    badge: "Novo",
+    mlLink: "https://www.mercadolivre.com.br/suporte-bau-yamaha-lander-250-2023-2024-2025-2026/up/MLBU3334593739",
   },
   {
     id: 2,
-    name: "Pastilha de Freio Dianteira CB 300",
-    category: "Freios",
-    price: 34.90,
+    name: "Slider Escapamento Honda CB300F / Twister 2023-2026",
+    category: "Sliders",
+    price: 119.90,
     originalPrice: null,
-    rating: 4.6,
-    reviews: 189,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=400&fit=crop",
+    rating: 4.7,
+    reviews: 98,
+    image: imgSliderEscapamento,
     badge: null,
+    mlLink: "https://www.mercadolivre.com.br/slider-escapamento-honda-cb300f-cb-300f-twister-2023-a-2026/up/MLBU1731330288",
   },
   {
     id: 3,
-    name: "Jogo de Juntas Motor YBR 125",
-    category: "Motor",
-    price: 45.90,
-    originalPrice: 59.90,
-    rating: 4.7,
-    reviews: 156,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=400&fit=crop",
-    badge: "Promoção",
+    name: "Slider Protetor Yamaha MT-07 2016-2026",
+    category: "Sliders",
+    price: 149.90,
+    originalPrice: null,
+    rating: 4.9,
+    reviews: 234,
+    image: imgSliderMt07,
+    badge: "Mais Vendido",
+    mlLink: "https://www.mercadolivre.com.br/slider-protetor-yamaha-mt07-mt07-2016-a-2026/up/MLBU3452822748",
   },
   {
     id: 4,
-    name: "Cabo de Acelerador CG 160",
-    category: "Motor",
-    price: 22.90,
-    originalPrice: null,
-    rating: 4.5,
-    reviews: 98,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=400&fit=crop",
-    badge: null,
+    name: "Protetor de Radiador CB 650R CB650R",
+    category: "Protetores",
+    price: 135.85,
+    originalPrice: 143.00,
+    rating: 4.7,
+    reviews: 131,
+    image: imgProtetorRadiador,
+    badge: "5% OFF",
+    mlLink: "https://produto.mercadolivre.com.br/MLB-1613226532-protetor-de-radiador-cb-650r-cb650r-_JM",
   },
   {
     id: 5,
-    name: "Kit Pistão + Anéis Fan 125",
-    category: "Motor",
-    price: 67.90,
-    originalPrice: 89.90,
-    rating: 4.9,
-    reviews: 312,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=400&fit=crop",
-    badge: "Mais Vendido",
-  },
-  {
-    id: 6,
-    name: "Disco de Freio Dianteiro Fazer 250",
-    category: "Freios",
-    price: 79.90,
-    originalPrice: 99.90,
-    rating: 4.7,
-    reviews: 145,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=400&fit=crop",
-    badge: "Promoção",
-  },
-  {
-    id: 7,
-    name: "Corrente de Transmissão 428H",
-    category: "Transmissão",
-    price: 49.90,
+    name: "Slider Protetor Carenagem e Motor Honda CB300R",
+    category: "Sliders",
+    price: 139.90,
     originalPrice: null,
-    rating: 4.4,
-    reviews: 87,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=400&fit=crop",
-    badge: null,
-  },
-  {
-    id: 8,
-    name: "Retentor de Bengala NXR Bros",
-    category: "Suspensão",
-    price: 29.90,
-    originalPrice: 39.90,
     rating: 4.6,
-    reviews: 203,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=400&fit=crop",
+    reviews: 187,
+    image: imgSliderCb300r,
     badge: null,
+    mlLink: "https://www.mercadolivre.com.br/slider-protetor-carenagem-e-motor-honda-cb300r-cb-300r/up/MLBU3048179729",
   },
 ];
 
@@ -106,7 +84,7 @@ const Products = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {products.map((product, i) => (
             <motion.div
               key={product.id}
@@ -118,9 +96,11 @@ const Products = () => {
             >
               {/* Image */}
               <div className="relative aspect-square bg-muted overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-eco-charcoal/80 to-eco-charcoal/40 flex items-center justify-center">
-                  <Cog className="h-16 w-16 text-primary/30" />
-                </div>
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
                 {product.badge && (
                   <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-display uppercase tracking-wider px-3 py-1 rounded-full">
                     {product.badge}
@@ -156,9 +136,11 @@ const Products = () => {
                   )}
                 </div>
 
-                <Button className="w-full font-display uppercase tracking-wider text-sm">
-                  <ShoppingCart className="mr-2 h-4 w-4" />
-                  Adicionar
+                <Button className="w-full font-display uppercase tracking-wider text-sm" asChild>
+                  <a href={product.mlLink} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    Comprar no Mercado Livre
+                  </a>
                 </Button>
               </div>
             </motion.div>
@@ -170,14 +152,20 @@ const Products = () => {
             variant="outline"
             size="lg"
             className="font-display uppercase tracking-wider"
+            asChild
           >
-            Ver Todos os Produtos
+            <a
+              href="https://lista.mercadolivre.com.br/pagina/ecoferro2059/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ver Todos os Produtos no Mercado Livre
+            </a>
           </Button>
         </div>
       </div>
     </section>
   );
 };
-
 
 export default Products;
