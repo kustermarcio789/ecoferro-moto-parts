@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart, Star, Cog } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const products = [
