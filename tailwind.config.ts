@@ -47,6 +47,14 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        eco: {
+          green: "hsl(var(--eco-green))",
+          "green-light": "hsl(var(--eco-green-light))",
+          "green-dark": "hsl(var(--eco-green-dark))",
+          charcoal: "hsl(var(--eco-charcoal))",
+          steel: "hsl(var(--eco-steel))",
+          warm: "hsl(var(--eco-warm))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -57,6 +65,10 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      fontFamily: {
+        display: ["Oswald", "sans-serif"],
+        body: ["Inter", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
