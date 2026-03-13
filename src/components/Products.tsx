@@ -179,7 +179,5 @@ const Products = () => {
   );
 };
 
-// Need Cog for placeholder
-import { Cog } from "lucide-react";
 
 export default Products;
