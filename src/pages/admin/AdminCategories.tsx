@@ -90,7 +90,7 @@ const AdminCategories = () => {
   const startEdit = (c: Category) => {
     setEditing(c);
     setFormData({
-      name: c.name, slug: c.slug, parent_id: c.parent_id || "",
+      name: c.name, slug: c.slug, parent_id: c.parent_id || "none",
       description: c.description || "", image_url: c.image_url || "",
       is_active: c.is_active, sort_order: String(c.sort_order || 0),
     });
