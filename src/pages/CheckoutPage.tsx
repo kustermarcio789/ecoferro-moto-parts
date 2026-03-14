@@ -55,9 +55,14 @@ const CheckoutPage = () => {
   const [selectedShipping, setSelectedShipping] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [customerNotes, setCustomerNotes] = useState("");
+  const [couponCode, setCouponCode] = useState("");
+  const [couponDiscount, setCouponDiscount] = useState(0);
+  const [couponApplied, setCouponApplied] = useState<{ id: string; code: string; discount_type: string; discount_value: number } | null>(null);
+  const [couponLoading, setCouponLoading] = useState(false);
 
   const shippingCost = SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.price || 0;
-  const total = subtotal + shippingCost;
+  const pixDiscount = paymentMethod === "pix" ? (subtotal - couponDiscount + shippingCost) * 0.05 : 0;
+  const total = subtotal + shippingCost - couponDiscount - pixDiscount;
 
   if (items.length === 0) {
     navigate("/carrinho");
