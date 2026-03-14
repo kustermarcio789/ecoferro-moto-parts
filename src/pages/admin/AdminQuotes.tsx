@@ -23,7 +23,7 @@ const AdminQuotes = () => {
     const fetch = async () => {
       setLoading(true);
       let query = supabase.from("quotes").select("*").order("created_at", { ascending: false }).limit(50);
-      if (statusFilter) query = query.eq("status", statusFilter);
+      if (statusFilter) query = query.eq("status", statusFilter as any);
       const { data } = await query;
       setQuotes(data || []);
       setLoading(false);
