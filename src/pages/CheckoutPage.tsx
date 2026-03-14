@@ -575,15 +575,21 @@ const CheckoutPage = () => {
                   <span>{formatCurrency(shippingCost)}</span>
                 </div>
               )}
-              {paymentMethod === "pix" && (
+              {couponDiscount > 0 && (
+                <div className="flex justify-between text-sm font-body text-primary">
+                  <span>Cupom ({couponApplied?.code})</span>
+                  <span>-{formatCurrency(couponDiscount)}</span>
+                </div>
+              )}
+              {pixDiscount > 0 && (
                 <div className="flex justify-between text-sm font-body text-primary">
                   <span>Desconto Pix (5%)</span>
-                  <span>-{formatCurrency(total * 0.05)}</span>
+                  <span>-{formatCurrency(pixDiscount)}</span>
                 </div>
               )}
               <div className="flex justify-between font-display text-lg font-bold pt-2 border-t border-border">
                 <span>Total</span>
-                <span className="text-primary">{formatCurrency(paymentMethod === "pix" ? total * 0.95 : total)}</span>
+                <span className="text-primary">{formatCurrency(total)}</span>
               </div>
             </div>
           </div>
