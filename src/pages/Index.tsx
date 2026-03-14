@@ -3,8 +3,10 @@ import HeroBanner from "@/components/store/HeroBanner";
 import CategoriesSection from "@/components/store/CategoriesSection";
 import FeaturedProducts from "@/components/store/FeaturedProducts";
 import BenefitsSection from "@/components/store/BenefitsSection";
+import TestimonialsSection from "@/components/store/TestimonialsSection";
+import TrustSection from "@/components/store/TrustSection";
+import FAQSection from "@/components/store/FAQSection";
 import NewsletterSection from "@/components/store/NewsletterSection";
-import About from "@/components/About";
 import StoreFooter from "@/components/store/StoreFooter";
 
 const Index = () => {
@@ -15,7 +17,9 @@ const Index = () => {
       <CategoriesSection />
       <FeaturedProducts />
       <BenefitsSection />
-      <About />
+      <TrustSection />
+      <TestimonialsSection />
+      <FAQSection />
       <NewsletterSection />
       <StoreFooter />
     </div>
