@@ -24,7 +24,7 @@ const AdminLeads = () => {
     const fetch = async () => {
       setLoading(true);
       let query = supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(100);
-      if (sourceFilter) query = query.eq("source", sourceFilter);
+      if (sourceFilter) query = query.eq("source", sourceFilter as any);
       const { data } = await query;
       setLeads(data || []);
       setLoading(false);

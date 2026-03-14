@@ -26,7 +26,7 @@ const AdminOrders = () => {
     const fetch = async () => {
       setLoading(true);
       let query = supabase.from("orders").select("*, customers(name, email)").order("created_at", { ascending: false }).limit(50);
-      if (statusFilter) query = query.eq("status", statusFilter);
+      if (statusFilter) query = query.eq("status", statusFilter as any);
       const { data } = await query;
       setOrders(data || []);
       setLoading(false);

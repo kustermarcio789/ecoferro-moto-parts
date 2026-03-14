@@ -32,7 +32,7 @@ const AdminQuotes = () => {
   }, [statusFilter]);
 
   const updateStatus = async (id: string, status: string) => {
-    await supabase.from("quotes").update({ status }).eq("id", id);
+    await supabase.from("quotes").update({ status: status as any }).eq("id", id);
     setQuotes(prev => prev.map(q => q.id === id ? { ...q, status } : q));
   };
 
