@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Search, Edit, Trash2, Upload, Download, ChevronLeft, ChevronRight, Filter, Image } from "lucide-react";
+import { Plus, Search, Edit, Trash2, Upload, Download, ChevronLeft, ChevronRight, Filter, Image, ShoppingBag, Loader2, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import AdminLayout from "@/components/admin/AdminLayout";
@@ -31,7 +31,95 @@ const AdminProducts = () => {
     weight: "", width: "", height: "", length: "",
     ncm: "", cfop: "", origin: "", meta_title: "", meta_description: "",
   });
+  const [showMlImport, setShowMlImport] = useState(false);
+  const [mlProducts, setMlProducts] = useState<any[]>([]);
+  const [mlLoading, setMlLoading] = useState(false);
+  const [mlSelected, setMlSelected] = useState<Set<string>>(new Set());
+  const [mlImporting, setMlImporting] = useState(false);
   const { toast } = useToast();
+
+  const fetchMlProducts = async () => {
+    setMlLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('mercadolivre-import', {
+        body: { nickname: 'ECOFERRO2059', offset: 0, limit: 50 },
+      });
+      if (error) throw error;
+      if (data?.success) {
+        setMlProducts(data.products || []);
+        setMlSelected(new Set());
+        toast({ title: `${data.products.length} produtos encontrados no Mercado Livre` });
+      } else {
+        toast({ title: "Erro", description: data?.error || "Falha ao buscar produtos", variant: "destructive" });
+      }
+    } catch (err: any) {
+      toast({ title: "Erro", description: err.message, variant: "destructive" });
+    } finally {
+      setMlLoading(false);
+    }
+  };
+
+  const importMlSelected = async () => {
+    const toImport = mlProducts.filter(p => mlSelected.has(p.ml_id));
+    if (!toImport.length) return;
+    setMlImporting(true);
+    let imported = 0;
+    for (const p of toImport) {
+      // Check if already exists by ml_id
+      const { data: existing } = await supabase.from("products").select("id").eq("ml_id", p.ml_id).maybeSingle();
+      if (existing) continue;
+
+      const { error } = await supabase.from("products").insert({
+        name: p.name,
+        slug: p.slug,
+        price: p.price,
+        original_price: p.original_price || null,
+        stock: p.stock,
+        ml_id: p.ml_id,
+        ml_permalink: p.ml_permalink,
+        is_active: true,
+        is_new: false,
+        is_featured: false,
+      });
+      if (!error) {
+        imported++;
+        // Also add primary image if available
+        if (p.image) {
+          const { data: prod } = await supabase.from("products").select("id").eq("ml_id", p.ml_id).maybeSingle();
+          if (prod) {
+            await supabase.from("product_images").insert({
+              product_id: prod.id,
+              url: p.image,
+              is_primary: true,
+              alt_text: p.name,
+            });
+          }
+        }
+      }
+    }
+    toast({ title: `${imported} produto(s) importado(s) com sucesso` });
+    setShowMlImport(false);
+    setMlProducts([]);
+    setMlSelected(new Set());
+    setMlImporting(false);
+    fetchProducts();
+  };
+
+  const toggleMlSelect = (mlId: string) => {
+    setMlSelected(prev => {
+      const next = new Set(prev);
+      if (next.has(mlId)) next.delete(mlId); else next.add(mlId);
+      return next;
+    });
+  };
+
+  const toggleMlSelectAll = () => {
+    if (mlSelected.size === mlProducts.length) {
+      setMlSelected(new Set());
+    } else {
+      setMlSelected(new Set(mlProducts.map(p => p.ml_id)));
+    }
+  };
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -197,6 +285,9 @@ const AdminProducts = () => {
               <SelectItem value="lowstock">Estoque Baixo</SelectItem>
             </SelectContent>
           </Select>
+          <Button variant="outline" onClick={() => { setShowMlImport(true); fetchMlProducts(); }} className="font-display uppercase tracking-wider text-xs">
+            <ShoppingBag className="mr-2 h-4 w-4" /> Importar do ML
+          </Button>
           <Button onClick={() => { resetForm(); setEditingProduct(null); setShowForm(true); }} className="font-display uppercase tracking-wider text-xs">
             <Plus className="mr-2 h-4 w-4" /> Novo Produto
           </Button>
@@ -450,6 +541,71 @@ const AdminProducts = () => {
           </div>
         )}
       </div>
+
+      {/* ML Import Dialog */}
+      <Dialog open={showMlImport} onOpenChange={setShowMlImport}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-display uppercase tracking-wider">
+              Importar Produtos do Mercado Livre
+            </DialogTitle>
+          </DialogHeader>
+
+          {mlLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <span className="ml-3 font-body text-muted-foreground">Buscando produtos...</span>
+            </div>
+          ) : mlProducts.length === 0 ? (
+            <p className="text-center py-8 text-muted-foreground font-body">Nenhum produto encontrado.</p>
+          ) : (
+            <>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <button onClick={toggleMlSelectAll} className="flex items-center gap-2 text-sm font-body text-primary hover:underline">
+                    {mlSelected.size === mlProducts.length ? "Desmarcar todos" : "Selecionar todos"}
+                  </button>
+                  <span className="text-xs text-muted-foreground font-body">{mlSelected.size} selecionado(s)</span>
+                </div>
+                <Button onClick={importMlSelected} disabled={mlSelected.size === 0 || mlImporting} className="font-display uppercase tracking-wider text-xs">
+                  {mlImporting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Download className="mr-2 h-4 w-4" />}
+                  Importar Selecionados
+                </Button>
+              </div>
+
+              <div className="grid gap-3 max-h-[60vh] overflow-y-auto">
+                {mlProducts.map(p => (
+                  <div
+                    key={p.ml_id}
+                    onClick={() => toggleMlSelect(p.ml_id)}
+                    className={`flex items-center gap-4 p-3 rounded-lg border cursor-pointer transition-colors ${
+                      mlSelected.has(p.ml_id) ? 'border-primary bg-primary/5' : 'border-border hover:border-muted-foreground/30'
+                    }`}
+                  >
+                    <div className={`h-5 w-5 rounded border-2 flex items-center justify-center shrink-0 ${
+                      mlSelected.has(p.ml_id) ? 'border-primary bg-primary' : 'border-muted-foreground/30'
+                    }`}>
+                      {mlSelected.has(p.ml_id) && <Check className="h-3 w-3 text-primary-foreground" />}
+                    </div>
+                    {p.image && (
+                      <img src={p.image} alt={p.name} className="h-14 w-14 object-cover rounded-lg shrink-0" />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-display text-sm font-semibold text-foreground line-clamp-1">{p.name}</p>
+                      <p className="text-xs text-muted-foreground font-body mt-0.5">ML ID: {p.ml_id} • Estoque: {p.stock}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="font-display font-bold text-primary">R$ {p.price?.toFixed(2).replace('.', ',')}</p>
+                      {p.shipping_free && <span className="text-xs text-green-600 font-body">Frete grátis</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
     </AdminLayout>
   );
 };
