@@ -1,19 +1,23 @@
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import Categories from "@/components/Categories";
-import Products from "@/components/Products";
+import StoreHeader from "@/components/store/StoreHeader";
+import HeroBanner from "@/components/store/HeroBanner";
+import CategoriesSection from "@/components/store/CategoriesSection";
+import FeaturedProducts from "@/components/store/FeaturedProducts";
+import BenefitsSection from "@/components/store/BenefitsSection";
+import NewsletterSection from "@/components/store/NewsletterSection";
 import About from "@/components/About";
-import Footer from "@/components/Footer";
+import StoreFooter from "@/components/store/StoreFooter";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      <Hero />
-      <Categories />
-      <Products />
+      <StoreHeader />
+      <HeroBanner />
+      <CategoriesSection />
+      <FeaturedProducts />
+      <BenefitsSection />
       <About />
-      <Footer />
+      <NewsletterSection />
+      <StoreFooter />
     </div>
   );
 };
