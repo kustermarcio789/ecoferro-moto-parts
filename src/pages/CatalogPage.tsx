@@ -62,18 +62,22 @@ const CatalogPage = () => {
       setLoading(true);
       let query = supabase
         .from("products")
-        .select("id, name, slug, price, original_price, stock, is_new, sku, brand_id, product_images(url, is_primary), categories!inner(id, name, slug, parent_id), brands(name, slug)", { count: "exact" })
+        .select("id, name, slug, price, original_price, stock, is_new, sku, brand_id, product_images(url, is_primary), categories(id, name, slug, parent_id), brands(name, slug)", { count: "exact" })
         .eq("is_active", true);
 
       if (q) query = query.ilike("name", `%${q}%`);
-      if (marca) query = query.eq("brands.slug", marca);
+      if (marca) {
+        const brandObj = brands.find(b => b.slug === marca);
+        if (brandObj) query = query.eq("brand_id", brandObj.id);
+      }
       if (disponivel === "sim") query = query.gt("stock", 0);
       if (precoMin) query = query.gte("price", Number(precoMin));
       if (precoMax) query = query.lte("price", Number(precoMax));
 
       // Filter by class or subclass
       if (subclasse) {
-        query = query.eq("categories.slug", subclasse);
+        const subCat = allCategories.find(c => c.slug === subclasse);
+        if (subCat) query = query.eq("category_id", subCat.id);
       } else if (classe) {
         const classeCat = allCategories.find(c => c.slug === classe && !c.parent_id);
         if (classeCat) {
@@ -96,8 +100,8 @@ const CatalogPage = () => {
       setTotal(count || 0);
       setLoading(false);
     };
-    if (allCategories.length > 0 || (!classe && !subclasse)) fetchProducts();
-  }, [q, marca, classe, subclasse, disponivel, precoMin, precoMax, sort, page, allCategories]);
+    if ((allCategories.length > 0 && brands.length > 0) || (!classe && !subclasse && !marca)) fetchProducts();
+  }, [q, marca, classe, subclasse, disponivel, precoMin, precoMax, sort, page, allCategories, brands]);
 
   const getImage = (p: Product) => p.product_images?.find(i => i.is_primary)?.url || p.product_images?.[0]?.url || "/placeholder.svg";
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
