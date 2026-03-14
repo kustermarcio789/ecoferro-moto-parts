@@ -19,14 +19,14 @@ const statusLabels: Record<string, { label: string; color: string }> = {
 const AdminOrders = () => {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
       let query = supabase.from("orders").select("*, customers(name, email)").order("created_at", { ascending: false }).limit(50);
-      if (statusFilter) query = query.eq("status", statusFilter as any);
+      if (statusFilter && statusFilter !== "all") query = query.eq("status", statusFilter as any);
       const { data } = await query;
       setOrders(data || []);
       setLoading(false);
