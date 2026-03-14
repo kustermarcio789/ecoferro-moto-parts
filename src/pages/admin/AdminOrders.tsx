@@ -37,6 +37,11 @@ const AdminOrders = () => {
   const [orderItems, setOrderItems] = useState<any[]>([]);
   const [orderPayments, setOrderPayments] = useState<any[]>([]);
   const [detailLoading, setDetailLoading] = useState(false);
+  const [editTracking, setEditTracking] = useState("");
+  const [editInvoice, setEditInvoice] = useState("");
+  const [editInvoiceKey, setEditInvoiceKey] = useState("");
+  const [editInternalNotes, setEditInternalNotes] = useState("");
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
