@@ -6,7 +6,7 @@ import { useCart } from "@/contexts/CartContext";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/ecoferro-logo.jpeg";
 
-interface Brand { name: string; slug: string }
+interface Brand { name: string; slug: string; logo_url: string | null }
 interface Category { id: string; name: string; slug: string; parent_id: string | null; children?: Category[] }
 
 const StoreHeader = () => {
