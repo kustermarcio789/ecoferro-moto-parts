@@ -286,9 +286,10 @@ const AdminProducts = () => {
               </div>
               <div>
                 <label className="text-xs font-body font-medium text-foreground mb-1 block">Marca</label>
-                <Select value={formData.brand_id} onValueChange={v => setFormData(f => ({ ...f, brand_id: v }))}>
+                <Select value={formData.brand_id || "none"} onValueChange={v => setFormData(f => ({ ...f, brand_id: v === "none" ? "" : v }))}>
                   <SelectTrigger className="font-body text-sm"><SelectValue placeholder="Selecione" /></SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="none">Nenhuma</SelectItem>
                     {brands.map(b => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}
                   </SelectContent>
                 </Select>
