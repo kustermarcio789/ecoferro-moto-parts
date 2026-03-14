@@ -12,12 +12,34 @@ Deno.serve(async (req) => {
 
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
   const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const accessToken = Deno.env.get('MERCADOLIVRE_ACCESS_TOKEN');
   const supabase = createClient(supabaseUrl, serviceRoleKey);
 
-  try {
-    const { nickname = 'ECOFERRO2059' } = await req.json().catch(() => ({}));
+  if (!accessToken) {
+    return new Response(
+      JSON.stringify({ success: false, error: 'MERCADOLIVRE_ACCESS_TOKEN não configurado' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
 
-    // 1. Get all local products that have ml_id set
+  try {
+    // 1. Get seller ID from token
+    const meResp = await fetch('https://api.mercadolibre.com/users/me', {
+      headers: { 'Authorization': `Bearer ${accessToken}` },
+    });
+    if (!meResp.ok) {
+      const errText = await meResp.text();
+      console.error('ML /users/me error:', errText);
+      return new Response(
+        JSON.stringify({ success: false, error: `Token inválido ou expirado (${meResp.status})` }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    const meData = await meResp.json();
+    const sellerId = meData.id;
+    console.log('Syncing seller:', sellerId, meData.nickname);
+
+    // 2. Get all local products that have ml_id
     const { data: localProducts, error: fetchErr } = await supabase
       .from('products')
       .select('id, ml_id, price, stock, name')
@@ -31,32 +53,26 @@ Deno.serve(async (req) => {
       );
     }
 
-    // 2. Fetch all ML products (paginate up to 200)
-    const mlItems: any[] = [];
-    let offset = 0;
-    const limit = 50;
-    let totalMl = Infinity;
-
-    while (offset < totalMl && offset < 200) {
-      const mlUrl = `https://api.mercadolibre.com/sites/MLB/search?nickname=${encodeURIComponent(nickname)}&offset=${offset}&limit=${limit}`;
-      const resp = await fetch(mlUrl);
-      if (!resp.ok) {
-        console.error(`ML API error at offset ${offset}: ${resp.status}`);
-        break;
-      }
-      const data = await resp.json();
-      totalMl = data.paging?.total || 0;
-      mlItems.push(...(data.results || []));
-      offset += limit;
-    }
-
-    console.log(`Fetched ${mlItems.length} items from ML (total: ${totalMl})`);
-
-    // 3. Build ML lookup map by ml_id
+    // 3. Fetch ML items using multiget
+    const mlIds = localProducts.map(p => p.ml_id).filter(Boolean);
     const mlMap = new Map<string, any>();
-    for (const item of mlItems) {
-      mlMap.set(item.id, item);
+
+    for (let i = 0; i < mlIds.length; i += 20) {
+      const batch = mlIds.slice(i, i + 20);
+      const resp = await fetch(`https://api.mercadolibre.com/items?ids=${batch.join(',')}`, {
+        headers: { 'Authorization': `Bearer ${accessToken}` },
+      });
+      if (resp.ok) {
+        const items = await resp.json();
+        for (const item of items) {
+          if (item.code === 200 && item.body) {
+            mlMap.set(item.body.id, item.body);
+          }
+        }
+      }
     }
+
+    console.log(`Fetched ${mlMap.size} items from ML for ${localProducts.length} local products`);
 
     // 4. Sync each local product
     let synced = 0;
@@ -65,20 +81,14 @@ Deno.serve(async (req) => {
 
     for (const local of localProducts) {
       const mlItem = mlMap.get(local.ml_id);
-      if (!mlItem) {
-        skipped++;
-        continue;
-      }
+      if (!mlItem) { skipped++; continue; }
 
       const newPrice = mlItem.price;
       const newStock = mlItem.available_quantity || 0;
       const priceChanged = Math.abs(newPrice - local.price) > 0.01;
       const stockChanged = newStock !== local.stock;
 
-      if (!priceChanged && !stockChanged) {
-        skipped++;
-        continue;
-      }
+      if (!priceChanged && !stockChanged) { skipped++; continue; }
 
       const updatePayload: any = {};
       if (priceChanged) updatePayload.price = newPrice;
@@ -90,11 +100,10 @@ Deno.serve(async (req) => {
         .eq('id', local.id);
 
       if (updateErr) {
-        console.error(`Failed to update product ${local.id}:`, updateErr.message);
+        console.error(`Failed to update ${local.id}:`, updateErr.message);
         continue;
       }
 
-      // Record inventory movement if stock changed
       if (stockChanged) {
         const diff = newStock - local.stock;
         await supabase.from('inventory_movements').insert({
@@ -116,14 +125,14 @@ Deno.serve(async (req) => {
       synced++;
     }
 
-    // 5. Log the sync result in site_settings
+    // 5. Log sync result
     await supabase.from('site_settings').upsert({
       key: 'ml_sync_last_run',
       value: {
         timestamp: new Date().toISOString(),
         synced,
         skipped,
-        total_ml: mlItems.length,
+        total_ml: mlMap.size,
         total_local: localProducts.length,
         changes,
       },
