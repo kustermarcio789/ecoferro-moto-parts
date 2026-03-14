@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { formatCurrency } from "@/lib/tracking";
+import ProductImageUpload from "@/components/admin/ProductImageUpload";
 
 const ITEMS_PER_PAGE = 20;
 
