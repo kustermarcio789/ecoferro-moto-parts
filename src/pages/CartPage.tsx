@@ -114,8 +114,8 @@ const CartPage = () => {
               </p>
             </div>
 
-            <Button className="w-full font-display uppercase tracking-wider text-base py-6" size="lg">
-              Finalizar Compra
+            <Button className="w-full font-display uppercase tracking-wider text-base py-6" size="lg" asChild>
+              <Link to="/checkout">Finalizar Compra</Link>
             </Button>
 
             <Button variant="ghost" className="w-full mt-2 font-body text-sm" asChild>

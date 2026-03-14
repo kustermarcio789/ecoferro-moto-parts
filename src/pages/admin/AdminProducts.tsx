@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Search, Edit, Trash2, Upload, Download, ChevronLeft, ChevronRight, Filter } from "lucide-react";
+import { Plus, Search, Edit, Trash2, Upload, Download, ChevronLeft, ChevronRight, Filter, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import AdminLayout from "@/components/admin/AdminLayout";
@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { formatCurrency } from "@/lib/tracking";
+import ProductImageUpload from "@/components/admin/ProductImageUpload";
 
 const ITEMS_PER_PAGE = 20;
 
@@ -354,6 +355,12 @@ const AdminProducts = () => {
                 </label>
               ))}
             </div>
+            {/* Image upload - only for existing products */}
+            {editingProduct && (
+              <div className="border-t border-border pt-4">
+                <ProductImageUpload productId={editingProduct.id} />
+              </div>
+            )}
             <div className="flex justify-end gap-3 pt-4 border-t border-border">
               <Button variant="outline" onClick={() => setShowForm(false)}>Cancelar</Button>
               <Button onClick={handleSave} className="font-display uppercase tracking-wider text-xs">
