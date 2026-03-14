@@ -203,7 +203,10 @@ const StoreHeader = () => {
               <div className="pl-6 space-y-0.5">
                 {brands.map(b => (
                   <Link key={b.slug} to={`/produtos?marca=${b.slug}`} onClick={closeAll}
-                    className="block py-2 px-3 font-body text-sm text-foreground/70 hover:text-primary hover:bg-muted rounded-md">{b.name}</Link>
+                    className="flex items-center gap-2.5 py-2 px-3 font-body text-sm text-foreground/70 hover:text-primary hover:bg-muted rounded-md">
+                    {b.logo_url && <img src={b.logo_url} alt={b.name} className="h-5 w-5 object-contain shrink-0" />}
+                    {b.name}
+                  </Link>
                 ))}
               </div>
             )}
