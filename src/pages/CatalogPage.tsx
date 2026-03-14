@@ -66,7 +66,10 @@ const CatalogPage = () => {
         .eq("is_active", true);
 
       if (q) query = query.ilike("name", `%${q}%`);
-      if (marca) query = query.eq("brands.slug", marca);
+      if (marca) {
+        const brandObj = brands.find(b => b.slug === marca);
+        if (brandObj) query = query.eq("brand_id", brandObj.id);
+      }
       if (disponivel === "sim") query = query.gt("stock", 0);
       if (precoMin) query = query.gte("price", Number(precoMin));
       if (precoMax) query = query.lte("price", Number(precoMax));
