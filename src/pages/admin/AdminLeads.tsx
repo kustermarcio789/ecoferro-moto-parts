@@ -18,13 +18,13 @@ const sourceLabels: Record<string, string> = {
 const AdminLeads = () => {
   const [leads, setLeads] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [sourceFilter, setSourceFilter] = useState("");
+  const [sourceFilter, setSourceFilter] = useState("all");
 
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
       let query = supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(100);
-      if (sourceFilter) query = query.eq("source", sourceFilter as any);
+      if (sourceFilter && sourceFilter !== "all") query = query.eq("source", sourceFilter as any);
       const { data } = await query;
       setLeads(data || []);
       setLoading(false);
