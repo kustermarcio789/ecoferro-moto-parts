@@ -133,7 +133,7 @@ const AdminCategories = () => {
               <Select value={formData.parent_id} onValueChange={v => setFormData(f => ({ ...f, parent_id: v }))}>
                 <SelectTrigger className="font-body text-sm"><SelectValue placeholder="Nenhuma (Classe principal)" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Nenhuma (Classe principal)</SelectItem>
+                  <SelectItem value="none">Nenhuma (Classe principal)</SelectItem>
                   {classes.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                 </SelectContent>
               </Select>
