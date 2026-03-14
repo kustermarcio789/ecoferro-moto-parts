@@ -75,7 +75,31 @@ const AdminOrders = () => {
     ]);
     setOrderItems(items.data || []);
     setOrderPayments(payments.data || []);
+    setEditTracking(order.tracking_code || "");
+    setEditInvoice(order.invoice_number || "");
+    setEditInvoiceKey(order.invoice_key || "");
+    setEditInternalNotes(order.internal_notes || "");
     setDetailLoading(false);
+  };
+
+  const saveOrderFields = async () => {
+    if (!selectedOrder) return;
+    setSaving(true);
+    const updates: any = {
+      tracking_code: editTracking || null,
+      invoice_number: editInvoice || null,
+      invoice_key: editInvoiceKey || null,
+      internal_notes: editInternalNotes || null,
+    };
+    const { error } = await supabase.from("orders").update(updates).eq("id", selectedOrder.id);
+    if (error) {
+      toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Salvo com sucesso" });
+      setSelectedOrder((prev: any) => prev ? { ...prev, ...updates } : prev);
+      setOrders(prev => prev.map(o => o.id === selectedOrder.id ? { ...o, ...updates } : o));
+    }
+    setSaving(false);
   };
 
   const formatDate = (d: string | null) => d ? new Date(d).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit" }) : "—";
