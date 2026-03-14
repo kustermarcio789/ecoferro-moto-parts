@@ -11,6 +11,8 @@ import { useAuth } from "@/hooks/useAuth";
 const adminNav = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Produtos", href: "/admin/produtos", icon: Package },
+  { label: "Marcas", href: "/admin/marcas", icon: TrendingUp },
+  { label: "Classes", href: "/admin/categorias", icon: Boxes },
   { label: "Pedidos", href: "/admin/pedidos", icon: ShoppingBag },
   { label: "Clientes", href: "/admin/clientes", icon: Users },
   { label: "Leads", href: "/admin/leads", icon: MessageSquare },

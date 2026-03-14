@@ -39,6 +39,8 @@ import AdminCoupons from "./pages/admin/AdminCoupons";
 import AdminBanners from "./pages/admin/AdminBanners";
 import AdminReviews from "./pages/admin/AdminReviews";
 import AdminAbandonedCarts from "./pages/admin/AdminAbandonedCarts";
+import AdminBrands from "./pages/admin/AdminBrands";
+import AdminCategories from "./pages/admin/AdminCategories";
 
 const queryClient = new QueryClient();
 
@@ -82,6 +84,8 @@ const App = () => (
               <Route path="/admin/banners" element={<ProtectedRoute><AdminBanners /></ProtectedRoute>} />
               <Route path="/admin/avaliacoes" element={<ProtectedRoute><AdminReviews /></ProtectedRoute>} />
               <Route path="/admin/carrinhos-abandonados" element={<ProtectedRoute><AdminAbandonedCarts /></ProtectedRoute>} />
+              <Route path="/admin/marcas" element={<ProtectedRoute><AdminBrands /></ProtectedRoute>} />
+              <Route path="/admin/categorias" element={<ProtectedRoute><AdminCategories /></ProtectedRoute>} />
 
               {/* Catch-all */}
               <Route path="*" element={<NotFound />} />
