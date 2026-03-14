@@ -21,7 +21,7 @@ const StoreHeader = () => {
 
   useEffect(() => {
     Promise.all([
-      supabase.from("brands").select("name, slug").eq("is_active", true).order("name"),
+      supabase.from("brands").select("name, slug, logo_url").eq("is_active", true).order("name"),
       supabase.from("categories").select("id, name, slug, parent_id").eq("is_active", true).order("sort_order"),
     ]).then(([b, c]) => {
       setBrands(b.data || []);
