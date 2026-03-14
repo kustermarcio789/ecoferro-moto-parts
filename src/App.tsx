@@ -35,6 +35,10 @@ import AdminPartners from "./pages/admin/AdminPartners";
 import AdminWholesale from "./pages/admin/AdminWholesale";
 import AdminReports from "./pages/admin/AdminReports";
 import AdminSettings from "./pages/admin/AdminSettings";
+import AdminCoupons from "./pages/admin/AdminCoupons";
+import AdminBanners from "./pages/admin/AdminBanners";
+import AdminReviews from "./pages/admin/AdminReviews";
+import AdminAbandonedCarts from "./pages/admin/AdminAbandonedCarts";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +78,10 @@ const App = () => (
               <Route path="/admin/atacado" element={<ProtectedRoute><AdminWholesale /></ProtectedRoute>} />
               <Route path="/admin/relatorios" element={<ProtectedRoute><AdminReports /></ProtectedRoute>} />
               <Route path="/admin/configuracoes" element={<ProtectedRoute><AdminSettings /></ProtectedRoute>} />
+              <Route path="/admin/cupons" element={<ProtectedRoute><AdminCoupons /></ProtectedRoute>} />
+              <Route path="/admin/banners" element={<ProtectedRoute><AdminBanners /></ProtectedRoute>} />
+              <Route path="/admin/avaliacoes" element={<ProtectedRoute><AdminReviews /></ProtectedRoute>} />
+              <Route path="/admin/carrinhos-abandonados" element={<ProtectedRoute><AdminAbandonedCarts /></ProtectedRoute>} />
 
               {/* Catch-all */}
               <Route path="*" element={<NotFound />} />
