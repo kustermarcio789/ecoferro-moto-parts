@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Search, Edit, Trash2, Upload, Download, ChevronLeft, ChevronRight, Filter } from "lucide-react";
+import { Plus, Search, Edit, Trash2, Upload, Download, ChevronLeft, ChevronRight, Filter, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import AdminLayout from "@/components/admin/AdminLayout";
