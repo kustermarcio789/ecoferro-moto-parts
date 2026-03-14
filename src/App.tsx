@@ -78,6 +78,10 @@ const App = () => (
               <Route path="/admin/atacado" element={<ProtectedRoute><AdminWholesale /></ProtectedRoute>} />
               <Route path="/admin/relatorios" element={<ProtectedRoute><AdminReports /></ProtectedRoute>} />
               <Route path="/admin/configuracoes" element={<ProtectedRoute><AdminSettings /></ProtectedRoute>} />
+              <Route path="/admin/cupons" element={<ProtectedRoute><AdminCoupons /></ProtectedRoute>} />
+              <Route path="/admin/banners" element={<ProtectedRoute><AdminBanners /></ProtectedRoute>} />
+              <Route path="/admin/avaliacoes" element={<ProtectedRoute><AdminReviews /></ProtectedRoute>} />
+              <Route path="/admin/carrinhos-abandonados" element={<ProtectedRoute><AdminAbandonedCarts /></ProtectedRoute>} />
 
               {/* Catch-all */}
               <Route path="*" element={<NotFound />} />
