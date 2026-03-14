@@ -100,8 +100,8 @@ const CatalogPage = () => {
       setTotal(count || 0);
       setLoading(false);
     };
-    if (allCategories.length > 0 || (!classe && !subclasse)) fetchProducts();
-  }, [q, marca, classe, subclasse, disponivel, precoMin, precoMax, sort, page, allCategories]);
+    if ((allCategories.length > 0 && brands.length > 0) || (!classe && !subclasse && !marca)) fetchProducts();
+  }, [q, marca, classe, subclasse, disponivel, precoMin, precoMax, sort, page, allCategories, brands]);
 
   const getImage = (p: Product) => p.product_images?.find(i => i.is_primary)?.url || p.product_images?.[0]?.url || "/placeholder.svg";
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
