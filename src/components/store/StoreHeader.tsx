@@ -22,6 +22,7 @@ const StoreHeader = () => {
   const navItems = [
     { label: "Início", href: "/" },
     { label: "Produtos", href: "/produtos" },
+    { label: "Atacado", href: "/atacado" },
     { label: "Sobre", href: "/sobre" },
     { label: "Contato", href: "/contato" },
     { label: "Orçamento B2B", href: "/orcamento" },
