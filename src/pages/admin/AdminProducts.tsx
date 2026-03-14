@@ -31,6 +31,11 @@ const AdminProducts = () => {
     weight: "", width: "", height: "", length: "",
     ncm: "", cfop: "", origin: "", meta_title: "", meta_description: "",
   });
+  const [showMlImport, setShowMlImport] = useState(false);
+  const [mlProducts, setMlProducts] = useState<any[]>([]);
+  const [mlLoading, setMlLoading] = useState(false);
+  const [mlSelected, setMlSelected] = useState<Set<string>>(new Set());
+  const [mlImporting, setMlImporting] = useState(false);
   const { toast } = useToast();
 
   const fetchProducts = async () => {
