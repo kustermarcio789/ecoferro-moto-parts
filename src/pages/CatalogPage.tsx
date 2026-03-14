@@ -18,7 +18,7 @@ interface Product {
 }
 
 interface Category { id: string; name: string; slug: string; parent_id: string | null; children?: Category[] }
-interface Brand { id: string; name: string; slug: string }
+interface Brand { id: string; name: string; slug: string; logo_url: string | null }
 
 const ITEMS_PER_PAGE = 12;
 
