@@ -285,6 +285,9 @@ const AdminProducts = () => {
               <SelectItem value="lowstock">Estoque Baixo</SelectItem>
             </SelectContent>
           </Select>
+          <Button variant="outline" onClick={() => { setShowMlImport(true); fetchMlProducts(); }} className="font-display uppercase tracking-wider text-xs">
+            <ShoppingBag className="mr-2 h-4 w-4" /> Importar do ML
+          </Button>
           <Button onClick={() => { resetForm(); setEditingProduct(null); setShowForm(true); }} className="font-display uppercase tracking-wider text-xs">
             <Plus className="mr-2 h-4 w-4" /> Novo Produto
           </Button>
