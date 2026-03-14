@@ -19,6 +19,11 @@ const LoginPage = () => {
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirect") || "/";
 
+  const resolveEmail = (input: string) => {
+    if (input.includes("@")) return input;
+    return `${input}@ecoferro.com.br`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -28,7 +33,8 @@ const LoginPage = () => {
         if (error) throw error;
         toast({ title: "Conta criada!", description: "Verifique seu e-mail para confirmar o cadastro." });
       } else {
-        const { error } = await signIn(email, password);
+        const loginEmail = resolveEmail(email);
+        const { error } = await signIn(loginEmail, password);
         if (error) throw error;
         navigate(redirect);
       }
