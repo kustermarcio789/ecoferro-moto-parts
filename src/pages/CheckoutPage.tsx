@@ -114,10 +114,65 @@ const CheckoutPage = () => {
     if (validateStep()) setStep(s => Math.min(4, s + 1));
   };
 
+  const applyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setCouponLoading(true);
+    const { data, error } = await supabase
+      .from("coupons")
+      .select("*")
+      .eq("code", couponCode.trim().toUpperCase())
+      .eq("is_active", true)
+      .maybeSingle();
+
+    if (error || !data) {
+      toast({ title: "Cupom inválido", variant: "destructive" });
+      setCouponDiscount(0);
+      setCouponApplied(null);
+    } else {
+      if (data.min_order_value && subtotal < Number(data.min_order_value)) {
+        toast({ title: `Pedido mínimo de ${formatCurrency(Number(data.min_order_value))}`, variant: "destructive" });
+      } else if (data.max_uses && Number(data.used_count) >= data.max_uses) {
+        toast({ title: "Cupom esgotado", variant: "destructive" });
+      } else {
+        const discount = data.discount_type === "percentage"
+          ? subtotal * (Number(data.discount_value) / 100)
+          : Number(data.discount_value);
+        setCouponDiscount(Math.min(discount, subtotal));
+        setCouponApplied({ id: data.id, code: data.code, discount_type: data.discount_type, discount_value: Number(data.discount_value) });
+        toast({ title: `Cupom ${data.code} aplicado!` });
+      }
+    }
+    setCouponLoading(false);
+  };
+
+  const removeCoupon = () => {
+    setCouponCode("");
+    setCouponDiscount(0);
+    setCouponApplied(null);
+  };
+
   const placeOrder = async () => {
     setLoading(true);
     try {
-      // 1. Create or find customer
+      // 1. Validate stock
+      for (const item of items) {
+        const { data: product } = await supabase
+          .from("products")
+          .select("stock, name")
+          .eq("id", item.id)
+          .single();
+        if (!product || product.stock < item.quantity) {
+          toast({
+            title: "Estoque insuficiente",
+            description: `"${product?.name || item.name}" possui apenas ${product?.stock || 0} unidade(s) disponível(is).`,
+            variant: "destructive",
+          });
+          setLoading(false);
+          return;
+        }
+      }
+
+      // 2. Create or find customer
       let customerId: string | null = null;
       const { data: existingCustomer } = await supabase
         .from("customers")
@@ -143,7 +198,7 @@ const CheckoutPage = () => {
         customerId = newCustomer.id;
       }
 
-      // 2. Create address
+      // 3. Create address
       await supabase.from("addresses").insert({
         customer_id: customerId!,
         zip_code: address.zip_code,
@@ -156,7 +211,7 @@ const CheckoutPage = () => {
         is_default: true,
       });
 
-      // 3. Create order
+      // 4. Create order with real totals
       const shippingOption = SHIPPING_OPTIONS.find(s => s.id === selectedShipping);
       const { data: order, error: orderErr } = await supabase
         .from("orders")
@@ -164,6 +219,7 @@ const CheckoutPage = () => {
           customer_id: customerId,
           subtotal,
           shipping_cost: shippingCost,
+          discount: couponDiscount + pixDiscount,
           total,
           status: "pending",
           payment_status: "pending",
@@ -172,13 +228,14 @@ const CheckoutPage = () => {
           shipping_address: address as any,
           billing_address: address as any,
           customer_notes: customerNotes || null,
+          coupon_id: couponApplied?.id || null,
           sales_channel: "retail",
         })
         .select("id, order_number")
         .single();
       if (orderErr) throw orderErr;
 
-      // 4. Create order items
+      // 5. Create order items
       const orderItems = items.map(item => ({
         order_id: order.id,
         product_id: item.id,
@@ -191,7 +248,7 @@ const CheckoutPage = () => {
       const { error: itemsErr } = await supabase.from("order_items").insert(orderItems);
       if (itemsErr) throw itemsErr;
 
-      // 5. Create payment record
+      // 6. Create payment record
       await supabase.from("payments").insert({
         order_id: order.id,
         amount: total,
@@ -199,9 +256,47 @@ const CheckoutPage = () => {
         status: "pending",
       });
 
-      // 6. Update stock
+      // 7. Decrement stock & register inventory movements
       for (const item of items) {
-        await supabase.rpc("has_role", { _user_id: "00000000-0000-0000-0000-000000000000", _role: "admin" }); // no-op, stock update via admin
+        const { data: product } = await supabase
+          .from("products")
+          .select("stock")
+          .eq("id", item.id)
+          .single();
+        const previousStock = product?.stock || 0;
+        const newStock = previousStock - item.quantity;
+
+        await supabase
+          .from("products")
+          .update({ stock: newStock })
+          .eq("id", item.id);
+
+        await supabase.from("inventory_movements").insert({
+          product_id: item.id,
+          type: "exit" as const,
+          quantity: item.quantity,
+          previous_stock: previousStock,
+          new_stock: newStock,
+          order_id: order.id,
+          reason: `Venda - Pedido #${order.order_number}`,
+        });
+      }
+
+      // 8. Increment coupon used_count
+      if (couponApplied) {
+        await supabase.rpc("has_role", { _user_id: "00000000-0000-0000-0000-000000000000", _role: "admin" }); // no-op placeholder
+        // Update via direct query
+        const { data: coupon } = await supabase
+          .from("coupons")
+          .select("used_count")
+          .eq("id", couponApplied.id)
+          .single();
+        if (coupon) {
+          await supabase
+            .from("coupons")
+            .update({ used_count: (coupon.used_count || 0) + 1 })
+            .eq("id", couponApplied.id);
+        }
       }
 
       clearCart();
