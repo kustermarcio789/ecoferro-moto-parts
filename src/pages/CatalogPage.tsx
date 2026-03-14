@@ -1,44 +1,59 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { Search, Filter, ShoppingCart, Star, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, ShoppingCart, ChevronLeft, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import StoreHeader from "@/components/store/StoreHeader";
 import StoreFooter from "@/components/store/StoreFooter";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/contexts/CartContext";
 
 interface Product {
-  id: string;
-  name: string;
-  slug: string;
-  price: number;
-  original_price: number | null;
-  stock: number;
-  is_new: boolean;
+  id: string; name: string; slug: string; price: number; original_price: number | null;
+  stock: number; is_new: boolean; sku: string | null; brand_id: string | null;
   product_images: { url: string; is_primary: boolean }[];
-  categories: { name: string } | null;
-  reviews: { rating: number }[];
+  categories: { id: string; name: string; slug: string; parent_id: string | null } | null;
+  brands: { name: string; slug: string } | null;
 }
+
+interface Category { id: string; name: string; slug: string; parent_id: string | null; children?: Category[] }
+interface Brand { id: string; name: string; slug: string }
 
 const ITEMS_PER_PAGE = 12;
 
 const CatalogPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<{ name: string; slug: string }[]>([]);
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
+  const [classes, setClasses] = useState<Category[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
+  const [showFilters, setShowFilters] = useState(false);
   const { addItem } = useCart();
 
   const q = searchParams.get("q") || "";
-  const categoria = searchParams.get("categoria") || "";
+  const marca = searchParams.get("marca") || "";
+  const classe = searchParams.get("classe") || "";
+  const subclasse = searchParams.get("subclasse") || "";
+  const disponivel = searchParams.get("disponivel") || "";
+  const precoMin = searchParams.get("preco_min") || "";
+  const precoMax = searchParams.get("preco_max") || "";
   const sort = searchParams.get("sort") || "relevancia";
   const page = parseInt(searchParams.get("page") || "1");
 
   useEffect(() => {
-    supabase.from("categories").select("name, slug").eq("is_active", true).order("sort_order").then(({ data }) => {
-      if (data) setCategories(data);
+    Promise.all([
+      supabase.from("categories").select("id, name, slug, parent_id").eq("is_active", true).order("sort_order"),
+      supabase.from("brands").select("id, name, slug").eq("is_active", true).order("name"),
+    ]).then(([c, b]) => {
+      const all = c.data || [];
+      setAllCategories(all);
+      setBrands(b.data || []);
+      setClasses(all.filter(cat => !cat.parent_id).map(p => ({
+        ...p, children: all.filter(ch => ch.parent_id === p.id),
+      })));
     });
   }, []);
 
@@ -47,14 +62,30 @@ const CatalogPage = () => {
       setLoading(true);
       let query = supabase
         .from("products")
-        .select("id, name, slug, price, original_price, stock, is_new, product_images(url, is_primary), categories!inner(name, slug), reviews(rating)", { count: "exact" })
+        .select("id, name, slug, price, original_price, stock, is_new, sku, brand_id, product_images(url, is_primary), categories!inner(id, name, slug, parent_id), brands(name, slug)", { count: "exact" })
         .eq("is_active", true);
 
       if (q) query = query.ilike("name", `%${q}%`);
-      if (categoria) query = query.eq("categories.slug", categoria);
+      if (marca) query = query.eq("brands.slug", marca);
+      if (disponivel === "sim") query = query.gt("stock", 0);
+      if (precoMin) query = query.gte("price", Number(precoMin));
+      if (precoMax) query = query.lte("price", Number(precoMax));
+
+      // Filter by class or subclass
+      if (subclasse) {
+        query = query.eq("categories.slug", subclasse);
+      } else if (classe) {
+        const classeCat = allCategories.find(c => c.slug === classe && !c.parent_id);
+        if (classeCat) {
+          const subIds = allCategories.filter(c => c.parent_id === classeCat.id).map(c => c.id);
+          subIds.push(classeCat.id);
+          query = query.in("category_id", subIds);
+        }
+      }
 
       if (sort === "menor-preco") query = query.order("price", { ascending: true });
       else if (sort === "maior-preco") query = query.order("price", { ascending: false });
+      else if (sort === "lancamentos") query = query.order("created_at", { ascending: false });
       else query = query.order("is_featured", { ascending: false }).order("created_at", { ascending: false });
 
       const from = (page - 1) * ITEMS_PER_PAGE;
@@ -65,19 +96,44 @@ const CatalogPage = () => {
       setTotal(count || 0);
       setLoading(false);
     };
-    fetchProducts();
-  }, [q, categoria, sort, page]);
+    if (allCategories.length > 0 || (!classe && !subclasse)) fetchProducts();
+  }, [q, marca, classe, subclasse, disponivel, precoMin, precoMax, sort, page, allCategories]);
 
   const getImage = (p: Product) => p.product_images?.find(i => i.is_primary)?.url || p.product_images?.[0]?.url || "/placeholder.svg";
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
 
   const updateParam = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams);
-    if (value) params.set(key, value);
-    else params.delete(key);
+    if (value) params.set(key, value); else params.delete(key);
     if (key !== "page") params.delete("page");
     setSearchParams(params);
   };
+
+  const clearFilters = () => setSearchParams({});
+  const hasFilters = marca || classe || subclasse || disponivel || precoMin || precoMax || q;
+
+  // Build breadcrumb
+  const breadcrumbs: { label: string; href?: string }[] = [{ label: "Início", href: "/" }, { label: "Produtos", href: "/produtos" }];
+  if (marca) breadcrumbs.push({ label: brands.find(b => b.slug === marca)?.name || marca });
+  if (classe) breadcrumbs.push({ label: classes.find(c => c.slug === classe)?.name || classe });
+  if (subclasse) {
+    const sub = allCategories.find(c => c.slug === subclasse);
+    if (sub) {
+      const parent = classes.find(c => c.id === sub.parent_id);
+      if (parent) breadcrumbs.push({ label: parent.name, href: `/produtos?classe=${parent.slug}` });
+      breadcrumbs.push({ label: sub.name });
+    }
+  }
+
+  // Title
+  const pageTitle = q ? `Resultados para "${q}"`
+    : subclasse ? allCategories.find(c => c.slug === subclasse)?.name || "Produtos"
+    : classe ? classes.find(c => c.slug === classe)?.name || "Produtos"
+    : marca ? brands.find(b => b.slug === marca)?.name || "Produtos"
+    : "Todos os Produtos";
+
+  // Selected class for subclass display
+  const selectedClass = classe ? classes.find(c => c.slug === classe) : null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -85,115 +141,208 @@ const CatalogPage = () => {
 
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <nav className="text-sm font-body text-muted-foreground mb-6">
-          <Link to="/" className="hover:text-primary">Início</Link>
-          <span className="mx-2">/</span>
-          <span className="text-foreground">Produtos</span>
-          {q && <span> — Resultados para "{q}"</span>}
+        <nav className="text-sm font-body text-muted-foreground mb-6 flex items-center gap-1 flex-wrap">
+          {breadcrumbs.map((b, i) => (
+            <span key={i} className="flex items-center gap-1">
+              {i > 0 && <span className="mx-1">/</span>}
+              {b.href ? <Link to={b.href} className="hover:text-primary">{b.label}</Link> : <span className="text-foreground">{b.label}</span>}
+            </span>
+          ))}
         </nav>
 
-        <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground uppercase tracking-wide mb-8">
-          {q ? `Resultados para "${q}"` : categoria ? categories.find(c => c.slug === categoria)?.name || "Produtos" : "Todos os Produtos"}
-        </h1>
-
-        {/* Filters bar */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-          <div className="flex flex-wrap gap-2">
-            <Button variant={!categoria ? "default" : "outline"} size="sm" className="font-display uppercase tracking-wider text-xs" onClick={() => updateParam("categoria", "")}>
-              Todos
-            </Button>
-            {categories.map(c => (
-              <Button key={c.slug} variant={categoria === c.slug ? "default" : "outline"} size="sm" className="font-display uppercase tracking-wider text-xs" onClick={() => updateParam("categoria", c.slug)}>
-                {c.name}
-              </Button>
-            ))}
-          </div>
-
-          <Select value={sort} onValueChange={(v) => updateParam("sort", v)}>
-            <SelectTrigger className="w-48 font-body text-sm">
-              <SelectValue placeholder="Ordenar por" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="relevancia">Relevância</SelectItem>
-              <SelectItem value="menor-preco">Menor Preço</SelectItem>
-              <SelectItem value="maior-preco">Maior Preço</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="flex items-start justify-between mb-6">
+          <h1 className="font-display text-2xl md:text-4xl font-bold text-foreground uppercase tracking-wide">{pageTitle}</h1>
+          <Button variant="outline" size="sm" className="md:hidden font-display uppercase tracking-wider text-xs" onClick={() => setShowFilters(!showFilters)}>
+            <SlidersHorizontal className="mr-2 h-4 w-4" /> Filtros
+          </Button>
         </div>
 
-        {/* Product grid */}
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="animate-pulse bg-muted rounded-xl h-80" />
-            ))}
-          </div>
-        ) : products.length === 0 ? (
-          <div className="text-center py-20">
-            <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h2 className="font-display text-2xl font-bold text-foreground mb-2">Nenhum produto encontrado</h2>
-            <p className="text-muted-foreground font-body">Tente ajustar os filtros ou termos de busca.</p>
-          </div>
-        ) : (
-          <>
-            <p className="text-sm text-muted-foreground font-body mb-4">{total} produto(s) encontrado(s)</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {products.map((product) => (
-                <div key={product.id} className="group bg-card rounded-xl border border-border shadow-eco hover:shadow-eco-hover transition-all overflow-hidden">
-                  <Link to={`/produto/${product.slug}`} className="relative aspect-square bg-muted overflow-hidden block">
-                    <img src={getImage(product)} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    {product.is_new && (
-                      <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-display uppercase tracking-wider px-3 py-1 rounded-full">Novo</span>
-                    )}
-                    {product.stock === 0 && (
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                        <span className="bg-destructive text-destructive-foreground px-4 py-2 rounded font-display uppercase text-sm">Esgotado</span>
-                      </div>
-                    )}
-                  </Link>
-                  <div className="p-4">
-                    <p className="text-xs text-muted-foreground font-body uppercase tracking-wider mb-1">{product.categories?.name}</p>
-                    <Link to={`/produto/${product.slug}`}>
-                      <h3 className="font-display text-sm font-semibold text-foreground leading-tight mb-2 line-clamp-2 hover:text-primary">{product.name}</h3>
-                    </Link>
-                    <div className="flex items-end gap-2 mb-3">
-                      <span className="font-display text-xl font-bold text-primary">R$ {product.price.toFixed(2).replace(".", ",")}</span>
-                      {product.original_price && product.original_price > product.price && (
-                        <span className="text-xs text-muted-foreground line-through font-body">R$ {product.original_price.toFixed(2).replace(".", ",")}</span>
-                      )}
-                    </div>
-                    <Button
-                      className="w-full font-display uppercase tracking-wider text-xs"
-                      size="sm"
-                      disabled={product.stock === 0}
-                      onClick={() => addItem({ id: product.id, name: product.name, price: product.price, image: getImage(product), slug: product.slug })}
-                    >
-                      <ShoppingCart className="mr-2 h-3 w-3" />
-                      Adicionar
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-12">
-                <Button variant="outline" size="icon" disabled={page <= 1} onClick={() => updateParam("page", String(page - 1))}>
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).slice(Math.max(0, page - 3), page + 2).map(p => (
-                  <Button key={p} variant={p === page ? "default" : "outline"} size="sm" onClick={() => updateParam("page", String(p))}>
-                    {p}
-                  </Button>
-                ))}
-                <Button variant="outline" size="icon" disabled={page >= totalPages} onClick={() => updateParam("page", String(page + 1))}>
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
+        <div className="flex gap-8">
+          {/* Sidebar filters */}
+          <aside className={`${showFilters ? "block fixed inset-0 z-50 bg-card p-6 overflow-y-auto" : "hidden"} md:block md:relative md:w-64 shrink-0`}>
+            {showFilters && (
+              <div className="flex items-center justify-between mb-4 md:hidden">
+                <h3 className="font-display text-lg font-bold uppercase tracking-wider">Filtros</h3>
+                <button onClick={() => setShowFilters(false)}><X className="h-5 w-5" /></button>
               </div>
             )}
-          </>
-        )}
+
+            <div className="space-y-6">
+              {/* Search */}
+              <div>
+                <label className="text-xs font-display font-bold uppercase tracking-wider text-foreground mb-2 block">Buscar</label>
+                <input type="text" value={q} onChange={e => updateParam("q", e.target.value)} placeholder="Nome, SKU..."
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
+              </div>
+
+              {/* Brands */}
+              <div>
+                <label className="text-xs font-display font-bold uppercase tracking-wider text-foreground mb-2 block">Marca</label>
+                <div className="space-y-1">
+                  {brands.map(b => (
+                    <button key={b.slug} onClick={() => updateParam("marca", marca === b.slug ? "" : b.slug)}
+                      className={`block w-full text-left px-3 py-1.5 rounded-md font-body text-sm transition-colors ${marca === b.slug ? "bg-primary/10 text-primary font-medium" : "text-foreground/70 hover:bg-muted"}`}>
+                      {b.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Classes */}
+              <div>
+                <label className="text-xs font-display font-bold uppercase tracking-wider text-foreground mb-2 block">Classe</label>
+                <div className="space-y-1">
+                  {classes.map(c => (
+                    <button key={c.slug} onClick={() => { updateParam("classe", classe === c.slug ? "" : c.slug); if (subclasse) updateParam("subclasse", ""); }}
+                      className={`block w-full text-left px-3 py-1.5 rounded-md font-body text-sm transition-colors ${classe === c.slug ? "bg-primary/10 text-primary font-medium" : "text-foreground/70 hover:bg-muted"}`}>
+                      {c.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Subclasses (when class selected) */}
+              {selectedClass?.children && selectedClass.children.length > 0 && (
+                <div>
+                  <label className="text-xs font-display font-bold uppercase tracking-wider text-foreground mb-2 block">Subclasse</label>
+                  <div className="space-y-1">
+                    {selectedClass.children.map(sub => (
+                      <button key={sub.slug} onClick={() => updateParam("subclasse", subclasse === sub.slug ? "" : sub.slug)}
+                        className={`block w-full text-left px-3 py-1.5 rounded-md font-body text-sm transition-colors ${subclasse === sub.slug ? "bg-primary/10 text-primary font-medium" : "text-foreground/70 hover:bg-muted"}`}>
+                        {sub.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Price range */}
+              <div>
+                <label className="text-xs font-display font-bold uppercase tracking-wider text-foreground mb-2 block">Faixa de Preço</label>
+                <div className="flex gap-2">
+                  <input type="number" placeholder="Mín" value={precoMin} onChange={e => updateParam("preco_min", e.target.value)}
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
+                  <input type="number" placeholder="Máx" value={precoMax} onChange={e => updateParam("preco_max", e.target.value)}
+                    className="w-full rounded-lg border border-border bg-background px-3 py-2 font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
+                </div>
+              </div>
+
+              {/* Availability */}
+              <div>
+                <label className="flex items-center gap-2 font-body text-sm cursor-pointer">
+                  <input type="checkbox" checked={disponivel === "sim"} onChange={e => updateParam("disponivel", e.target.checked ? "sim" : "")} className="rounded border-border" />
+                  Apenas em estoque
+                </label>
+              </div>
+
+              {hasFilters && (
+                <Button variant="outline" size="sm" className="w-full font-display uppercase tracking-wider text-xs" onClick={clearFilters}>
+                  Limpar Filtros
+                </Button>
+              )}
+            </div>
+
+            {showFilters && (
+              <Button className="w-full mt-6 font-display uppercase tracking-wider md:hidden" onClick={() => setShowFilters(false)}>
+                Ver {total} produto(s)
+              </Button>
+            )}
+          </aside>
+
+          {/* Product grid */}
+          <div className="flex-1 min-w-0">
+            {/* Active filters & sort */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+              <div className="flex flex-wrap gap-2 items-center">
+                <p className="text-sm text-muted-foreground font-body">{total} produto(s)</p>
+                {marca && <Badge variant="secondary" className="gap-1">{brands.find(b => b.slug === marca)?.name} <button onClick={() => updateParam("marca", "")}><X className="h-3 w-3" /></button></Badge>}
+                {classe && <Badge variant="secondary" className="gap-1">{classes.find(c => c.slug === classe)?.name} <button onClick={() => updateParam("classe", "")}><X className="h-3 w-3" /></button></Badge>}
+                {subclasse && <Badge variant="secondary" className="gap-1">{allCategories.find(c => c.slug === subclasse)?.name} <button onClick={() => updateParam("subclasse", "")}><X className="h-3 w-3" /></button></Badge>}
+              </div>
+              <Select value={sort} onValueChange={(v) => updateParam("sort", v)}>
+                <SelectTrigger className="w-48 font-body text-sm"><SelectValue placeholder="Ordenar por" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="relevancia">Relevância</SelectItem>
+                  <SelectItem value="menor-preco">Menor Preço</SelectItem>
+                  <SelectItem value="maior-preco">Maior Preço</SelectItem>
+                  <SelectItem value="lancamentos">Lançamentos</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, i) => <div key={i} className="animate-pulse bg-muted rounded-xl h-80" />)}
+              </div>
+            ) : products.length === 0 ? (
+              <div className="text-center py-20">
+                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h2 className="font-display text-2xl font-bold text-foreground mb-2">Nenhum produto encontrado</h2>
+                <p className="text-muted-foreground font-body mb-4">Tente ajustar os filtros ou termos de busca.</p>
+                {hasFilters && <Button variant="outline" onClick={clearFilters}>Limpar Filtros</Button>}
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {products.map((product) => (
+                    <div key={product.id} className="group bg-card rounded-xl border border-border shadow-eco hover:shadow-eco-hover transition-all overflow-hidden">
+                      <Link to={`/produto/${product.slug}`} className="relative aspect-square bg-muted overflow-hidden block">
+                        <img src={getImage(product)} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                        {product.is_new && (
+                          <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-display uppercase tracking-wider px-3 py-1 rounded-full">Novo</span>
+                        )}
+                        {product.original_price && product.original_price > product.price && (
+                          <span className="absolute top-3 right-3 bg-destructive text-destructive-foreground text-xs font-display uppercase tracking-wider px-2 py-1 rounded-full">
+                            -{Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
+                          </span>
+                        )}
+                        {product.stock === 0 && (
+                          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                            <span className="bg-destructive text-destructive-foreground px-4 py-2 rounded font-display uppercase text-sm">Esgotado</span>
+                          </div>
+                        )}
+                      </Link>
+                      <div className="p-4">
+                        <div className="flex items-center gap-2 mb-1">
+                          {product.brands?.name && <span className="text-[10px] text-primary font-display uppercase tracking-wider font-bold">{product.brands.name}</span>}
+                          {product.categories?.name && <span className="text-[10px] text-muted-foreground font-body">• {product.categories.name}</span>}
+                        </div>
+                        <Link to={`/produto/${product.slug}`}>
+                          <h3 className="font-display text-sm font-semibold text-foreground leading-tight mb-1 line-clamp-2 hover:text-primary transition-colors">{product.name}</h3>
+                        </Link>
+                        {product.sku && <p className="text-[10px] text-muted-foreground font-body mb-2">SKU: {product.sku}</p>}
+                        <div className="flex items-end gap-2 mb-3">
+                          <span className="font-display text-xl font-bold text-primary">R$ {product.price.toFixed(2).replace(".", ",")}</span>
+                          {product.original_price && product.original_price > product.price && (
+                            <span className="text-xs text-muted-foreground line-through font-body">R$ {product.original_price.toFixed(2).replace(".", ",")}</span>
+                          )}
+                        </div>
+                        <Button className="w-full font-display uppercase tracking-wider text-xs" size="sm" disabled={product.stock === 0}
+                          onClick={() => addItem({ id: product.id, name: product.name, price: product.price, image: getImage(product), slug: product.slug })}>
+                          <ShoppingCart className="mr-2 h-3 w-3" /> Adicionar
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center gap-2 mt-12">
+                    <Button variant="outline" size="icon" disabled={page <= 1} onClick={() => updateParam("page", String(page - 1))}>
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).slice(Math.max(0, page - 3), page + 2).map(p => (
+                      <Button key={p} variant={p === page ? "default" : "outline"} size="sm" onClick={() => updateParam("page", String(p))}>{p}</Button>
+                    ))}
+                    <Button variant="outline" size="icon" disabled={page >= totalPages} onClick={() => updateParam("page", String(page + 1))}>
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
       </div>
 
       <StoreFooter />
