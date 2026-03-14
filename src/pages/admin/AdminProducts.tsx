@@ -355,6 +355,12 @@ const AdminProducts = () => {
                 </label>
               ))}
             </div>
+            {/* Image upload - only for existing products */}
+            {editingProduct && (
+              <div className="border-t border-border pt-4">
+                <ProductImageUpload productId={editingProduct.id} />
+              </div>
+            )}
             <div className="flex justify-end gap-3 pt-4 border-t border-border">
               <Button variant="outline" onClick={() => setShowForm(false)}>Cancelar</Button>
               <Button onClick={handleSave} className="font-display uppercase tracking-wider text-xs">
