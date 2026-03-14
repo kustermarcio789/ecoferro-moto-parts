@@ -71,7 +71,7 @@ const AdminCategories = () => {
     }
   };
 
-  const resetForm = () => setFormData({ name: "", slug: "", parent_id: "", description: "", image_url: "", is_active: true, sort_order: "0" });
+  const resetForm = () => setFormData({ name: "", slug: "", parent_id: "none", description: "", image_url: "", is_active: true, sort_order: "0" });
 
   const deleteCategory = async (id: string) => {
     const hasChildren = categories.some(c => c.parent_id === id);
