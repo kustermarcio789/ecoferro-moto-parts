@@ -48,7 +48,7 @@ const AdminLeads = () => {
         <Select value={sourceFilter} onValueChange={setSourceFilter}>
           <SelectTrigger className="w-48 text-xs font-body"><SelectValue placeholder="Origem" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Todas</SelectItem>
+            <SelectItem value="all">Todas</SelectItem>
             {Object.entries(sourceLabels).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}
           </SelectContent>
         </Select>

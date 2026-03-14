@@ -49,7 +49,7 @@ const AdminCategories = () => {
     const payload = {
       name: formData.name,
       slug,
-      parent_id: formData.parent_id || null,
+      parent_id: formData.parent_id && formData.parent_id !== "none" ? formData.parent_id : null,
       description: formData.description || null,
       image_url: formData.image_url || null,
       is_active: formData.is_active,
