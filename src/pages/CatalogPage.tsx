@@ -46,7 +46,7 @@ const CatalogPage = () => {
   useEffect(() => {
     Promise.all([
       supabase.from("categories").select("id, name, slug, parent_id").eq("is_active", true).order("sort_order"),
-      supabase.from("brands").select("id, name, slug").eq("is_active", true).order("name"),
+      supabase.from("brands").select("id, name, slug, logo_url").eq("is_active", true).order("name"),
     ]).then(([c, b]) => {
       const all = c.data || [];
       setAllCategories(all);
