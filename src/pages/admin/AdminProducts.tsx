@@ -38,6 +38,89 @@ const AdminProducts = () => {
   const [mlImporting, setMlImporting] = useState(false);
   const { toast } = useToast();
 
+  const fetchMlProducts = async () => {
+    setMlLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('mercadolivre-import', {
+        body: { nickname: 'ECOFERRO2059', offset: 0, limit: 50 },
+      });
+      if (error) throw error;
+      if (data?.success) {
+        setMlProducts(data.products || []);
+        setMlSelected(new Set());
+        toast({ title: `${data.products.length} produtos encontrados no Mercado Livre` });
+      } else {
+        toast({ title: "Erro", description: data?.error || "Falha ao buscar produtos", variant: "destructive" });
+      }
+    } catch (err: any) {
+      toast({ title: "Erro", description: err.message, variant: "destructive" });
+    } finally {
+      setMlLoading(false);
+    }
+  };
+
+  const importMlSelected = async () => {
+    const toImport = mlProducts.filter(p => mlSelected.has(p.ml_id));
+    if (!toImport.length) return;
+    setMlImporting(true);
+    let imported = 0;
+    for (const p of toImport) {
+      // Check if already exists by ml_id
+      const { data: existing } = await supabase.from("products").select("id").eq("ml_id", p.ml_id).maybeSingle();
+      if (existing) continue;
+
+      const { error } = await supabase.from("products").insert({
+        name: p.name,
+        slug: p.slug,
+        price: p.price,
+        original_price: p.original_price || null,
+        stock: p.stock,
+        ml_id: p.ml_id,
+        ml_permalink: p.ml_permalink,
+        is_active: true,
+        is_new: false,
+        is_featured: false,
+      });
+      if (!error) {
+        imported++;
+        // Also add primary image if available
+        if (p.image) {
+          const { data: prod } = await supabase.from("products").select("id").eq("ml_id", p.ml_id).maybeSingle();
+          if (prod) {
+            await supabase.from("product_images").insert({
+              product_id: prod.id,
+              url: p.image,
+              is_primary: true,
+              alt_text: p.name,
+            });
+          }
+        }
+      }
+    }
+    toast({ title: `${imported} produto(s) importado(s) com sucesso` });
+    setShowMlImport(false);
+    setMlProducts([]);
+    setMlSelected(new Set());
+    setMlImporting(false);
+    fetchProducts();
+  };
+
+  const toggleMlSelect = (mlId: string) => {
+    setMlSelected(prev => {
+      const next = new Set(prev);
+      if (next.has(mlId)) next.delete(mlId); else next.add(mlId);
+      return next;
+    });
+  };
+
+  const toggleMlSelectAll = () => {
+    if (mlSelected.size === mlProducts.length) {
+      setMlSelected(new Set());
+    } else {
+      setMlSelected(new Set(mlProducts.map(p => p.ml_id)));
+    }
+  };
+
   const fetchProducts = async () => {
     setLoading(true);
     let query = supabase
