@@ -212,13 +212,7 @@ const ProductPage = () => {
                 </Button>
               </div>
 
-              {product.ml_permalink && (
-                <Button variant="secondary" className="w-full font-display uppercase tracking-wider text-xs" asChild>
-                  <a href={product.ml_permalink} target="_blank" rel="noopener noreferrer">
-                    Comprar no Mercado Livre
-                  </a>
-                </Button>
-              )}
+              
             </div>
 
             {/* Trust */}

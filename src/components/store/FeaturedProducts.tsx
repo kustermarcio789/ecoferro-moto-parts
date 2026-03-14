@@ -82,10 +82,7 @@ const FeaturedProducts = () => {
             Produtos em Destaque
           </h2>
           <p className="mt-4 text-muted-foreground font-body text-lg">
-            Em breve nossos produtos estarão disponíveis aqui. Enquanto isso, visite nossa loja no{" "}
-            <a href="https://lista.mercadolivre.com.br/pagina/ecoferro2059/" target="_blank" rel="noopener noreferrer" className="text-primary underline font-semibold">
-              Mercado Livre
-            </a>.
+            Em breve nossos produtos estarão disponíveis aqui. Cadastre produtos pelo painel administrativo.
           </p>
         </div>
       </section>
