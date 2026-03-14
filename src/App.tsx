@@ -15,6 +15,8 @@ import Index from "./pages/Index";
 import CatalogPage from "./pages/CatalogPage";
 import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import QuotePage from "./pages/QuotePage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
