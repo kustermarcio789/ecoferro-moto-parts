@@ -270,9 +270,10 @@ const AdminProducts = () => {
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs font-body font-medium text-foreground mb-1 block">Classe / Subclasse</label>
-                <Select value={formData.category_id} onValueChange={v => setFormData(f => ({ ...f, category_id: v }))}>
+                <Select value={formData.category_id || "none"} onValueChange={v => setFormData(f => ({ ...f, category_id: v === "none" ? "" : v }))}>
                   <SelectTrigger className="font-body text-sm"><SelectValue placeholder="Selecione" /></SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="none">Nenhuma</SelectItem>
                     {categories.filter(c => !(c as any).parent_id).map(cls => {
                       const subs = categories.filter(s => (s as any).parent_id === cls.id);
                       return [
