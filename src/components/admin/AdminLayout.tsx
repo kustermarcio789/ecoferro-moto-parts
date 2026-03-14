@@ -21,6 +21,7 @@ const adminNav = [
   { label: "Estoque", href: "/admin/estoque", icon: Boxes },
   { label: "Parceiros", href: "/admin/parceiros", icon: HandCoins },
   { label: "Atacado", href: "/admin/atacado", icon: Store },
+  { label: "Carrinhos", href: "/admin/carrinhos-abandonados", icon: ShoppingCart },
   { label: "Relatórios", href: "/admin/relatorios", icon: BarChart3 },
   { label: "Configurações", href: "/admin/configuracoes", icon: Settings },
 ];
