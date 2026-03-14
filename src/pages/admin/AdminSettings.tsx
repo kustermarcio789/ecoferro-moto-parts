@@ -1,12 +1,16 @@
 import AdminLayout from "@/components/admin/AdminLayout";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Save, RefreshCw, Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { Save, RefreshCw, Loader2, CheckCircle, AlertCircle, Link2, ExternalLink } from "lucide-react";
+
+const ML_APP_ID = "5758280675014902";
 
 const AdminSettings = () => {
   const { toast } = useToast();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [settings, setSettings] = useState<Record<string, any>>({
     whatsapp_number: "5511999999999",
     meta_pixel_id: "",
@@ -17,6 +21,70 @@ const AdminSettings = () => {
   const [loading, setLoading] = useState(false);
   const [syncStatus, setSyncStatus] = useState<any>(null);
   const [syncing, setSyncing] = useState(false);
+  const [mlStatus, setMlStatus] = useState<any>(null);
+  const [mlLoading, setMlLoading] = useState(false);
+
+  const redirectUri = `${window.location.origin}/admin/configuracoes`;
+
+  // Handle ML OAuth callback
+  useEffect(() => {
+    const code = searchParams.get('code');
+    if (code) {
+      exchangeMlCode(code);
+      // Clean URL
+      searchParams.delete('code');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, []);
+
+  const exchangeMlCode = async (code: string) => {
+    setMlLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('mercadolivre-oauth', {
+        body: { action: 'exchange_code', code, redirect_uri: redirectUri },
+      });
+      if (error) throw error;
+      if (data?.success) {
+        toast({ title: "Mercado Livre conectado!", description: `Vendedor ID: ${data.user_id}` });
+        checkMlStatus();
+      } else {
+        toast({ title: "Erro", description: data?.error, variant: "destructive" });
+      }
+    } catch (err: any) {
+      toast({ title: "Erro na autorização", description: err.message, variant: "destructive" });
+    } finally {
+      setMlLoading(false);
+    }
+  };
+
+  const checkMlStatus = async () => {
+    try {
+      const { data } = await supabase.functions.invoke('mercadolivre-oauth', {
+        body: { action: 'status' },
+      });
+      setMlStatus(data);
+    } catch { /* ignore */ }
+  };
+
+  const refreshMlToken = async () => {
+    setMlLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('mercadolivre-oauth', {
+        body: { action: 'refresh' },
+      });
+      if (error) throw error;
+      if (data?.success) {
+        toast({ title: "Token renovado com sucesso!" });
+        checkMlStatus();
+      } else {
+        toast({ title: "Erro", description: data?.error, variant: "destructive" });
+      }
+    } catch (err: any) {
+      toast({ title: "Erro", description: err.message, variant: "destructive" });
+    } finally {
+      setMlLoading(false);
+    }
+  };
 
   useEffect(() => {
     supabase.from("site_settings").select("key, value").then(({ data }) => {
@@ -25,13 +93,14 @@ const AdminSettings = () => {
         data.forEach(s => {
           if (s.key === 'ml_sync_last_run') {
             setSyncStatus(s.value);
-          } else {
+          } else if (s.key !== 'ml_oauth_tokens') {
             map[s.key] = typeof s.value === "string" ? s.value : JSON.stringify(s.value);
           }
         });
         setSettings(prev => ({ ...prev, ...map }));
       }
     });
+    checkMlStatus();
   }, []);
 
   const handleSave = async () => {
@@ -47,16 +116,15 @@ const AdminSettings = () => {
     setSyncing(true);
     try {
       const { data, error } = await supabase.functions.invoke('mercadolivre-sync', {
-        body: { nickname: 'ECOFERRO2059' },
+        body: {},
       });
       if (error) throw error;
       if (data?.success) {
         toast({ title: `Sincronização concluída: ${data.synced} produto(s) atualizado(s)` });
-        // Refresh sync status
         const { data: setting } = await supabase.from("site_settings").select("value").eq("key", "ml_sync_last_run").maybeSingle();
         if (setting) setSyncStatus(setting.value);
       } else {
-        toast({ title: "Erro na sincronização", description: data?.error, variant: "destructive" });
+        toast({ title: "Erro", description: data?.error, variant: "destructive" });
       }
     } catch (err: any) {
       toast({ title: "Erro", description: err.message, variant: "destructive" });
@@ -74,10 +142,10 @@ const AdminSettings = () => {
   ];
 
   const formatDate = (iso: string) => {
-    try {
-      return new Date(iso).toLocaleString('pt-BR');
-    } catch { return iso; }
+    try { return new Date(iso).toLocaleString('pt-BR'); } catch { return iso; }
   };
+
+  const mlAuthUrl = `https://auth.mercadolivre.com.br/authorization?response_type=code&client_id=${ML_APP_ID}&redirect_uri=${encodeURIComponent(redirectUri)}`;
 
   return (
     <AdminLayout title="Configurações">
@@ -105,11 +173,68 @@ const AdminSettings = () => {
           </div>
         </div>
 
+        {/* ML Connection */}
+        <div className="bg-card rounded-xl border border-border p-6">
+          <h2 className="font-display text-lg font-bold text-foreground uppercase tracking-wider mb-6">Mercado Livre — Conexão</h2>
+
+          {mlLoading ? (
+            <div className="flex items-center gap-3 py-4">
+              <Loader2 className="h-5 w-5 animate-spin text-primary" />
+              <span className="font-body text-sm text-muted-foreground">Processando...</span>
+            </div>
+          ) : mlStatus?.connected ? (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-sm font-body">
+                <CheckCircle className="h-5 w-5 text-green-500" />
+                <span className="text-foreground font-medium">Conectado</span>
+                <span className="text-muted-foreground">• Vendedor ID: {mlStatus.user_id}</span>
+              </div>
+
+              {mlStatus.is_expired ? (
+                <div className="flex items-center gap-2 text-sm font-body">
+                  <AlertCircle className="h-4 w-4 text-destructive" />
+                  <span className="text-destructive">Token expirado</span>
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground font-body">
+                  Token válido até: {formatDate(mlStatus.expires_at)}
+                </p>
+              )}
+
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={refreshMlToken} className="font-display uppercase tracking-wider text-xs">
+                  <RefreshCw className="mr-2 h-3 w-3" /> Renovar Token
+                </Button>
+                <Button variant="outline" size="sm" asChild className="font-display uppercase tracking-wider text-xs">
+                  <a href={mlAuthUrl}>
+                    <Link2 className="mr-2 h-3 w-3" /> Re-autorizar
+                  </a>
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-sm font-body">
+                <AlertCircle className="h-5 w-5 text-muted-foreground" />
+                <span className="text-muted-foreground">Não conectado</span>
+              </div>
+              <p className="text-xs text-muted-foreground font-body">
+                Conecte sua conta do Mercado Livre para importar e sincronizar produtos automaticamente.
+              </p>
+              <Button asChild className="font-display uppercase tracking-wider text-xs">
+                <a href={mlAuthUrl}>
+                  <ExternalLink className="mr-2 h-4 w-4" /> Autorizar Mercado Livre
+                </a>
+              </Button>
+            </div>
+          )}
+        </div>
+
         {/* ML Sync */}
         <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="font-display text-lg font-bold text-foreground uppercase tracking-wider">Sincronização Mercado Livre</h2>
-            <Button onClick={runManualSync} disabled={syncing} variant="outline" className="font-display uppercase tracking-wider text-xs">
+            <h2 className="font-display text-lg font-bold text-foreground uppercase tracking-wider">Sincronização ML</h2>
+            <Button onClick={runManualSync} disabled={syncing || !mlStatus?.connected} variant="outline" className="font-display uppercase tracking-wider text-xs">
               {syncing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
               {syncing ? "Sincronizando..." : "Sincronizar Agora"}
             </Button>
@@ -127,22 +252,17 @@ const AdminSettings = () => {
                   Última sincronização: <span className="text-foreground font-medium">{formatDate(syncStatus.timestamp)}</span>
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <div className="text-center">
-                    <p className="font-display text-xl font-bold text-foreground">{syncStatus.total_ml || 0}</p>
-                    <p className="text-xs text-muted-foreground font-body">Produtos ML</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="font-display text-xl font-bold text-foreground">{syncStatus.total_local || 0}</p>
-                    <p className="text-xs text-muted-foreground font-body">Produtos Locais</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="font-display text-xl font-bold text-primary">{syncStatus.synced || 0}</p>
-                    <p className="text-xs text-muted-foreground font-body">Atualizados</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="font-display text-xl font-bold text-muted-foreground">{syncStatus.skipped || 0}</p>
-                    <p className="text-xs text-muted-foreground font-body">Sem Alteração</p>
-                  </div>
+                  {[
+                    { label: "Produtos ML", value: syncStatus.total_ml || 0 },
+                    { label: "Produtos Locais", value: syncStatus.total_local || 0 },
+                    { label: "Atualizados", value: syncStatus.synced || 0, color: "text-primary" },
+                    { label: "Sem Alteração", value: syncStatus.skipped || 0 },
+                  ].map((m, i) => (
+                    <div key={i} className="text-center">
+                      <p className={`font-display text-xl font-bold ${m.color || 'text-foreground'}`}>{m.value}</p>
+                      <p className="text-xs text-muted-foreground font-body">{m.label}</p>
+                    </div>
+                  ))}
                 </div>
 
                 {syncStatus.changes?.length > 0 && (
@@ -152,12 +272,8 @@ const AdminSettings = () => {
                       {syncStatus.changes.map((c: any, i: number) => (
                         <div key={i} className="text-xs font-body text-muted-foreground flex flex-wrap gap-1">
                           <span className="text-foreground font-medium truncate max-w-[200px]">{c.name}</span>
-                          {c.price && (
-                            <span>• Preço: R$ {c.price.from?.toFixed(2).replace('.', ',')} → R$ {c.price.to?.toFixed(2).replace('.', ',')}</span>
-                          )}
-                          {c.stock && (
-                            <span>• Estoque: {c.stock.from} → {c.stock.to}</span>
-                          )}
+                          {c.price && <span>• Preço: R$ {c.price.from?.toFixed(2).replace('.', ',')} → R$ {c.price.to?.toFixed(2).replace('.', ',')}</span>}
+                          {c.stock && <span>• Estoque: {c.stock.from} → {c.stock.to}</span>}
                         </div>
                       ))}
                     </div>
@@ -167,7 +283,7 @@ const AdminSettings = () => {
             ) : (
               <div className="flex items-center gap-2 text-sm font-body text-muted-foreground">
                 <AlertCircle className="h-4 w-4" />
-                <span>Nenhuma sincronização realizada ainda. Clique em "Sincronizar Agora" para começar.</span>
+                <span>Nenhuma sincronização realizada ainda.</span>
               </div>
             )}
           </div>
