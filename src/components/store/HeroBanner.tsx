@@ -3,7 +3,7 @@ import { ArrowRight, Shield, Truck, Award, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "@/assets/hero-bg.png";
 
 const HeroBanner = () => {
   const [search, setSearch] = useState("");
