@@ -17,8 +17,8 @@ const AdminProducts = () => {
   const [brands, setBrands] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [showForm, setShowForm] = useState(false);
@@ -41,7 +41,7 @@ const AdminProducts = () => {
       .order("created_at", { ascending: false });
 
     if (search) query = query.ilike("name", `%${search}%`);
-    if (categoryFilter) query = query.eq("category_id", categoryFilter);
+    if (categoryFilter && categoryFilter !== "all") query = query.eq("category_id", categoryFilter);
     if (statusFilter === "active") query = query.eq("is_active", true);
     else if (statusFilter === "inactive") query = query.eq("is_active", false);
     else if (statusFilter === "lowstock") query = query.lte("stock", 5);
@@ -181,14 +181,14 @@ const AdminProducts = () => {
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
             <SelectTrigger className="w-40 text-xs font-body"><SelectValue placeholder="Categoria" /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Todas</SelectItem>
+              <SelectItem value="all">Todas</SelectItem>
               {categories.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
             </SelectContent>
           </Select>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-36 text-xs font-body"><SelectValue placeholder="Status" /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Todos</SelectItem>
+              <SelectItem value="all">Todos</SelectItem>
               <SelectItem value="active">Ativos</SelectItem>
               <SelectItem value="inactive">Inativos</SelectItem>
               <SelectItem value="lowstock">Estoque Baixo</SelectItem>
@@ -270,9 +270,10 @@ const AdminProducts = () => {
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs font-body font-medium text-foreground mb-1 block">Classe / Subclasse</label>
-                <Select value={formData.category_id} onValueChange={v => setFormData(f => ({ ...f, category_id: v }))}>
+                <Select value={formData.category_id || "none"} onValueChange={v => setFormData(f => ({ ...f, category_id: v === "none" ? "" : v }))}>
                   <SelectTrigger className="font-body text-sm"><SelectValue placeholder="Selecione" /></SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="none">Nenhuma</SelectItem>
                     {categories.filter(c => !(c as any).parent_id).map(cls => {
                       const subs = categories.filter(s => (s as any).parent_id === cls.id);
                       return [
@@ -285,9 +286,10 @@ const AdminProducts = () => {
               </div>
               <div>
                 <label className="text-xs font-body font-medium text-foreground mb-1 block">Marca</label>
-                <Select value={formData.brand_id} onValueChange={v => setFormData(f => ({ ...f, brand_id: v }))}>
+                <Select value={formData.brand_id || "none"} onValueChange={v => setFormData(f => ({ ...f, brand_id: v === "none" ? "" : v }))}>
                   <SelectTrigger className="font-body text-sm"><SelectValue placeholder="Selecione" /></SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="none">Nenhuma</SelectItem>
                     {brands.map(b => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}
                   </SelectContent>
                 </Select>

@@ -15,13 +15,13 @@ const statusLabels: Record<string, { label: string; color: string }> = {
 const AdminWholesale = () => {
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
       let query = supabase.from("wholesale_customers").select("*").order("created_at", { ascending: false });
-      if (statusFilter) query = query.eq("status", statusFilter);
+      if (statusFilter && statusFilter !== "all") query = query.eq("status", statusFilter);
       const { data } = await query;
       setCustomers(data || []);
       setLoading(false);
@@ -42,7 +42,7 @@ const AdminWholesale = () => {
         <Select value={statusFilter} onValueChange={setStatusFilter}>
           <SelectTrigger className="w-40 text-xs font-body"><SelectValue placeholder="Status" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Todos</SelectItem>
+            <SelectItem value="all">Todos</SelectItem>
             {Object.entries(statusLabels).map(([k, v]) => <SelectItem key={k} value={k}>{v.label}</SelectItem>)}
           </SelectContent>
         </Select>

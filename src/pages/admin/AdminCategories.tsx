@@ -25,7 +25,7 @@ const AdminCategories = () => {
   const [editing, setEditing] = useState<Category | null>(null);
   const [search, setSearch] = useState("");
   const [formData, setFormData] = useState({
-    name: "", slug: "", parent_id: "", description: "", image_url: "", is_active: true, sort_order: "0",
+    name: "", slug: "", parent_id: "none", description: "", image_url: "", is_active: true, sort_order: "0",
   });
   const { toast } = useToast();
 
@@ -49,7 +49,7 @@ const AdminCategories = () => {
     const payload = {
       name: formData.name,
       slug,
-      parent_id: formData.parent_id || null,
+      parent_id: formData.parent_id && formData.parent_id !== "none" ? formData.parent_id : null,
       description: formData.description || null,
       image_url: formData.image_url || null,
       is_active: formData.is_active,
@@ -71,7 +71,7 @@ const AdminCategories = () => {
     }
   };
 
-  const resetForm = () => setFormData({ name: "", slug: "", parent_id: "", description: "", image_url: "", is_active: true, sort_order: "0" });
+  const resetForm = () => setFormData({ name: "", slug: "", parent_id: "none", description: "", image_url: "", is_active: true, sort_order: "0" });
 
   const deleteCategory = async (id: string) => {
     const hasChildren = categories.some(c => c.parent_id === id);
@@ -90,7 +90,7 @@ const AdminCategories = () => {
   const startEdit = (c: Category) => {
     setEditing(c);
     setFormData({
-      name: c.name, slug: c.slug, parent_id: c.parent_id || "",
+      name: c.name, slug: c.slug, parent_id: c.parent_id || "none",
       description: c.description || "", image_url: c.image_url || "",
       is_active: c.is_active, sort_order: String(c.sort_order || 0),
     });
@@ -133,7 +133,7 @@ const AdminCategories = () => {
               <Select value={formData.parent_id} onValueChange={v => setFormData(f => ({ ...f, parent_id: v }))}>
                 <SelectTrigger className="font-body text-sm"><SelectValue placeholder="Nenhuma (Classe principal)" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Nenhuma (Classe principal)</SelectItem>
+                  <SelectItem value="none">Nenhuma (Classe principal)</SelectItem>
                   {classes.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                 </SelectContent>
               </Select>
