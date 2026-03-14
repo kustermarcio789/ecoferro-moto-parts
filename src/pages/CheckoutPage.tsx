@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, MapPin, CreditCard, Package, User, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, MapPin, CreditCard, Package, User, Check, Loader2, Tag, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import StoreHeader from "@/components/store/StoreHeader";
 import StoreFooter from "@/components/store/StoreFooter";
