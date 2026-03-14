@@ -22,6 +22,7 @@ const StoreHeader = () => {
   const navItems = [
     { label: "Início", href: "/" },
     { label: "Produtos", href: "/produtos" },
+    { label: "Atacado", href: "/atacado" },
     { label: "Sobre", href: "/sobre" },
     { label: "Contato", href: "/contato" },
     { label: "Orçamento B2B", href: "/orcamento" },
@@ -38,10 +39,9 @@ const StoreHeader = () => {
           </div>
           <span className="hidden sm:block text-primary-foreground/80">Frete grátis para compras acima de R$ 299</span>
           <div className="flex items-center gap-4">
-            <Link to="/admin" className="hover:underline text-primary-foreground/70">Admin</Link>
-            <a href="https://lista.mercadolivre.com.br/pagina/ecoferro2059/" target="_blank" rel="noopener noreferrer" className="hover:underline">
-              Mercado Livre
-            </a>
+            <Link to="/login" className="hover:underline text-primary-foreground/70 flex items-center gap-1">
+              <User className="h-3 w-3" /> Entrar
+            </Link>
           </div>
         </div>
       </div>
