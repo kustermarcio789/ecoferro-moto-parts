@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { Search, Eye, X, Package, MapPin, CreditCard, Clock, User } from "lucide-react";
+import { Search, Eye, X, Package, MapPin, CreditCard, Clock, User, Save, Truck, FileText } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -35,6 +37,11 @@ const AdminOrders = () => {
   const [orderItems, setOrderItems] = useState<any[]>([]);
   const [orderPayments, setOrderPayments] = useState<any[]>([]);
   const [detailLoading, setDetailLoading] = useState(false);
+  const [editTracking, setEditTracking] = useState("");
+  const [editInvoice, setEditInvoice] = useState("");
+  const [editInvoiceKey, setEditInvoiceKey] = useState("");
+  const [editInternalNotes, setEditInternalNotes] = useState("");
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -68,7 +75,31 @@ const AdminOrders = () => {
     ]);
     setOrderItems(items.data || []);
     setOrderPayments(payments.data || []);
+    setEditTracking(order.tracking_code || "");
+    setEditInvoice(order.invoice_number || "");
+    setEditInvoiceKey(order.invoice_key || "");
+    setEditInternalNotes(order.internal_notes || "");
     setDetailLoading(false);
+  };
+
+  const saveOrderFields = async () => {
+    if (!selectedOrder) return;
+    setSaving(true);
+    const updates: any = {
+      tracking_code: editTracking || null,
+      invoice_number: editInvoice || null,
+      invoice_key: editInvoiceKey || null,
+      internal_notes: editInternalNotes || null,
+    };
+    const { error } = await supabase.from("orders").update(updates).eq("id", selectedOrder.id);
+    if (error) {
+      toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Salvo com sucesso" });
+      setSelectedOrder((prev: any) => prev ? { ...prev, ...updates } : prev);
+      setOrders(prev => prev.map(o => o.id === selectedOrder.id ? { ...o, ...updates } : o));
+    }
+    setSaving(false);
   };
 
   const formatDate = (d: string | null) => d ? new Date(d).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit" }) : "—";
@@ -318,32 +349,58 @@ const AdminOrders = () => {
                   <div><span className="text-muted-foreground">Pago:</span> {formatDate(selectedOrder.paid_at)}</div>
                   <div><span className="text-muted-foreground">Enviado:</span> {formatDate(selectedOrder.shipped_at)}</div>
                   <div><span className="text-muted-foreground">Entregue:</span> {formatDate(selectedOrder.delivered_at)}</div>
-                  {selectedOrder.tracking_code && (
-                    <div className="col-span-2"><span className="text-muted-foreground">Rastreio:</span> <span className="text-primary font-medium">{selectedOrder.tracking_code}</span></div>
-                  )}
-                  {selectedOrder.invoice_number && (
-                    <div className="col-span-2"><span className="text-muted-foreground">NF:</span> {selectedOrder.invoice_number} {selectedOrder.invoice_key && `(${selectedOrder.invoice_key})`}</div>
-                  )}
+                </div>
+              </div>
+
+              {/* Editable: Tracking & Invoice */}
+              <div className="bg-muted/50 rounded-lg p-4 space-y-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <Truck className="h-4 w-4 text-muted-foreground" />
+                  <h3 className="font-display text-xs font-bold uppercase tracking-wider">Rastreio & Nota Fiscal</h3>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[10px] text-muted-foreground font-body uppercase tracking-wider">Código de Rastreio</label>
+                    <Input value={editTracking} onChange={e => setEditTracking(e.target.value)} placeholder="Ex: BR123456789BR" className="mt-1 h-8 text-sm" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] text-muted-foreground font-body uppercase tracking-wider">Número da NF</label>
+                    <Input value={editInvoice} onChange={e => setEditInvoice(e.target.value)} placeholder="Ex: 000123" className="mt-1 h-8 text-sm" />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="text-[10px] text-muted-foreground font-body uppercase tracking-wider">Chave da NF-e</label>
+                    <Input value={editInvoiceKey} onChange={e => setEditInvoiceKey(e.target.value)} placeholder="44 dígitos" className="mt-1 h-8 text-sm font-mono" />
+                  </div>
                 </div>
               </div>
 
               {/* Notes */}
-              {(selectedOrder.customer_notes || selectedOrder.internal_notes) && (
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {selectedOrder.customer_notes && (
-                    <div className="bg-muted/50 rounded-lg p-4">
-                      <h3 className="font-display text-xs font-bold uppercase tracking-wider mb-2">Obs. do Cliente</h3>
-                      <p className="text-sm font-body text-muted-foreground">{selectedOrder.customer_notes}</p>
-                    </div>
-                  )}
-                  {selectedOrder.internal_notes && (
-                    <div className="bg-muted/50 rounded-lg p-4">
-                      <h3 className="font-display text-xs font-bold uppercase tracking-wider mb-2">Obs. Internas</h3>
-                      <p className="text-sm font-body text-muted-foreground">{selectedOrder.internal_notes}</p>
-                    </div>
-                  )}
+              <div className="grid sm:grid-cols-2 gap-4">
+                {selectedOrder.customer_notes && (
+                  <div className="bg-muted/50 rounded-lg p-4">
+                    <h3 className="font-display text-xs font-bold uppercase tracking-wider mb-2">Obs. do Cliente</h3>
+                    <p className="text-sm font-body text-muted-foreground">{selectedOrder.customer_notes}</p>
+                  </div>
+                )}
+                <div className="bg-muted/50 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                    <h3 className="font-display text-xs font-bold uppercase tracking-wider">Obs. Internas</h3>
+                  </div>
+                  <textarea
+                    value={editInternalNotes}
+                    onChange={e => setEditInternalNotes(e.target.value)}
+                    placeholder="Notas internas sobre o pedido..."
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring min-h-[60px] resize-y"
+                  />
                 </div>
-              )}
+              </div>
+
+              {/* Save Button */}
+              <Button onClick={saveOrderFields} disabled={saving} className="w-full">
+                <Save className="h-4 w-4 mr-2" />
+                {saving ? "Salvando..." : "Salvar Alterações"}
+              </Button>
             </div>
           )}
         </DialogContent>
