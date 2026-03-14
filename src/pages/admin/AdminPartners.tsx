@@ -16,13 +16,13 @@ const statusLabels: Record<string, { label: string; color: string }> = {
 const AdminPartners = () => {
   const [partners, setPartners] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
       let query = supabase.from("partners").select("*").order("created_at", { ascending: false });
-      if (statusFilter) query = query.eq("status", statusFilter);
+      if (statusFilter && statusFilter !== "all") query = query.eq("status", statusFilter);
       const { data } = await query;
       setPartners(data || []);
       setLoading(false);
