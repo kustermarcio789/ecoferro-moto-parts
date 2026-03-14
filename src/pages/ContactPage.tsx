@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
+import { Phone, Mail, MapPin, MessageCircle, Clock, Facebook } from "lucide-react";
 import StoreHeader from "@/components/store/StoreHeader";
 import StoreFooter from "@/components/store/StoreFooter";
 import { supabase } from "@/integrations/supabase/client";
@@ -43,24 +43,42 @@ const ContactPage = () => {
 
             <div className="space-y-4 mb-8">
               {[
-                { icon: Phone, label: "(11) 99999-9999" },
-                { icon: Mail, label: "contato@ecoferro.com.br" },
-                { icon: MapPin, label: "São Paulo, SP - Brasil" },
+                { icon: Phone, label: "(14) 2034-0647", href: "tel:+551420340647" },
+                { icon: Mail, label: "vendas@ecoferro.com.br", href: "mailto:vendas@ecoferro.com.br" },
+                { icon: MapPin, label: "R. Dário Alonso, 130 — Pq. Minas Gerais, Ourinhos - SP, 19902-030" },
               ].map(c => (
                 <div key={c.label} className="flex items-center gap-3 text-foreground font-body">
                   <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
                     <c.icon className="h-5 w-5 text-primary" />
                   </div>
-                  {c.label}
+                  {c.href ? <a href={c.href} className="hover:text-primary transition-colors">{c.label}</a> : c.label}
                 </div>
               ))}
             </div>
 
-            <Button className="font-display uppercase tracking-wider" asChild>
-              <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer">
-                <MessageCircle className="mr-2 h-4 w-4" /> Falar pelo WhatsApp
-              </a>
-            </Button>
+            <div className="bg-muted/50 rounded-xl p-5 border border-border mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                <Clock className="h-5 w-5 text-primary" />
+                <h3 className="font-display text-sm font-bold uppercase tracking-wider">Horário de Funcionamento</h3>
+              </div>
+              <div className="font-body text-sm text-muted-foreground space-y-1">
+                <p><span className="text-foreground font-medium">Segunda a Sexta:</span> 08:00 – 17:30</p>
+                <p><span className="text-foreground font-medium">Sábado e Domingo:</span> Fechado</p>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <Button className="font-display uppercase tracking-wider" asChild>
+                <a href="https://wa.me/551420340647?text=Olá! Vim pelo site da EcoFerro e gostaria de informações." target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp
+                </a>
+              </Button>
+              <Button variant="outline" className="font-display uppercase tracking-wider" asChild>
+                <a href="https://web.facebook.com/ecoferro/" target="_blank" rel="noopener noreferrer">
+                  <Facebook className="mr-2 h-4 w-4" /> Facebook
+                </a>
+              </Button>
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -82,6 +100,10 @@ const ContactPage = () => {
               <label className="text-sm font-body font-medium text-foreground mb-1 block">Mensagem *</label>
               <textarea required rows={5} value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} className="w-full rounded-lg border border-border bg-background px-4 py-2.5 font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none" />
             </div>
+            <label className="flex items-start gap-2 font-body text-xs text-muted-foreground">
+              <input type="checkbox" required className="mt-0.5 rounded border-border" />
+              Concordo com a <a href="/politica-privacidade" className="text-primary hover:underline">Política de Privacidade</a> e autorizo o contato.
+            </label>
             <Button type="submit" disabled={loading} className="w-full font-display uppercase tracking-wider">
               {loading ? "Enviando..." : "Enviar Mensagem"}
             </Button>
