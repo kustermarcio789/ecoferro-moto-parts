@@ -140,7 +140,7 @@ const AdminBrands = () => {
               <tr key={b.id} className="border-b border-border hover:bg-muted/30 transition-colors">
                 <td className="p-4">
                   <div className="flex items-center gap-3">
-                    {b.logo_url && <img src={b.logo_url} alt={b.name} className="h-8 w-8 rounded object-contain" />}
+                    {b.logo_url && <img src={b.logo_url} alt={b.name} className="h-10 w-10 rounded object-contain" />}
                     <span className="font-body font-medium text-foreground">{b.name}</span>
                   </div>
                 </td>
