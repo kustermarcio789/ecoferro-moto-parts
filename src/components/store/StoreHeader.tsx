@@ -6,7 +6,7 @@ import { useCart } from "@/contexts/CartContext";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/ecoferro-logo.jpeg";
 
-interface Brand { name: string; slug: string }
+interface Brand { name: string; slug: string; logo_url: string | null }
 interface Category { id: string; name: string; slug: string; parent_id: string | null; children?: Category[] }
 
 const StoreHeader = () => {
@@ -21,7 +21,7 @@ const StoreHeader = () => {
 
   useEffect(() => {
     Promise.all([
-      supabase.from("brands").select("name, slug").eq("is_active", true).order("name"),
+      supabase.from("brands").select("name, slug, logo_url").eq("is_active", true).order("name"),
       supabase.from("categories").select("id, name, slug, parent_id").eq("is_active", true).order("sort_order"),
     ]).then(([b, c]) => {
       setBrands(b.data || []);
@@ -127,7 +127,8 @@ const StoreHeader = () => {
               <div className="absolute top-full left-0 bg-card border border-border rounded-lg shadow-lg py-2 min-w-[200px] z-50">
                 {brands.map(b => (
                   <Link key={b.slug} to={`/produtos?marca=${b.slug}`} onClick={closeAll}
-                    className="block px-4 py-2 font-body text-sm text-foreground/80 hover:text-primary hover:bg-muted transition-colors">
+                    className="flex items-center gap-2.5 px-4 py-2 font-body text-sm text-foreground/80 hover:text-primary hover:bg-muted transition-colors">
+                    {b.logo_url && <img src={b.logo_url} alt={b.name} className="h-5 w-5 object-contain shrink-0" />}
                     {b.name}
                   </Link>
                 ))}
@@ -202,7 +203,10 @@ const StoreHeader = () => {
               <div className="pl-6 space-y-0.5">
                 {brands.map(b => (
                   <Link key={b.slug} to={`/produtos?marca=${b.slug}`} onClick={closeAll}
-                    className="block py-2 px-3 font-body text-sm text-foreground/70 hover:text-primary hover:bg-muted rounded-md">{b.name}</Link>
+                    className="flex items-center gap-2.5 py-2 px-3 font-body text-sm text-foreground/70 hover:text-primary hover:bg-muted rounded-md">
+                    {b.logo_url && <img src={b.logo_url} alt={b.name} className="h-5 w-5 object-contain shrink-0" />}
+                    {b.name}
+                  </Link>
                 ))}
               </div>
             )}

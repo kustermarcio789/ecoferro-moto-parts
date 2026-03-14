@@ -18,7 +18,7 @@ interface Product {
 }
 
 interface Category { id: string; name: string; slug: string; parent_id: string | null; children?: Category[] }
-interface Brand { id: string; name: string; slug: string }
+interface Brand { id: string; name: string; slug: string; logo_url: string | null }
 
 const ITEMS_PER_PAGE = 12;
 
@@ -46,7 +46,7 @@ const CatalogPage = () => {
   useEffect(() => {
     Promise.all([
       supabase.from("categories").select("id, name, slug, parent_id").eq("is_active", true).order("sort_order"),
-      supabase.from("brands").select("id, name, slug").eq("is_active", true).order("name"),
+      supabase.from("brands").select("id, name, slug, logo_url").eq("is_active", true).order("name"),
     ]).then(([c, b]) => {
       const all = c.data || [];
       setAllCategories(all);
@@ -185,7 +185,8 @@ const CatalogPage = () => {
                 <div className="space-y-1">
                   {brands.map(b => (
                     <button key={b.slug} onClick={() => updateParam("marca", marca === b.slug ? "" : b.slug)}
-                      className={`block w-full text-left px-3 py-1.5 rounded-md font-body text-sm transition-colors ${marca === b.slug ? "bg-primary/10 text-primary font-medium" : "text-foreground/70 hover:bg-muted"}`}>
+                      className={`flex items-center gap-2.5 w-full text-left px-3 py-1.5 rounded-md font-body text-sm transition-colors ${marca === b.slug ? "bg-primary/10 text-primary font-medium" : "text-foreground/70 hover:bg-muted"}`}>
+                      {b.logo_url && <img src={b.logo_url} alt={b.name} className="h-5 w-5 object-contain shrink-0" />}
                       {b.name}
                     </button>
                   ))}
