@@ -25,7 +25,7 @@ const AdminCategories = () => {
   const [editing, setEditing] = useState<Category | null>(null);
   const [search, setSearch] = useState("");
   const [formData, setFormData] = useState({
-    name: "", slug: "", parent_id: "", description: "", image_url: "", is_active: true, sort_order: "0",
+    name: "", slug: "", parent_id: "none", description: "", image_url: "", is_active: true, sort_order: "0",
   });
   const { toast } = useToast();
 
