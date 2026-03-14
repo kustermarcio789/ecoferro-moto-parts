@@ -19,6 +19,11 @@ const LoginPage = () => {
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirect") || "/";
 
+  const resolveEmail = (input: string) => {
+    if (input.includes("@")) return input;
+    return `${input}@ecoferro.com.br`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -28,7 +33,8 @@ const LoginPage = () => {
         if (error) throw error;
         toast({ title: "Conta criada!", description: "Verifique seu e-mail para confirmar o cadastro." });
       } else {
-        const { error } = await signIn(email, password);
+        const loginEmail = resolveEmail(email);
+        const { error } = await signIn(loginEmail, password);
         if (error) throw error;
         navigate(redirect);
       }
@@ -62,8 +68,8 @@ const LoginPage = () => {
             </div>
           )}
           <div>
-            <label className="text-sm font-body font-medium text-foreground mb-1 block">E-mail</label>
-            <input type="email" required value={email} onChange={e => setEmail(e.target.value)} className="w-full rounded-lg border border-border bg-background px-4 py-2.5 font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
+            <label className="text-sm font-body font-medium text-foreground mb-1 block">{isSignUp ? "E-mail" : "Usuário ou E-mail"}</label>
+            <input type={isSignUp ? "email" : "text"} required value={email} onChange={e => setEmail(e.target.value)} placeholder={isSignUp ? "" : "admin.ecoferro"} className="w-full rounded-lg border border-border bg-background px-4 py-2.5 font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
           </div>
           <div>
             <label className="text-sm font-body font-medium text-foreground mb-1 block">Senha</label>
