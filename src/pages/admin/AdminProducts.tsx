@@ -41,7 +41,7 @@ const AdminProducts = () => {
       .order("created_at", { ascending: false });
 
     if (search) query = query.ilike("name", `%${search}%`);
-    if (categoryFilter) query = query.eq("category_id", categoryFilter);
+    if (categoryFilter && categoryFilter !== "all") query = query.eq("category_id", categoryFilter);
     if (statusFilter === "active") query = query.eq("is_active", true);
     else if (statusFilter === "inactive") query = query.eq("is_active", false);
     else if (statusFilter === "lowstock") query = query.lte("stock", 5);
