@@ -144,23 +144,26 @@ const AdminProducts = () => {
     });
   };
 
-  const startEdit = (p: any) => {
-    setEditingProduct(p);
+  const startEdit = async (p: any) => {
+    // Fetch full product data since list query only has partial fields
+    const { data: full } = await supabase.from("products").select("*").eq("id", p.id).single();
+    const prod = full || p;
+    setEditingProduct(prod);
     setFormData({
-      name: p.name || "", slug: p.slug || "", sku: p.sku || "",
-      price: String(p.price || ""), cost: String(p.cost || ""),
-      original_price: String(p.original_price || ""),
-      stock: String(p.stock || 0), min_stock: String(p.min_stock || 5),
-      moq: String(p.moq || 1), category_id: p.category_id || "",
-      brand_id: p.brand_id || "",
-      description: p.description || "", short_description: p.short_description || "",
-      is_active: p.is_active ?? true, is_featured: p.is_featured ?? false,
-      is_new: p.is_new ?? false, wholesale_only: p.wholesale_only ?? false,
-      wholesale_price: String(p.wholesale_price || ""),
-      weight: String(p.weight || ""), width: String(p.width || ""),
-      height: String(p.height || ""), length: String(p.length || ""),
-      ncm: p.ncm || "", cfop: p.cfop || "", origin: p.origin || "",
-      meta_title: p.meta_title || "", meta_description: p.meta_description || "",
+      name: prod.name || "", slug: prod.slug || "", sku: prod.sku || "",
+      price: String(prod.price || ""), cost: String(prod.cost || ""),
+      original_price: String(prod.original_price || ""),
+      stock: String(prod.stock || 0), min_stock: String(prod.min_stock || 5),
+      moq: String(prod.moq || 1), category_id: prod.category_id || "",
+      brand_id: prod.brand_id || "",
+      description: prod.description || "", short_description: prod.short_description || "",
+      is_active: prod.is_active ?? true, is_featured: prod.is_featured ?? false,
+      is_new: prod.is_new ?? false, wholesale_only: prod.wholesale_only ?? false,
+      wholesale_price: String(prod.wholesale_price || ""),
+      weight: String(prod.weight || ""), width: String(prod.width || ""),
+      height: String(prod.height || ""), length: String(prod.length || ""),
+      ncm: prod.ncm || "", cfop: prod.cfop || "", origin: prod.origin || "",
+      meta_title: prod.meta_title || "", meta_description: prod.meta_description || "",
     });
     setShowForm(true);
   };
