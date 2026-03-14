@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, MapPin, CreditCard, Package, User, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, MapPin, CreditCard, Package, User, Check, Loader2, Tag, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import StoreHeader from "@/components/store/StoreHeader";
 import StoreFooter from "@/components/store/StoreFooter";
@@ -55,9 +55,14 @@ const CheckoutPage = () => {
   const [selectedShipping, setSelectedShipping] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [customerNotes, setCustomerNotes] = useState("");
+  const [couponCode, setCouponCode] = useState("");
+  const [couponDiscount, setCouponDiscount] = useState(0);
+  const [couponApplied, setCouponApplied] = useState<{ id: string; code: string; discount_type: string; discount_value: number } | null>(null);
+  const [couponLoading, setCouponLoading] = useState(false);
 
   const shippingCost = SHIPPING_OPTIONS.find(s => s.id === selectedShipping)?.price || 0;
-  const total = subtotal + shippingCost;
+  const pixDiscount = paymentMethod === "pix" ? (subtotal - couponDiscount + shippingCost) * 0.05 : 0;
+  const total = subtotal + shippingCost - couponDiscount - pixDiscount;
 
   if (items.length === 0) {
     navigate("/carrinho");
@@ -109,10 +114,65 @@ const CheckoutPage = () => {
     if (validateStep()) setStep(s => Math.min(4, s + 1));
   };
 
+  const applyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setCouponLoading(true);
+    const { data, error } = await supabase
+      .from("coupons")
+      .select("*")
+      .eq("code", couponCode.trim().toUpperCase())
+      .eq("is_active", true)
+      .maybeSingle();
+
+    if (error || !data) {
+      toast({ title: "Cupom inválido", variant: "destructive" });
+      setCouponDiscount(0);
+      setCouponApplied(null);
+    } else {
+      if (data.min_order_value && subtotal < Number(data.min_order_value)) {
+        toast({ title: `Pedido mínimo de ${formatCurrency(Number(data.min_order_value))}`, variant: "destructive" });
+      } else if (data.max_uses && Number(data.used_count) >= data.max_uses) {
+        toast({ title: "Cupom esgotado", variant: "destructive" });
+      } else {
+        const discount = data.discount_type === "percentage"
+          ? subtotal * (Number(data.discount_value) / 100)
+          : Number(data.discount_value);
+        setCouponDiscount(Math.min(discount, subtotal));
+        setCouponApplied({ id: data.id, code: data.code, discount_type: data.discount_type, discount_value: Number(data.discount_value) });
+        toast({ title: `Cupom ${data.code} aplicado!` });
+      }
+    }
+    setCouponLoading(false);
+  };
+
+  const removeCoupon = () => {
+    setCouponCode("");
+    setCouponDiscount(0);
+    setCouponApplied(null);
+  };
+
   const placeOrder = async () => {
     setLoading(true);
     try {
-      // 1. Create or find customer
+      // 1. Validate stock
+      for (const item of items) {
+        const { data: product } = await supabase
+          .from("products")
+          .select("stock, name")
+          .eq("id", item.id)
+          .single();
+        if (!product || product.stock < item.quantity) {
+          toast({
+            title: "Estoque insuficiente",
+            description: `"${product?.name || item.name}" possui apenas ${product?.stock || 0} unidade(s) disponível(is).`,
+            variant: "destructive",
+          });
+          setLoading(false);
+          return;
+        }
+      }
+
+      // 2. Create or find customer
       let customerId: string | null = null;
       const { data: existingCustomer } = await supabase
         .from("customers")
@@ -138,7 +198,7 @@ const CheckoutPage = () => {
         customerId = newCustomer.id;
       }
 
-      // 2. Create address
+      // 3. Create address
       await supabase.from("addresses").insert({
         customer_id: customerId!,
         zip_code: address.zip_code,
@@ -151,7 +211,7 @@ const CheckoutPage = () => {
         is_default: true,
       });
 
-      // 3. Create order
+      // 4. Create order with real totals
       const shippingOption = SHIPPING_OPTIONS.find(s => s.id === selectedShipping);
       const { data: order, error: orderErr } = await supabase
         .from("orders")
@@ -159,6 +219,7 @@ const CheckoutPage = () => {
           customer_id: customerId,
           subtotal,
           shipping_cost: shippingCost,
+          discount: couponDiscount + pixDiscount,
           total,
           status: "pending",
           payment_status: "pending",
@@ -167,13 +228,14 @@ const CheckoutPage = () => {
           shipping_address: address as any,
           billing_address: address as any,
           customer_notes: customerNotes || null,
+          coupon_id: couponApplied?.id || null,
           sales_channel: "retail",
         })
         .select("id, order_number")
         .single();
       if (orderErr) throw orderErr;
 
-      // 4. Create order items
+      // 5. Create order items
       const orderItems = items.map(item => ({
         order_id: order.id,
         product_id: item.id,
@@ -186,7 +248,7 @@ const CheckoutPage = () => {
       const { error: itemsErr } = await supabase.from("order_items").insert(orderItems);
       if (itemsErr) throw itemsErr;
 
-      // 5. Create payment record
+      // 6. Create payment record
       await supabase.from("payments").insert({
         order_id: order.id,
         amount: total,
@@ -194,9 +256,47 @@ const CheckoutPage = () => {
         status: "pending",
       });
 
-      // 6. Update stock
+      // 7. Decrement stock & register inventory movements
       for (const item of items) {
-        await supabase.rpc("has_role", { _user_id: "00000000-0000-0000-0000-000000000000", _role: "admin" }); // no-op, stock update via admin
+        const { data: product } = await supabase
+          .from("products")
+          .select("stock")
+          .eq("id", item.id)
+          .single();
+        const previousStock = product?.stock || 0;
+        const newStock = previousStock - item.quantity;
+
+        await supabase
+          .from("products")
+          .update({ stock: newStock })
+          .eq("id", item.id);
+
+        await supabase.from("inventory_movements").insert({
+          product_id: item.id,
+          type: "exit" as const,
+          quantity: item.quantity,
+          previous_stock: previousStock,
+          new_stock: newStock,
+          order_id: order.id,
+          reason: `Venda - Pedido #${order.order_number}`,
+        });
+      }
+
+      // 8. Increment coupon used_count
+      if (couponApplied) {
+        await supabase.rpc("has_role", { _user_id: "00000000-0000-0000-0000-000000000000", _role: "admin" }); // no-op placeholder
+        // Update via direct query
+        const { data: coupon } = await supabase
+          .from("coupons")
+          .select("used_count")
+          .eq("id", couponApplied.id)
+          .single();
+        if (coupon) {
+          await supabase
+            .from("coupons")
+            .update({ used_count: (coupon.used_count || 0) + 1 })
+            .eq("id", couponApplied.id);
+        }
       }
 
       clearCart();
@@ -360,6 +460,28 @@ const CheckoutPage = () => {
                     </label>
                   ))}
                 </div>
+
+                {/* Coupon */}
+                <div className="border-t border-border pt-4">
+                  <label className={labelClass}>Cupom de desconto</label>
+                  {couponApplied ? (
+                    <div className="flex items-center gap-2 bg-primary/5 border border-primary/20 rounded-lg px-3 py-2">
+                      <Tag className="h-4 w-4 text-primary" />
+                      <span className="font-body text-sm font-medium text-primary flex-1">{couponApplied.code}</span>
+                      <span className="font-body text-xs text-primary">-{formatCurrency(couponDiscount)}</span>
+                      <button onClick={removeCoupon}><X className="h-4 w-4 text-muted-foreground hover:text-destructive" /></button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <input value={couponCode} onChange={e => setCouponCode(e.target.value.toUpperCase())}
+                        placeholder="CÓDIGO" className={inputClass} />
+                      <Button variant="outline" size="sm" onClick={applyCoupon} disabled={couponLoading} className="shrink-0 font-display uppercase tracking-wider text-xs">
+                        {couponLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Aplicar"}
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
                 <div>
                   <label className={labelClass}>Observações do pedido (opcional)</label>
                   <textarea value={customerNotes} onChange={e => setCustomerNotes(e.target.value)}
@@ -453,15 +575,21 @@ const CheckoutPage = () => {
                   <span>{formatCurrency(shippingCost)}</span>
                 </div>
               )}
-              {paymentMethod === "pix" && (
+              {couponDiscount > 0 && (
+                <div className="flex justify-between text-sm font-body text-primary">
+                  <span>Cupom ({couponApplied?.code})</span>
+                  <span>-{formatCurrency(couponDiscount)}</span>
+                </div>
+              )}
+              {pixDiscount > 0 && (
                 <div className="flex justify-between text-sm font-body text-primary">
                   <span>Desconto Pix (5%)</span>
-                  <span>-{formatCurrency(total * 0.05)}</span>
+                  <span>-{formatCurrency(pixDiscount)}</span>
                 </div>
               )}
               <div className="flex justify-between font-display text-lg font-bold pt-2 border-t border-border">
                 <span>Total</span>
-                <span className="text-primary">{formatCurrency(paymentMethod === "pix" ? total * 0.95 : total)}</span>
+                <span className="text-primary">{formatCurrency(total)}</span>
               </div>
             </div>
           </div>

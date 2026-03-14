@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import { Plus, Edit, Trash2, Users, DollarSign, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -115,8 +115,31 @@ const AdminPartners = () => {
 
   const f = (key: string, val: string) => setFormData(prev => ({ ...prev, [key]: val }));
 
+  const totalPartners = partners.length;
+  const approvedPartners = partners.filter(p => p.status === "approved").length;
+  const totalCommission = partners.reduce((acc, p) => acc + (Number(p.commission_value) || 0), 0);
+  const pendingPartners = partners.filter(p => p.status === "pending").length;
+
   return (
     <AdminLayout title="Parceiros & Afiliados">
+      {/* Metrics */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        {[
+          { label: "Total de Parceiros", value: totalPartners, icon: Users, color: "text-primary" },
+          { label: "Aprovados", value: approvedPartners, icon: Users, color: "text-primary" },
+          { label: "Pendentes", value: pendingPartners, icon: TrendingUp, color: "text-amber-600" },
+          { label: "Comissão Média", value: totalPartners > 0 ? `${(totalCommission / totalPartners).toFixed(1)}%` : "0%", icon: DollarSign, color: "text-primary" },
+        ].map((m, i) => (
+          <div key={i} className="bg-card rounded-xl border border-border p-4">
+            <div className="flex items-center gap-2 mb-1">
+              <m.icon className={`h-4 w-4 ${m.color}`} />
+              <span className="text-xs font-display uppercase tracking-wider text-muted-foreground">{m.label}</span>
+            </div>
+            <p className="font-display text-2xl font-bold text-foreground">{m.value}</p>
+          </div>
+        ))}
+      </div>
+
       <div className="flex items-center justify-between gap-4 mb-6">
         <Select value={statusFilter} onValueChange={setStatusFilter}>
           <SelectTrigger className="w-40 text-xs font-body"><SelectValue placeholder="Status" /></SelectTrigger>
