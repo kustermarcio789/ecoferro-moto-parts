@@ -186,7 +186,7 @@ const CatalogPage = () => {
                   {brands.map(b => (
                     <button key={b.slug} onClick={() => updateParam("marca", marca === b.slug ? "" : b.slug)}
                       className={`flex items-center gap-2.5 w-full text-left px-3 py-1.5 rounded-md font-body text-sm transition-colors ${marca === b.slug ? "bg-primary/10 text-primary font-medium" : "text-foreground/70 hover:bg-muted"}`}>
-                      {b.logo_url && <img src={b.logo_url} alt={b.name} className="object-contain shrink-0" style={{ height: '26px', width: '26px' }} />}
+                      {b.logo_url && <img src={b.logo_url} alt={b.name} className="object-contain shrink-0" style={{ height: '34px', width: '34px' }} />}
                       {b.name}
                     </button>
                   ))}
