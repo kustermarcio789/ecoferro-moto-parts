@@ -460,6 +460,28 @@ const CheckoutPage = () => {
                     </label>
                   ))}
                 </div>
+
+                {/* Coupon */}
+                <div className="border-t border-border pt-4">
+                  <label className={labelClass}>Cupom de desconto</label>
+                  {couponApplied ? (
+                    <div className="flex items-center gap-2 bg-primary/5 border border-primary/20 rounded-lg px-3 py-2">
+                      <Tag className="h-4 w-4 text-primary" />
+                      <span className="font-body text-sm font-medium text-primary flex-1">{couponApplied.code}</span>
+                      <span className="font-body text-xs text-primary">-{formatCurrency(couponDiscount)}</span>
+                      <button onClick={removeCoupon}><X className="h-4 w-4 text-muted-foreground hover:text-destructive" /></button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <input value={couponCode} onChange={e => setCouponCode(e.target.value.toUpperCase())}
+                        placeholder="CÓDIGO" className={inputClass} />
+                      <Button variant="outline" size="sm" onClick={applyCoupon} disabled={couponLoading} className="shrink-0 font-display uppercase tracking-wider text-xs">
+                        {couponLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Aplicar"}
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
                 <div>
                   <label className={labelClass}>Observações do pedido (opcional)</label>
                   <textarea value={customerNotes} onChange={e => setCustomerNotes(e.target.value)}
