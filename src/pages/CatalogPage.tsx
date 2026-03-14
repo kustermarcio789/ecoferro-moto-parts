@@ -73,7 +73,8 @@ const CatalogPage = () => {
 
       // Filter by class or subclass
       if (subclasse) {
-        query = query.eq("categories.slug", subclasse);
+        const subCat = allCategories.find(c => c.slug === subclasse);
+        if (subCat) query = query.eq("category_id", subCat.id);
       } else if (classe) {
         const classeCat = allCategories.find(c => c.slug === classe && !c.parent_id);
         if (classeCat) {
