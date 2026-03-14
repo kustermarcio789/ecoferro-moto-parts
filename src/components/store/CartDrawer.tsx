@@ -71,7 +71,7 @@ const CartDrawer = () => {
               <span className="font-bold text-primary">R$ {subtotal.toFixed(2).replace(".", ",")}</span>
             </div>
             <Button className="w-full font-display uppercase tracking-wider" asChild onClick={() => setIsOpen(false)}>
-              <Link to="/carrinho">Finalizar Compra</Link>
+              <Link to="/checkout">Finalizar Compra</Link>
             </Button>
             <Button variant="outline" className="w-full font-display uppercase tracking-wider text-xs" onClick={() => setIsOpen(false)}>
               Continuar Comprando
