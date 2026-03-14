@@ -127,7 +127,8 @@ const StoreHeader = () => {
               <div className="absolute top-full left-0 bg-card border border-border rounded-lg shadow-lg py-2 min-w-[200px] z-50">
                 {brands.map(b => (
                   <Link key={b.slug} to={`/produtos?marca=${b.slug}`} onClick={closeAll}
-                    className="block px-4 py-2 font-body text-sm text-foreground/80 hover:text-primary hover:bg-muted transition-colors">
+                    className="flex items-center gap-2.5 px-4 py-2 font-body text-sm text-foreground/80 hover:text-primary hover:bg-muted transition-colors">
+                    {b.logo_url && <img src={b.logo_url} alt={b.name} className="h-5 w-5 object-contain shrink-0" />}
                     {b.name}
                   </Link>
                 ))}
