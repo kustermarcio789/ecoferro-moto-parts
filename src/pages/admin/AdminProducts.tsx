@@ -541,6 +541,71 @@ const AdminProducts = () => {
           </div>
         )}
       </div>
+
+      {/* ML Import Dialog */}
+      <Dialog open={showMlImport} onOpenChange={setShowMlImport}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-display uppercase tracking-wider">
+              Importar Produtos do Mercado Livre
+            </DialogTitle>
+          </DialogHeader>
+
+          {mlLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <span className="ml-3 font-body text-muted-foreground">Buscando produtos...</span>
+            </div>
+          ) : mlProducts.length === 0 ? (
+            <p className="text-center py-8 text-muted-foreground font-body">Nenhum produto encontrado.</p>
+          ) : (
+            <>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <button onClick={toggleMlSelectAll} className="flex items-center gap-2 text-sm font-body text-primary hover:underline">
+                    {mlSelected.size === mlProducts.length ? "Desmarcar todos" : "Selecionar todos"}
+                  </button>
+                  <span className="text-xs text-muted-foreground font-body">{mlSelected.size} selecionado(s)</span>
+                </div>
+                <Button onClick={importMlSelected} disabled={mlSelected.size === 0 || mlImporting} className="font-display uppercase tracking-wider text-xs">
+                  {mlImporting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Download className="mr-2 h-4 w-4" />}
+                  Importar Selecionados
+                </Button>
+              </div>
+
+              <div className="grid gap-3 max-h-[60vh] overflow-y-auto">
+                {mlProducts.map(p => (
+                  <div
+                    key={p.ml_id}
+                    onClick={() => toggleMlSelect(p.ml_id)}
+                    className={`flex items-center gap-4 p-3 rounded-lg border cursor-pointer transition-colors ${
+                      mlSelected.has(p.ml_id) ? 'border-primary bg-primary/5' : 'border-border hover:border-muted-foreground/30'
+                    }`}
+                  >
+                    <div className={`h-5 w-5 rounded border-2 flex items-center justify-center shrink-0 ${
+                      mlSelected.has(p.ml_id) ? 'border-primary bg-primary' : 'border-muted-foreground/30'
+                    }`}>
+                      {mlSelected.has(p.ml_id) && <Check className="h-3 w-3 text-primary-foreground" />}
+                    </div>
+                    {p.image && (
+                      <img src={p.image} alt={p.name} className="h-14 w-14 object-cover rounded-lg shrink-0" />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-display text-sm font-semibold text-foreground line-clamp-1">{p.name}</p>
+                      <p className="text-xs text-muted-foreground font-body mt-0.5">ML ID: {p.ml_id} • Estoque: {p.stock}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="font-display font-bold text-primary">R$ {p.price?.toFixed(2).replace('.', ',')}</p>
+                      {p.shipping_free && <span className="text-xs text-green-600 font-body">Frete grátis</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
     </AdminLayout>
   );
 };
