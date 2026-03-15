@@ -55,7 +55,7 @@ const LoginPage = () => {
         const loginEmail = resolveEmail(email);
         const { error } = await signIn(loginEmail, password);
         if (error) throw error;
-        navigate(redirect);
+        justLoggedIn.current = true;
       }
     } catch (err: any) {
       toast({ title: "Erro", description: err.message || "Tente novamente.", variant: "destructive" });
