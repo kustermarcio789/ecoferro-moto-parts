@@ -67,9 +67,22 @@ const StoreHeader = () => {
             <a href="tel:+551420340647" className="hover:underline">(14) 2034-0647</a>
           </div>
           <span className="hidden sm:block text-primary-foreground/80">Frete grátis para compras acima de R$ 299</span>
-          <Link to="/login" className="hover:underline text-primary-foreground/70 flex items-center gap-1">
-            <User className="h-3 w-3" /> Entrar
-          </Link>
+          {user ? (
+            <div className="flex items-center gap-3">
+              {isAdmin && (
+                <Link to="/admin" className="hover:underline text-primary-foreground flex items-center gap-1 font-semibold">
+                  <Shield className="h-3 w-3" /> Admin
+                </Link>
+              )}
+              <button onClick={() => signOut()} className="hover:underline text-primary-foreground/70 flex items-center gap-1">
+                <LogOut className="h-3 w-3" /> Sair
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="hover:underline text-primary-foreground/70 flex items-center gap-1">
+              <User className="h-3 w-3" /> Entrar
+            </Link>
+          )}
         </div>
       </div>
 
