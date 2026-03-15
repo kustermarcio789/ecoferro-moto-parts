@@ -193,6 +193,11 @@ const StoreHeader = () => {
           <Link to="/contato" className="py-3 px-4 font-display text-sm uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors border-b-2 border-transparent hover:border-primary">
             Contato
           </Link>
+          {isAdmin && (
+            <Link to="/admin" className="py-3 px-4 font-display text-sm uppercase tracking-wider text-primary hover:text-primary/80 transition-colors border-b-2 border-primary flex items-center gap-1.5">
+              <Shield className="h-3.5 w-3.5" /> Painel Admin
+            </Link>
+          )}
         </div>
       </nav>
 
