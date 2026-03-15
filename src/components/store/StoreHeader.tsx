@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, ShoppingCart, Menu, X, Phone, User, ChevronDown, ChevronRight } from "lucide-react";
+import { Search, ShoppingCart, Menu, X, Phone, User, ChevronDown, ChevronRight, Shield, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/ecoferro-logo.jpeg";
 
@@ -16,6 +17,7 @@ const StoreHeader = () => {
   const [classes, setClasses] = useState<Category[]>([]);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const { totalItems, setIsOpen } = useCart();
+  const { user, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -65,9 +67,22 @@ const StoreHeader = () => {
             <a href="tel:+551420340647" className="hover:underline">(14) 2034-0647</a>
           </div>
           <span className="hidden sm:block text-primary-foreground/80">Frete grátis para compras acima de R$ 299</span>
-          <Link to="/login" className="hover:underline text-primary-foreground/70 flex items-center gap-1">
-            <User className="h-3 w-3" /> Entrar
-          </Link>
+          {user ? (
+            <div className="flex items-center gap-3">
+              {isAdmin && (
+                <Link to="/admin" className="hover:underline text-primary-foreground flex items-center gap-1 font-semibold">
+                  <Shield className="h-3 w-3" /> Admin
+                </Link>
+              )}
+              <button onClick={() => signOut()} className="hover:underline text-primary-foreground/70 flex items-center gap-1">
+                <LogOut className="h-3 w-3" /> Sair
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="hover:underline text-primary-foreground/70 flex items-center gap-1">
+              <User className="h-3 w-3" /> Entrar
+            </Link>
+          )}
         </div>
       </div>
 
@@ -178,6 +193,11 @@ const StoreHeader = () => {
           <Link to="/contato" className="py-3 px-4 font-display text-sm uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors border-b-2 border-transparent hover:border-primary">
             Contato
           </Link>
+          {isAdmin && (
+            <Link to="/admin" className="py-3 px-4 font-display text-sm uppercase tracking-wider text-primary hover:text-primary/80 transition-colors border-b-2 border-primary flex items-center gap-1.5">
+              <Shield className="h-3.5 w-3.5" /> Painel Admin
+            </Link>
+          )}
         </div>
       </nav>
 
@@ -235,6 +255,11 @@ const StoreHeader = () => {
             <Link to="/orcamento" onClick={closeAll} className="block py-2.5 px-3 font-display uppercase tracking-wider text-sm text-foreground/80 hover:text-primary hover:bg-muted rounded-md">Orçamento B2B</Link>
             <Link to="/sobre" onClick={closeAll} className="block py-2.5 px-3 font-display uppercase tracking-wider text-sm text-foreground/80 hover:text-primary hover:bg-muted rounded-md">Sobre</Link>
             <Link to="/contato" onClick={closeAll} className="block py-2.5 px-3 font-display uppercase tracking-wider text-sm text-foreground/80 hover:text-primary hover:bg-muted rounded-md">Contato</Link>
+            {isAdmin && (
+              <Link to="/admin" onClick={closeAll} className="flex items-center gap-2 py-2.5 px-3 font-display uppercase tracking-wider text-sm text-primary font-semibold hover:bg-muted rounded-md">
+                <Shield className="h-4 w-4" /> Painel Admin
+              </Link>
+            )}
           </div>
         </nav>
       )}
