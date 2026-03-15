@@ -17,6 +17,7 @@ const StoreHeader = () => {
   const [classes, setClasses] = useState<Category[]>([]);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const { totalItems, setIsOpen } = useCart();
+  const { user, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
