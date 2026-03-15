@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, ShoppingCart, Menu, X, Phone, User, ChevronDown, ChevronRight } from "lucide-react";
+import { Search, ShoppingCart, Menu, X, Phone, User, ChevronDown, ChevronRight, Shield, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/ecoferro-logo.jpeg";
 
