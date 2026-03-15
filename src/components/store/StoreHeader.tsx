@@ -255,6 +255,11 @@ const StoreHeader = () => {
             <Link to="/orcamento" onClick={closeAll} className="block py-2.5 px-3 font-display uppercase tracking-wider text-sm text-foreground/80 hover:text-primary hover:bg-muted rounded-md">Orçamento B2B</Link>
             <Link to="/sobre" onClick={closeAll} className="block py-2.5 px-3 font-display uppercase tracking-wider text-sm text-foreground/80 hover:text-primary hover:bg-muted rounded-md">Sobre</Link>
             <Link to="/contato" onClick={closeAll} className="block py-2.5 px-3 font-display uppercase tracking-wider text-sm text-foreground/80 hover:text-primary hover:bg-muted rounded-md">Contato</Link>
+            {isAdmin && (
+              <Link to="/admin" onClick={closeAll} className="flex items-center gap-2 py-2.5 px-3 font-display uppercase tracking-wider text-sm text-primary font-semibold hover:bg-muted rounded-md">
+                <Shield className="h-4 w-4" /> Painel Admin
+              </Link>
+            )}
           </div>
         </nav>
       )}
