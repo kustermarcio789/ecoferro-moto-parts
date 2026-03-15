@@ -13,11 +13,30 @@ const LoginPage = () => {
   const [fullName, setFullName] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const justLoggedIn = useRef(false);
+  const { signIn, signUp, user, isAdmin } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirect") || "/";
+
+  // After login, wait for isAdmin to resolve then redirect
+  useEffect(() => {
+    if (user && justLoggedIn.current) {
+      if (isAdmin) {
+        justLoggedIn.current = false;
+        navigate("/admin", { replace: true });
+      } else if (!loading) {
+        // Give a small delay for admin check to complete
+        const timer = setTimeout(() => {
+          if (!justLoggedIn.current) return;
+          justLoggedIn.current = false;
+          navigate(redirect, { replace: true });
+        }, 500);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [user, isAdmin, loading]);
 
   const resolveEmail = (input: string) => {
     if (input.includes("@")) return input;
