@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { Search, ShoppingCart, ChevronLeft, ChevronRight, SlidersHorizontal, X } from "lucide-react";
+import { Search, ShoppingCart, ChevronLeft, ChevronRight, SlidersHorizontal, X, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import StoreHeader from "@/components/store/StoreHeader";
@@ -31,6 +33,7 @@ const CatalogPage = () => {
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
   const [showFilters, setShowFilters] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const { addItem } = useCart();
 
   const q = searchParams.get("q") || "";
@@ -291,13 +294,22 @@ const CatalogPage = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {products.map((product) => (
                     <div key={product.id} className="group bg-card rounded-xl border border-border shadow-eco hover:shadow-eco-hover transition-all overflow-hidden">
-                      <Link to={`/produto/${product.slug}`} className="relative aspect-square bg-muted overflow-hidden block">
-                        <img src={getImage(product)} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                      <div className="relative aspect-square bg-white overflow-hidden block">
+                        <Link to={`/produto/${product.slug}`} className="block w-full h-full">
+                          <img src={getImage(product)} alt={product.name} className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                        </Link>
+                        <button
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLightboxImage(getImage(product)); }}
+                          className="absolute top-3 right-3 z-10 h-8 w-8 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center transition-colors opacity-0 group-hover:opacity-100"
+                          title="Ampliar imagem"
+                        >
+                          <ZoomIn className="h-4 w-4 text-white" />
+                        </button>
                         {product.is_new && (
                           <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-display uppercase tracking-wider px-3 py-1 rounded-full">Novo</span>
                         )}
                         {product.original_price && product.original_price > product.price && (
-                          <span className="absolute top-3 right-3 bg-destructive text-destructive-foreground text-xs font-display uppercase tracking-wider px-2 py-1 rounded-full">
+                          <span className="absolute bottom-3 right-3 bg-destructive text-destructive-foreground text-xs font-display uppercase tracking-wider px-2 py-1 rounded-full">
                             -{Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
                           </span>
                         )}
@@ -306,7 +318,7 @@ const CatalogPage = () => {
                             <span className="bg-destructive text-destructive-foreground px-4 py-2 rounded font-display uppercase text-sm">Esgotado</span>
                           </div>
                         )}
-                      </Link>
+                      </div>
                       <div className="p-4">
                         <div className="flex items-center gap-2 mb-1">
                           {product.brands?.name && <span className="text-[10px] text-primary font-display uppercase tracking-wider font-bold">{product.brands.name}</span>}
@@ -349,6 +361,26 @@ const CatalogPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      <Dialog open={!!lightboxImage} onOpenChange={(open) => { if (!open) setLightboxImage(null); }}>
+        <DialogPrimitive.Portal>
+          <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/90 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+          <DialogPrimitive.Content className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8">
+            <button onClick={() => setLightboxImage(null)}
+              className="absolute top-4 right-4 z-50 h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
+              <X className="h-6 w-6 text-white" />
+            </button>
+            {lightboxImage && (
+              <img
+                src={lightboxImage}
+                alt="Produto ampliado"
+                className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg shadow-2xl"
+              />
+            )}
+          </DialogPrimitive.Content>
+        </DialogPrimitive.Portal>
+      </Dialog>
 
       <StoreFooter />
     </div>

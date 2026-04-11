@@ -100,9 +100,9 @@ const ProductPage = () => {
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
           {/* Gallery */}
           <div>
-            <div className="relative aspect-square bg-muted rounded-xl overflow-hidden mb-4 group cursor-pointer"
+            <div className="relative aspect-square bg-white rounded-xl overflow-hidden mb-4 group cursor-pointer border border-border"
               onClick={() => setLightboxOpen(true)}>
-              <img src={images[activeImage]} alt={product.name} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+              <img src={images[activeImage]} alt={product.name} className="w-full h-full object-contain p-2 transition-transform group-hover:scale-105" />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
                 <ZoomIn className="h-8 w-8 text-white opacity-0 group-hover:opacity-80 transition-opacity drop-shadow-lg" />
               </div>
