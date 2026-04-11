@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ShoppingCart, MessageCircle, ChevronLeft, ChevronRight, Star, Truck, Shield, Tag } from "lucide-react";
+import { ShoppingCart, MessageCircle, ChevronLeft, ChevronRight, Star, Truck, Shield, Tag, X, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogOverlay, DialogPortal, DialogClose } from "@/components/ui/dialog";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import StoreHeader from "@/components/store/StoreHeader";
 import StoreFooter from "@/components/store/StoreFooter";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,6 +14,7 @@ const ProductPage = () => {
   const [product, setProduct] = useState<any>(null);
   const [images, setImages] = useState<string[]>([]);
   const [activeImage, setActiveImage] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const { addItem } = useCart();
@@ -97,16 +100,20 @@ const ProductPage = () => {
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
           {/* Gallery */}
           <div>
-            <div className="relative aspect-square bg-muted rounded-xl overflow-hidden mb-4">
-              <img src={images[activeImage]} alt={product.name} className="w-full h-full object-cover" />
+            <div className="relative aspect-square bg-muted rounded-xl overflow-hidden mb-4 group cursor-pointer"
+              onClick={() => setLightboxOpen(true)}>
+              <img src={images[activeImage]} alt={product.name} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                <ZoomIn className="h-8 w-8 text-white opacity-0 group-hover:opacity-80 transition-opacity drop-shadow-lg" />
+              </div>
               {images.length > 1 && (
                 <>
-                  <button onClick={() => setActiveImage(i => i > 0 ? i - 1 : images.length - 1)}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-card/80 flex items-center justify-center hover:bg-card">
+                  <button onClick={(e) => { e.stopPropagation(); setActiveImage(i => i > 0 ? i - 1 : images.length - 1); }}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-card/80 flex items-center justify-center hover:bg-card z-10">
                     <ChevronLeft className="h-5 w-5" />
                   </button>
-                  <button onClick={() => setActiveImage(i => i < images.length - 1 ? i + 1 : 0)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-card/80 flex items-center justify-center hover:bg-card">
+                  <button onClick={(e) => { e.stopPropagation(); setActiveImage(i => i < images.length - 1 ? i + 1 : 0); }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-card/80 flex items-center justify-center hover:bg-card z-10">
                     <ChevronRight className="h-5 w-5" />
                   </button>
                 </>
@@ -123,6 +130,44 @@ const ProductPage = () => {
               </div>
             )}
           </div>
+
+          {/* Lightbox Modal */}
+          <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
+            <DialogPrimitive.Portal>
+              <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/90 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+              <DialogPrimitive.Content className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8">
+                <button onClick={() => setLightboxOpen(false)}
+                  className="absolute top-4 right-4 z-50 h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
+                  <X className="h-6 w-6 text-white" />
+                </button>
+                {images.length > 1 && (
+                  <>
+                    <button onClick={() => setActiveImage(i => i > 0 ? i - 1 : images.length - 1)}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 z-50 h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
+                      <ChevronLeft className="h-7 w-7 text-white" />
+                    </button>
+                    <button onClick={() => setActiveImage(i => i < images.length - 1 ? i + 1 : 0)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 z-50 h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
+                      <ChevronRight className="h-7 w-7 text-white" />
+                    </button>
+                  </>
+                )}
+                <img
+                  src={images[activeImage]}
+                  alt={product.name}
+                  className="max-h-[85vh] max-w-[90vw] object-contain rounded-lg shadow-2xl"
+                />
+                {images.length > 1 && (
+                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                    {images.map((_, i) => (
+                      <button key={i} onClick={() => setActiveImage(i)}
+                        className={`h-2.5 w-2.5 rounded-full transition-colors ${i === activeImage ? "bg-white" : "bg-white/40 hover:bg-white/60"}`} />
+                    ))}
+                  </div>
+                )}
+              </DialogPrimitive.Content>
+            </DialogPrimitive.Portal>
+          </Dialog>
 
           {/* Product info */}
           <div>
