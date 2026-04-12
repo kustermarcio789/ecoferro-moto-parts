@@ -24,7 +24,7 @@ const ProductPage = () => {
       if (!slug) return;
       const { data } = await supabase
         .from("products")
-        .select("*, product_images(url, is_primary, sort_order), categories(id, name, slug, parent_id), brands(name, slug), reviews(rating, customer_name, comment, title, created_at)")
+        .select("*, product_images(url, is_primary, sort_order), categories(id, name, slug, parent_id), brands(name, slug), reviews(rating, customer_name, comment, title, photos, created_at)")
         .eq("slug", slug)
         .eq("is_active", true)
         .single();
@@ -282,6 +282,16 @@ const ProductPage = () => {
                   </div>
                   {r.title && <p className="font-display text-sm font-semibold text-foreground mb-1">{r.title}</p>}
                   {r.comment && <p className="text-sm text-muted-foreground font-body">{r.comment}</p>}
+                  {r.photos && r.photos.length > 0 && (
+                    <div className="flex gap-2 mt-3 overflow-x-auto">
+                      {r.photos.map((photo: string, pi: number) => (
+                        <a key={pi} href={photo} target="_blank" rel="noopener noreferrer"
+                          className="h-20 w-20 rounded-lg overflow-hidden border border-border shrink-0 hover:opacity-80 transition-opacity">
+                          <img src={photo} alt={`Foto ${pi + 1}`} className="w-full h-full object-cover" />
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
