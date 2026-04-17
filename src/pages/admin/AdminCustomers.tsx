@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Search, Pencil, Trash2, AlertTriangle } from "lucide-react";
+import { Search, Pencil, Trash2, AlertTriangle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -26,9 +26,20 @@ const AdminCustomers = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<Customer | null>(null);
+  const [creating, setCreating] = useState<Partial<Customer> | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<Customer | null>(null);
   const [confirmClearML, setConfirmClearML] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  const emptyCustomer: Partial<Customer> = {
+    name: "",
+    email: "",
+    phone: "",
+    cpf_cnpj: "",
+    company_name: "",
+    is_company: false,
+    notes: "",
+  };
 
   const fetchCustomers = async () => {
     setLoading(true);
@@ -87,6 +98,32 @@ const AdminCustomers = () => {
     }
   };
 
+  const handleCreate = async () => {
+    if (!creating?.name?.trim()) {
+      toast.error("Nome é obrigatório");
+      return;
+    }
+    setSaving(true);
+    const { error } = await supabase.from("customers").insert({
+      name: creating.name.trim(),
+      email: creating.email?.trim() || null,
+      phone: creating.phone?.trim() || null,
+      cpf_cnpj: creating.cpf_cnpj?.trim() || null,
+      company_name: creating.is_company ? creating.company_name?.trim() || null : null,
+      is_company: creating.is_company || false,
+      notes: creating.notes?.trim() || null,
+    });
+
+    setSaving(false);
+    if (error) {
+      toast.error("Erro ao criar: " + error.message);
+    } else {
+      toast.success("Cliente criado com sucesso!");
+      setCreating(null);
+      fetchCustomers();
+    }
+  };
+
   const handleClearML = async () => {
     // Apagar endereços ML primeiro
     await supabase.from("addresses").delete().eq("label", "Mercado Livre");
@@ -116,13 +153,21 @@ const AdminCustomers = () => {
           />
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         </div>
-        <Button
-          variant="destructive"
-          onClick={() => setConfirmClearML(true)}
-          className="font-display uppercase tracking-wider text-xs"
-        >
-          <Trash2 className="mr-2 h-4 w-4" /> Limpar Clientes ML
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={() => setCreating({ ...emptyCustomer })}
+            className="font-display uppercase tracking-wider text-xs"
+          >
+            <Plus className="mr-2 h-4 w-4" /> Novo Cliente
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={() => setConfirmClearML(true)}
+            className="font-display uppercase tracking-wider text-xs"
+          >
+            <Trash2 className="mr-2 h-4 w-4" /> Limpar Clientes ML
+          </Button>
+        </div>
       </div>
 
       <div className="bg-card rounded-xl border border-border overflow-hidden">
@@ -200,6 +245,92 @@ const AdminCustomers = () => {
           </table>
         </div>
       </div>
+
+      {/* Novo Cliente */}
+      <Dialog open={!!creating} onOpenChange={(o) => !o && setCreating(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Plus className="h-5 w-5" /> Novo Cliente
+            </DialogTitle>
+          </DialogHeader>
+          {creating && (
+            <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+              <div>
+                <Label>
+                  Nome <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  value={creating.name || ""}
+                  onChange={(e) => setCreating({ ...creating, name: e.target.value })}
+                  placeholder="Nome completo ou razão social"
+                />
+              </div>
+              <div>
+                <Label>E-mail</Label>
+                <Input
+                  type="email"
+                  value={creating.email || ""}
+                  onChange={(e) => setCreating({ ...creating, email: e.target.value })}
+                  placeholder="cliente@email.com"
+                />
+              </div>
+              <div>
+                <Label>Telefone</Label>
+                <Input
+                  value={creating.phone || ""}
+                  onChange={(e) => setCreating({ ...creating, phone: e.target.value })}
+                  placeholder="(11) 99999-9999"
+                />
+              </div>
+              <div>
+                <Label>CPF/CNPJ</Label>
+                <Input
+                  value={creating.cpf_cnpj || ""}
+                  onChange={(e) => setCreating({ ...creating, cpf_cnpj: e.target.value })}
+                  placeholder="000.000.000-00 ou 00.000.000/0000-00"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="is_company_new"
+                  checked={creating.is_company || false}
+                  onChange={(e) => setCreating({ ...creating, is_company: e.target.checked })}
+                />
+                <Label htmlFor="is_company_new">É empresa (CNPJ)</Label>
+              </div>
+              {creating.is_company && (
+                <div>
+                  <Label>Razão Social</Label>
+                  <Input
+                    value={creating.company_name || ""}
+                    onChange={(e) => setCreating({ ...creating, company_name: e.target.value })}
+                    placeholder="Nome da empresa"
+                  />
+                </div>
+              )}
+              <div>
+                <Label>Observações</Label>
+                <Textarea
+                  value={creating.notes || ""}
+                  onChange={(e) => setCreating({ ...creating, notes: e.target.value })}
+                  rows={3}
+                  placeholder="Informações adicionais sobre o cliente..."
+                />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setCreating(null)}>
+              Cancelar
+            </Button>
+            <Button onClick={handleCreate} disabled={saving}>
+              {saving ? "Criando..." : "Criar Cliente"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Editar */}
       <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
