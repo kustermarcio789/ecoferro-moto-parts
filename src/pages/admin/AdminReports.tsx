@@ -3,139 +3,146 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { formatCurrency } from "@/lib/tracking";
 import { DollarSign, TrendingDown, TrendingUp, Percent, Package, Truck } from "lucide-react";
+import { formatSalesChannel } from "@/services/inventoryService";
+
+const supabaseAny = supabase as any;
 
 const AdminReports = () => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetch = async () => {
-      const [orders, products] = await Promise.all([
+    const fetchData = async () => {
+      const [orders, products, movements] = await Promise.all([
         supabase.from("orders").select("total, subtotal, discount, shipping_cost, status, sales_channel, created_at"),
-        supabase.from("products").select("name, price, cost, stock"),
+        supabase.from("products").select("name, price, cost"),
+        supabaseAny.from("inventory_movements").select("type, quantity, created_at, channel"),
       ]);
 
       const allOrders = orders.data || [];
-      const paidOrders = allOrders.filter(o => ["paid", "delivered", "shipped"].includes(o.status));
+      const paidOrders = allOrders.filter((order: any) => ["paid", "delivered", "shipped"].includes(order.status));
       const allProducts = products.data || [];
+      const allMovements = movements.data || [];
 
-      const faturamentoBruto = paidOrders.reduce((s, o) => s + Number(o.total), 0);
-      const totalDescontos = paidOrders.reduce((s, o) => s + Number(o.discount || 0), 0);
-      const totalFrete = paidOrders.reduce((s, o) => s + Number(o.shipping_cost || 0), 0);
-      const totalSubtotal = paidOrders.reduce((s, o) => s + Number(o.subtotal), 0);
+      const grossRevenue = paidOrders.reduce((sum: number, order: any) => sum + Number(order.total), 0);
+      const discounts = paidOrders.reduce((sum: number, order: any) => sum + Number(order.discount || 0), 0);
+      const shipping = paidOrders.reduce((sum: number, order: any) => sum + Number(order.shipping_cost || 0), 0);
+      const subtotal = paidOrders.reduce((sum: number, order: any) => sum + Number(order.subtotal || 0), 0);
 
-      // Margin estimation from products
-      const productMargins = allProducts
-        .filter(p => p.cost && p.cost > 0)
-        .map(p => ({
-          name: p.name,
-          price: Number(p.price),
-          cost: Number(p.cost),
-          margin: ((Number(p.price) - Number(p.cost)) / Number(p.price)) * 100,
-          profit: Number(p.price) - Number(p.cost),
-        }))
-        .sort((a, b) => b.margin - a.margin);
+      const averageMargin = allProducts.filter((product: any) => product.cost > 0).reduce((sum: number, product: any, _, array: any[]) => {
+        const margin = ((Number(product.price) - Number(product.cost)) / Number(product.price || 1)) * 100;
+        return sum + margin / Math.max(array.length, 1);
+      }, 0);
 
-      const avgMargin = productMargins.length > 0
-        ? productMargins.reduce((s, p) => s + p.margin, 0) / productMargins.length
-        : 0;
+      const estimatedCosts = subtotal * (1 - averageMargin / 100);
+      const taxes = grossRevenue * 0.06;
+      const grossProfit = grossRevenue - estimatedCosts - shipping;
+      const netProfit = grossProfit - discounts - taxes;
 
-      const estimatedCosts = totalSubtotal * (1 - avgMargin / 100);
-      const impostos = faturamentoBruto * 0.06; // Simples estimado
-      const lucroBruto = faturamentoBruto - estimatedCosts - totalFrete;
-      const lucroLiquido = lucroBruto - totalDescontos - impostos;
+      const channelSummary = Object.entries(
+        paidOrders.reduce((acc: Record<string, number>, order: any) => {
+          const channel = order.sales_channel || "website";
+          acc[channel] = (acc[channel] || 0) + Number(order.total);
+          return acc;
+        }, {}),
+      ).map(([channel, total]) => ({ channel, total })).sort((a, b) => Number(b.total) - Number(a.total));
+
+      const movementSummary = {
+        entries: allMovements.filter((movement: any) => ["entry", "entry_from_production", "return", "cancellation_reversal"].includes(movement.type)).reduce((sum: number, movement: any) => sum + Number(movement.quantity || 0), 0),
+        exits: allMovements.filter((movement: any) => ["sale", "exit", "damaged_loss"].includes(movement.type)).reduce((sum: number, movement: any) => sum + Number(movement.quantity || 0), 0),
+        reservations: allMovements.filter((movement: any) => ["reservation", "release_reservation"].includes(movement.type)).length,
+      };
 
       setData({
-        faturamentoBruto, totalDescontos, totalFrete, impostos,
-        estimatedCosts, lucroBruto, lucroLiquido, avgMargin,
+        grossRevenue,
+        discounts,
+        shipping,
+        taxes,
+        estimatedCosts,
+        grossProfit,
+        netProfit,
+        averageMargin,
         totalOrders: paidOrders.length,
-        ticketMedio: paidOrders.length > 0 ? faturamentoBruto / paidOrders.length : 0,
-        productMargins: productMargins.slice(0, 10),
-        productMarginsBottom: [...productMargins].sort((a, b) => a.margin - b.margin).slice(0, 10),
+        averageTicket: paidOrders.length > 0 ? grossRevenue / paidOrders.length : 0,
+        channelSummary,
+        movementSummary,
       });
       setLoading(false);
     };
-    fetch();
+
+    fetchData();
   }, []);
 
   if (loading) {
     return (
-      <AdminLayout title="Relatórios">
+      <AdminLayout title="Relatorios">
         <div className="grid gap-4">
-          {Array.from({ length: 6 }).map((_, i) => <div key={i} className="h-20 bg-muted rounded-xl animate-pulse" />)}
+          {Array.from({ length: 6 }).map((_, index) => <div key={index} className="h-20 animate-pulse rounded-xl bg-muted" />)}
         </div>
       </AdminLayout>
     );
   }
 
   return (
-    <AdminLayout title="Relatórios">
-      {/* DRE */}
-      <div className="bg-card rounded-xl border border-border p-6 mb-6">
-        <h2 className="font-display text-lg font-bold text-foreground uppercase tracking-wider mb-6">DRE Simplificada</h2>
+    <AdminLayout title="Relatorios">
+      <div className="mb-6 rounded-xl border border-border bg-card p-6">
+        <h2 className="mb-6 font-display text-lg font-bold uppercase tracking-wider text-foreground">DRE simplificada</h2>
         <div className="space-y-3">
           {[
-            { label: "Faturamento Bruto", value: data.faturamentoBruto, icon: DollarSign, positive: true },
-            { label: "(-) Descontos", value: data.totalDescontos, icon: TrendingDown, positive: false },
-            { label: "(-) Impostos Estimados (6%)", value: data.impostos, icon: Percent, positive: false },
-            { label: "(-) Fretes", value: data.totalFrete, icon: Truck, positive: false },
-            { label: "(-) Custo dos Produtos", value: data.estimatedCosts, icon: Package, positive: false },
-            { label: "= Lucro Bruto", value: data.lucroBruto, icon: TrendingUp, positive: data.lucroBruto > 0 },
-            { label: "= Lucro Líquido", value: data.lucroLiquido, icon: TrendingUp, positive: data.lucroLiquido > 0 },
-          ].map(row => (
-            <div key={row.label} className={`flex items-center justify-between p-3 rounded-lg ${row.label.startsWith("=") ? "bg-muted/50 font-bold" : ""}`}>
+            { label: "Faturamento bruto", value: data.grossRevenue, icon: DollarSign, positive: true },
+            { label: "(-) Descontos", value: data.discounts, icon: TrendingDown, positive: false },
+            { label: "(-) Impostos estimados (6%)", value: data.taxes, icon: Percent, positive: false },
+            { label: "(-) Fretes", value: data.shipping, icon: Truck, positive: false },
+            { label: "(-) Custo estimado", value: data.estimatedCosts, icon: Package, positive: false },
+            { label: "= Lucro bruto", value: data.grossProfit, icon: TrendingUp, positive: data.grossProfit > 0 },
+            { label: "= Lucro liquido", value: data.netProfit, icon: TrendingUp, positive: data.netProfit > 0 },
+          ].map((row) => (
+            <div key={row.label} className={`flex items-center justify-between rounded-lg p-3 ${row.label.startsWith("=") ? "bg-muted/50 font-bold" : ""}`}>
               <div className="flex items-center gap-3">
                 <row.icon className={`h-4 w-4 ${row.positive ? "text-primary" : "text-destructive"}`} />
-                <span className="font-body text-sm text-foreground">{row.label}</span>
+                <span className="text-sm font-body text-foreground">{row.label}</span>
               </div>
-              <span className={`font-display text-lg ${row.positive ? "text-primary" : "text-destructive"}`}>
-                {formatCurrency(Math.abs(row.value))}
-              </span>
+              <span className={`font-display text-lg ${row.positive ? "text-primary" : "text-destructive"}`}>{formatCurrency(Math.abs(row.value))}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* KPIs */}
-      <div className="grid sm:grid-cols-3 gap-4 mb-6">
-        <div className="bg-card rounded-xl border border-border p-5">
-          <span className="text-xs text-muted-foreground font-body uppercase tracking-wider">Pedidos Pagos</span>
-          <p className="font-display text-2xl font-bold text-foreground mt-1">{data.totalOrders}</p>
-        </div>
-        <div className="bg-card rounded-xl border border-border p-5">
-          <span className="text-xs text-muted-foreground font-body uppercase tracking-wider">Ticket Médio</span>
-          <p className="font-display text-2xl font-bold text-foreground mt-1">{formatCurrency(data.ticketMedio)}</p>
-        </div>
-        <div className="bg-card rounded-xl border border-border p-5">
-          <span className="text-xs text-muted-foreground font-body uppercase tracking-wider">Margem Média</span>
-          <p className="font-display text-2xl font-bold text-primary mt-1">{data.avgMargin.toFixed(1)}%</p>
-        </div>
+      <div className="mb-6 grid gap-4 sm:grid-cols-3">
+        <div className="rounded-xl border border-border bg-card p-5"><span className="text-xs font-body uppercase tracking-wider text-muted-foreground">Pedidos pagos</span><p className="mt-1 font-display text-2xl font-bold text-foreground">{data.totalOrders}</p></div>
+        <div className="rounded-xl border border-border bg-card p-5"><span className="text-xs font-body uppercase tracking-wider text-muted-foreground">Ticket medio</span><p className="mt-1 font-display text-2xl font-bold text-foreground">{formatCurrency(data.averageTicket)}</p></div>
+        <div className="rounded-xl border border-border bg-card p-5"><span className="text-xs font-body uppercase tracking-wider text-muted-foreground">Margem media</span><p className="mt-1 font-display text-2xl font-bold text-primary">{data.averageMargin.toFixed(1)}%</p></div>
       </div>
 
-      {/* Margin Rankings */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        <div className="bg-card rounded-xl border border-border p-6">
-          <h3 className="font-display text-sm font-bold text-foreground uppercase tracking-wider mb-4">🔝 Maior Margem</h3>
-          <div className="space-y-2">
-            {data.productMargins.map((p: any, i: number) => (
-              <div key={i} className="flex items-center justify-between text-sm">
-                <span className="font-body text-foreground truncate max-w-[200px]">{p.name}</span>
-                <span className="font-display font-bold text-primary">{p.margin.toFixed(1)}%</span>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="rounded-xl border border-border bg-card p-6">
+          <h3 className="mb-4 font-display text-sm font-bold uppercase tracking-wider text-foreground">Saida por canal</h3>
+          <div className="space-y-3">
+            {data.channelSummary.map((channel: any) => (
+              <div key={channel.channel} className="flex items-center justify-between rounded-lg bg-muted/50 p-3">
+                <span className="text-sm font-body text-foreground">{formatSalesChannel(channel.channel)}</span>
+                <span className="font-display font-bold text-primary">{formatCurrency(Number(channel.total))}</span>
               </div>
             ))}
-            {data.productMargins.length === 0 && <p className="text-xs text-muted-foreground font-body">Cadastre custos nos produtos para ver margens</p>}
+            {data.channelSummary.length === 0 && <p className="text-xs font-body text-muted-foreground">Nenhum pedido pago ainda.</p>}
           </div>
         </div>
-        <div className="bg-card rounded-xl border border-border p-6">
-          <h3 className="font-display text-sm font-bold text-foreground uppercase tracking-wider mb-4">⚠️ Menor Margem</h3>
-          <div className="space-y-2">
-            {data.productMarginsBottom.map((p: any, i: number) => (
-              <div key={i} className="flex items-center justify-between text-sm">
-                <span className="font-body text-foreground truncate max-w-[200px]">{p.name}</span>
-                <span className={`font-display font-bold ${p.margin < 10 ? "text-destructive" : "text-amber-500"}`}>{p.margin.toFixed(1)}%</span>
-              </div>
-            ))}
-            {data.productMarginsBottom.length === 0 && <p className="text-xs text-muted-foreground font-body">Cadastre custos nos produtos para ver margens</p>}
+
+        <div className="rounded-xl border border-border bg-card p-6">
+          <h3 className="mb-4 font-display text-sm font-bold uppercase tracking-wider text-foreground">Resumo de movimentacoes</h3>
+          <div className="grid gap-3">
+            <div className="rounded-lg bg-muted/50 p-4">
+              <div className="text-xs font-body uppercase tracking-wider text-muted-foreground">Entradas</div>
+              <div className="mt-1 font-display text-2xl font-bold text-primary">{data.movementSummary.entries}</div>
+            </div>
+            <div className="rounded-lg bg-muted/50 p-4">
+              <div className="text-xs font-body uppercase tracking-wider text-muted-foreground">Saidas</div>
+              <div className="mt-1 font-display text-2xl font-bold text-destructive">{data.movementSummary.exits}</div>
+            </div>
+            <div className="rounded-lg bg-muted/50 p-4">
+              <div className="text-xs font-body uppercase tracking-wider text-muted-foreground">Eventos de reserva</div>
+              <div className="mt-1 font-display text-2xl font-bold text-blue-700">{data.movementSummary.reservations}</div>
+            </div>
           </div>
         </div>
       </div>

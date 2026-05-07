@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { formatCurrency } from "@/lib/tracking";
+import { updateOrderStatusWithInventory } from "@/services/inventoryService";
 
 const statusLabels: Record<string, { label: string; color: string }> = {
   pending: { label: "Pendente", color: "bg-amber-100 text-amber-700" },
@@ -56,14 +57,22 @@ const AdminOrders = () => {
   }, [statusFilter]);
 
   const updateStatus = async (id: string, status: string) => {
-    const updates: any = { status };
-    if (status === "paid") updates.paid_at = new Date().toISOString();
-    if (status === "shipped") updates.shipped_at = new Date().toISOString();
-    if (status === "delivered") updates.delivered_at = new Date().toISOString();
-    if (status === "cancelled") updates.cancelled_at = new Date().toISOString();
-    await supabase.from("orders").update(updates).eq("id", id);
-    setOrders(prev => prev.map(o => o.id === id ? { ...o, ...updates } : o));
-    if (selectedOrder?.id === id) setSelectedOrder((prev: any) => prev ? { ...prev, ...updates } : prev);
+    try {
+      await updateOrderStatusWithInventory(id, status);
+
+      const updates: any = { status };
+      if (status === "paid") updates.paid_at = new Date().toISOString();
+      if (status === "shipped") updates.shipped_at = new Date().toISOString();
+      if (status === "delivered") updates.delivered_at = new Date().toISOString();
+      if (status === "cancelled" || status === "refunded") updates.cancelled_at = new Date().toISOString();
+      if (status !== "cancelled" && status !== "refunded") updates.cancelled_at = null;
+
+      setOrders(prev => prev.map(o => o.id === id ? { ...o, ...updates } : o));
+      if (selectedOrder?.id === id) setSelectedOrder((prev: any) => prev ? { ...prev, ...updates } : prev);
+      toast({ title: "Status atualizado" });
+    } catch (error: any) {
+      toast({ title: "Erro ao atualizar status", description: error.message, variant: "destructive" });
+    }
   };
 
   const openDetail = async (order: any) => {

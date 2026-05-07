@@ -5,8 +5,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Save, RefreshCw, Loader2, CheckCircle, AlertCircle, Link2, ExternalLink } from "lucide-react";
+import { PRODUCTION_SOURCE_SYSTEM } from "@/services/inventoryService";
 
 const ML_APP_ID = "5758280675014902";
+const supabaseAny = supabase as any;
 
 const AdminSettings = () => {
   const { toast } = useToast();
@@ -23,8 +25,10 @@ const AdminSettings = () => {
   const [syncing, setSyncing] = useState(false);
   const [mlStatus, setMlStatus] = useState<any>(null);
   const [mlLoading, setMlLoading] = useState(false);
+  const [productionStatus, setProductionStatus] = useState<any>(null);
 
   const redirectUri = `${window.location.origin}/admin/configuracoes`;
+  const productionEndpoint = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/production-sync`;
 
   // Handle ML OAuth callback
   useEffect(() => {
@@ -101,6 +105,14 @@ const AdminSettings = () => {
       }
     });
     checkMlStatus();
+    supabaseAny
+      .from("integration_logs")
+      .select("status, source_reference, error_message, processed_at, created_at")
+      .eq("source_system", PRODUCTION_SOURCE_SYSTEM)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }: any) => setProductionStatus(data || null));
   }, []);
 
   const handleSave = async () => {
@@ -150,6 +162,41 @@ const AdminSettings = () => {
   return (
     <AdminLayout title="Configurações">
       <div className="max-w-2xl space-y-6">
+        <div className="bg-card rounded-xl border border-border p-6">
+          <h2 className="font-display text-lg font-bold text-foreground uppercase tracking-wider mb-4">Integracao da Producao</h2>
+          <div className="space-y-3 text-sm font-body">
+            <p className="text-muted-foreground">
+              Origem monitorada: <span className="text-foreground font-medium">{PRODUCTION_SOURCE_SYSTEM}</span>
+            </p>
+            <p className="text-muted-foreground break-all">
+              Endpoint de recebimento: <span className="text-foreground font-medium">{productionEndpoint}</span>
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Proteja a chamada com o secret <code>PRODUCTION_SYNC_TOKEN</code> nas Edge Functions. Cada envio deve incluir codigo do produto, SKU, quantidade, etapa final, operador, timestamp e referencia de origem.
+            </p>
+            <div className="rounded-lg bg-muted/50 p-4">
+              <p className="text-xs text-muted-foreground font-body">
+                Ultimo evento:
+                <span className="text-foreground font-medium"> {productionStatus ? formatDate(productionStatus.created_at) : " nenhum recebido ainda"}</span>
+              </p>
+              <p className="text-xs text-muted-foreground font-body mt-1">
+                Status:
+                <span className="text-foreground font-medium"> {productionStatus?.status || "aguardando"}</span>
+              </p>
+              <p className="text-xs text-muted-foreground font-body mt-1">
+                Referencia:
+                <span className="text-foreground font-medium"> {productionStatus?.source_reference || "-"}</span>
+              </p>
+              {productionStatus?.error_message && (
+                <p className="text-xs font-body text-destructive mt-2">{productionStatus.error_message}</p>
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Regra operacional ativa: depois da sincronizacao da etapa final, o admin passa a ser a fonte de verdade do estoque disponivel para venda.
+            </p>
+          </div>
+        </div>
+
         {/* General Settings */}
         <div className="bg-card rounded-xl border border-border p-6">
           <h2 className="font-display text-lg font-bold text-foreground uppercase tracking-wider mb-6">Configurações Gerais</h2>

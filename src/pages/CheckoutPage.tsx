@@ -9,6 +9,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { formatCurrency } from "@/lib/tracking";
+import { processOrderInventory } from "@/services/inventoryService";
 
 interface CustomerData {
   name: string; email: string; phone: string; cpf_cnpj: string;
@@ -229,7 +230,7 @@ const CheckoutPage = () => {
           billing_address: address as any,
           customer_notes: customerNotes || null,
           coupon_id: couponApplied?.id || null,
-          sales_channel: "retail",
+          sales_channel: "website",
         })
         .select("id, order_number")
         .single();
@@ -256,31 +257,8 @@ const CheckoutPage = () => {
         status: "pending",
       });
 
-      // 7. Decrement stock & register inventory movements
-      for (const item of items) {
-        const { data: product } = await supabase
-          .from("products")
-          .select("stock")
-          .eq("id", item.id)
-          .single();
-        const previousStock = product?.stock || 0;
-        const newStock = previousStock - item.quantity;
-
-        await supabase
-          .from("products")
-          .update({ stock: newStock })
-          .eq("id", item.id);
-
-        await supabase.from("inventory_movements").insert({
-          product_id: item.id,
-          type: "exit" as const,
-          quantity: item.quantity,
-          previous_stock: previousStock,
-          new_stock: newStock,
-          order_id: order.id,
-          reason: `Venda - Pedido #${order.order_number}`,
-        });
-      }
+      // 7. Commit inventory through the shared audit-safe flow
+      await processOrderInventory(order.id);
 
       // 8. Increment coupon used_count
       if (couponApplied) {
