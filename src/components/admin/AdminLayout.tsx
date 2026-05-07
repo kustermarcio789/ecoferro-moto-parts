@@ -2,7 +2,8 @@ import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, Package, ShoppingBag, Users, Tag, FileText,
   BarChart3, Settings, LogOut, Menu, X, MessageSquare, Star,
-  Megaphone, Boxes, HandCoins, TrendingUp, UserCheck, Store, ShoppingCart
+  Megaphone, Boxes, HandCoins, TrendingUp, UserCheck, Store, ShoppingCart,
+  ArrowUpDown, Link2, Activity
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -21,8 +22,11 @@ const adminNav = [
   { label: "Cupons", href: "/admin/cupons", icon: Tag },
   { label: "Banners", href: "/admin/banners", icon: Megaphone },
   { label: "Estoque", href: "/admin/estoque", icon: Boxes },
+  { label: "Movimentacoes", href: "/admin/movimentacoes", icon: ArrowUpDown },
+  { label: "Integracoes", href: "/admin/integracoes", icon: Link2 },
   { label: "Parceiros", href: "/admin/parceiros", icon: HandCoins },
   { label: "Atacado", href: "/admin/atacado", icon: Store },
+  { label: "Produção B2B", href: "/admin/producao", icon: Activity },
   { label: "Carrinhos", href: "/admin/carrinhos-abandonados", icon: ShoppingCart },
   { label: "Relatórios", href: "/admin/relatorios", icon: BarChart3 },
   { label: "Configurações", href: "/admin/configuracoes", icon: Settings },

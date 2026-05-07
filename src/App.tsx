@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CartProvider } from "@/contexts/CartContext";
+import { WholesaleCartProvider } from "@/contexts/WholesaleCartContext";
 import { AuthProvider } from "@/hooks/useAuth";
 import WhatsAppButton from "@/components/store/WhatsAppButton";
 import CartDrawer from "@/components/store/CartDrawer";
@@ -23,6 +24,10 @@ import ContactPage from "./pages/ContactPage";
 import LoginPage from "./pages/LoginPage";
 import PolicyPage from "./pages/PolicyPage";
 import WholesalePage from "./pages/WholesalePage";
+import WholesaleDashboard from "./pages/wholesale/WholesaleDashboard";
+import WholesaleCatalog from "./pages/wholesale/WholesaleCatalog";
+import WholesaleOrders from "./pages/wholesale/WholesaleOrders";
+import WholesaleOrderDetail from "./pages/wholesale/WholesaleOrderDetail";
 import NotFound from "./pages/NotFound";
 
 // Admin
@@ -43,6 +48,9 @@ import AdminReviews from "./pages/admin/AdminReviews";
 import AdminAbandonedCarts from "./pages/admin/AdminAbandonedCarts";
 import AdminBrands from "./pages/admin/AdminBrands";
 import AdminCategories from "./pages/admin/AdminCategories";
+import AdminMovements from "./pages/admin/AdminMovements";
+import AdminIntegrations from "./pages/admin/AdminIntegrations";
+import AdminProduction from "./pages/admin/AdminProduction";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +59,7 @@ const App = () => (
     <TooltipProvider>
       <AuthProvider>
         <CartProvider>
+          <WholesaleCartProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -70,6 +79,10 @@ const App = () => (
               <Route path="/contato" element={<ContactPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/atacado" element={<WholesalePage />} />
+              <Route path="/atacado/painel" element={<WholesaleDashboard />} />
+              <Route path="/atacado/catalogo" element={<WholesaleCatalog />} />
+              <Route path="/atacado/pedidos" element={<WholesaleOrders />} />
+              <Route path="/atacado/pedidos/:id" element={<WholesaleOrderDetail />} />
               <Route path="/:slug" element={<PolicyPage />} />
 
               {/* Admin (Protected) */}
@@ -80,8 +93,11 @@ const App = () => (
               <Route path="/admin/leads" element={<ProtectedRoute><AdminLeads /></ProtectedRoute>} />
               <Route path="/admin/orcamentos" element={<ProtectedRoute><AdminQuotes /></ProtectedRoute>} />
               <Route path="/admin/estoque" element={<ProtectedRoute><AdminInventory /></ProtectedRoute>} />
+              <Route path="/admin/movimentacoes" element={<ProtectedRoute><AdminMovements /></ProtectedRoute>} />
+              <Route path="/admin/integracoes" element={<ProtectedRoute><AdminIntegrations /></ProtectedRoute>} />
               <Route path="/admin/parceiros" element={<ProtectedRoute><AdminPartners /></ProtectedRoute>} />
               <Route path="/admin/atacado" element={<ProtectedRoute><AdminWholesale /></ProtectedRoute>} />
+              <Route path="/admin/producao" element={<ProtectedRoute><AdminProduction /></ProtectedRoute>} />
               <Route path="/admin/relatorios" element={<ProtectedRoute><AdminReports /></ProtectedRoute>} />
               <Route path="/admin/configuracoes" element={<ProtectedRoute><AdminSettings /></ProtectedRoute>} />
               <Route path="/admin/cupons" element={<ProtectedRoute><AdminCoupons /></ProtectedRoute>} />
@@ -95,6 +111,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
+          </WholesaleCartProvider>
         </CartProvider>
       </AuthProvider>
     </TooltipProvider>
