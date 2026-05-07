@@ -69,16 +69,38 @@ embutidas):
 
 ### Fluxo de uso
 
-1. Atacadista preenche cadastro em `/atacado` (status `pending`).
-2. Atacadista cria conta com mesmo e-mail (trigger vincula automaticamente).
-3. Admin aprova em `/admin/atacado` (status `approved`).
-4. Atacadista entra em `/atacado/painel`, navega ao catálogo, monta pedido com prazo
+1. Atacadista preenche cadastro em `/atacado` (status `pending`). O CNPJ informado
+   será o login dele depois.
+2. Admin abre `/admin/atacado`, clica em **"Aprovar e gerar acesso"**. A Edge Function
+   `wholesale-approve` cria o usuário em `auth.users`, gera senha provisória e marca
+   `status='approved'`. O admin vê uma modal com **CNPJ + senha provisória** já formatada
+   em mensagem do WhatsApp para copiar/enviar ao cliente. (Pode reenviar nova senha a
+   qualquer momento usando o botão "Nova senha".)
+3. Atacadista entra em `/atacado/login` informando **CNPJ ou e-mail** + senha.
+   Quando o input parece um CNPJ, o frontend chama o RPC
+   `get_wholesale_email_by_cnpj` para resolver o e-mail e então autentica.
+4. No portal `/atacado/painel`, ele navega ao catálogo, monta pedido com prazo
    desejado e clica "Solicitar Pedido". O RPC `create_wholesale_order` cria o pedido
    com `sales_channel='wholesale'` e semeia as 9 etapas de produção com datas previstas.
 5. Time admin abre `/admin/producao`, escolhe o pedido e ajusta % de cada etapa
    (slider, datas, operador, observações). O `overall_progress_percentage` e o
    `estimated_delivery_at` são recalculados automaticamente.
 6. Atacadista vê a evolução em `/atacado/pedidos/:id` em tempo real.
+
+### Edge Function: wholesale-approve
+
+Aprovação do atacadista (gera credenciais). Deploy:
+
+```sh
+supabase functions deploy wholesale-approve
+```
+
+Variáveis de ambiente esperadas (já injetadas pelo Supabase):
+`SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`.
+
+A senha provisória é retornada apenas no JSON da resposta — não é persistida em texto
+plano. O admin copia da modal e envia ao cliente. Para gerar nova senha, basta clicar
+"Nova senha" na lista (chama a função com `action: "resend_password"`).
 
 ### Integração com `controle.ecoferro.com.br`
 

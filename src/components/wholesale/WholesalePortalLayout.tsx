@@ -36,7 +36,7 @@ const WholesalePortalLayout = ({ children }: { children: React.ReactNode }) => {
     );
   }
   if (!user) {
-    return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} replace />;
+    return <Navigate to={`/atacado/login?redirect=${encodeURIComponent(location.pathname)}`} replace />;
   }
   if (!wholesaleCustomer) {
     return (

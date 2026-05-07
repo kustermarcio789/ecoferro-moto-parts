@@ -24,6 +24,7 @@ import ContactPage from "./pages/ContactPage";
 import LoginPage from "./pages/LoginPage";
 import PolicyPage from "./pages/PolicyPage";
 import WholesalePage from "./pages/WholesalePage";
+import WholesaleLogin from "./pages/wholesale/WholesaleLogin";
 import WholesaleDashboard from "./pages/wholesale/WholesaleDashboard";
 import WholesaleCatalog from "./pages/wholesale/WholesaleCatalog";
 import WholesaleOrders from "./pages/wholesale/WholesaleOrders";
@@ -79,6 +80,7 @@ const App = () => (
               <Route path="/contato" element={<ContactPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/atacado" element={<WholesalePage />} />
+              <Route path="/atacado/login" element={<WholesaleLogin />} />
               <Route path="/atacado/painel" element={<WholesaleDashboard />} />
               <Route path="/atacado/catalogo" element={<WholesaleCatalog />} />
               <Route path="/atacado/pedidos" element={<WholesaleOrders />} />
