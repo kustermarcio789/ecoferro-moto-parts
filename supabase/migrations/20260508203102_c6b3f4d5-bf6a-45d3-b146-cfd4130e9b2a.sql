@@ -1,0 +1,1 @@
+ALTER TABLE public.product_images ADD CONSTRAINT product_images_product_id_url_key UNIQUE (product_id, url);
