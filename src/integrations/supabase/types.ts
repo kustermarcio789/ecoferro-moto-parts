@@ -344,6 +344,13 @@ export type Database = {
             referencedRelation: "orders"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "commissions_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_orders_summary"
+            referencedColumns: ["id"]
+          },
         ]
       }
       consents: {
@@ -466,52 +473,224 @@ export type Database = {
         }
         Relationships: []
       }
+      integration_logs: {
+        Row: {
+          attempts: number
+          created_at: string
+          destination_system: string
+          direction: string
+          error_message: string | null
+          event_type: string
+          external_event_id: string | null
+          id: string
+          integration_key: string
+          operator_name: string | null
+          processed_at: string | null
+          product_code: string | null
+          product_id: string | null
+          product_mapping_id: string | null
+          quantity: number | null
+          request_payload: Json
+          response_payload: Json | null
+          sku: string | null
+          source_reference: string | null
+          source_system: string
+          stage: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          destination_system?: string
+          direction?: string
+          error_message?: string | null
+          event_type: string
+          external_event_id?: string | null
+          id?: string
+          integration_key: string
+          operator_name?: string | null
+          processed_at?: string | null
+          product_code?: string | null
+          product_id?: string | null
+          product_mapping_id?: string | null
+          quantity?: number | null
+          request_payload?: Json
+          response_payload?: Json | null
+          sku?: string | null
+          source_reference?: string | null
+          source_system: string
+          stage?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          destination_system?: string
+          direction?: string
+          error_message?: string | null
+          event_type?: string
+          external_event_id?: string | null
+          id?: string
+          integration_key?: string
+          operator_name?: string | null
+          processed_at?: string | null
+          product_code?: string | null
+          product_id?: string | null
+          product_mapping_id?: string | null
+          quantity?: number | null
+          request_payload?: Json
+          response_payload?: Json | null
+          sku?: string | null
+          source_reference?: string | null
+          source_system?: string
+          stage?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_logs_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "integration_logs_product_mapping_id_fkey"
+            columns: ["product_mapping_id"]
+            isOneToOne: false
+            referencedRelation: "product_external_mappings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventory_balances: {
+        Row: {
+          available_quantity: number
+          created_at: string
+          damaged_quantity: number
+          last_movement_at: string | null
+          low_stock_threshold: number
+          product_id: string
+          reserved_quantity: number
+          updated_at: string
+        }
+        Insert: {
+          available_quantity?: number
+          created_at?: string
+          damaged_quantity?: number
+          last_movement_at?: string | null
+          low_stock_threshold?: number
+          product_id: string
+          reserved_quantity?: number
+          updated_at?: string
+        }
+        Update: {
+          available_quantity?: number
+          created_at?: string
+          damaged_quantity?: number
+          last_movement_at?: string | null
+          low_stock_threshold?: number
+          product_id?: string
+          reserved_quantity?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_balances_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: true
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inventory_movements: {
         Row: {
+          channel: string | null
           created_at: string
           created_by: string | null
+          external_event_id: string | null
           id: string
+          integration_log_id: string | null
+          metadata: Json
+          new_reserved: number | null
           new_stock: number | null
           order_id: string | null
+          previous_reserved: number | null
           previous_stock: number | null
           product_id: string
           quantity: number
           reason: string | null
+          source_reference: string | null
+          source_system: string | null
           type: Database["public"]["Enums"]["inventory_movement_type"]
           variation_id: string | null
         }
         Insert: {
+          channel?: string | null
           created_at?: string
           created_by?: string | null
+          external_event_id?: string | null
           id?: string
+          integration_log_id?: string | null
+          metadata?: Json
+          new_reserved?: number | null
           new_stock?: number | null
           order_id?: string | null
+          previous_reserved?: number | null
           previous_stock?: number | null
           product_id: string
           quantity: number
           reason?: string | null
+          source_reference?: string | null
+          source_system?: string | null
           type: Database["public"]["Enums"]["inventory_movement_type"]
           variation_id?: string | null
         }
         Update: {
+          channel?: string | null
           created_at?: string
           created_by?: string | null
+          external_event_id?: string | null
           id?: string
+          integration_log_id?: string | null
+          metadata?: Json
+          new_reserved?: number | null
           new_stock?: number | null
           order_id?: string | null
+          previous_reserved?: number | null
           previous_stock?: number | null
           product_id?: string
           quantity?: number
           reason?: string | null
+          source_reference?: string | null
+          source_system?: string | null
           type?: Database["public"]["Enums"]["inventory_movement_type"]
           variation_id?: string | null
         }
         Relationships: [
           {
+            foreignKeyName: "inventory_movements_integration_log_id_fkey"
+            columns: ["integration_log_id"]
+            isOneToOne: false
+            referencedRelation: "integration_logs"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "inventory_movements_order_id_fkey"
             columns: ["order_id"]
             isOneToOne: false
             referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_movements_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_orders_summary"
             referencedColumns: ["id"]
           },
           {
@@ -710,6 +889,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_orders_summary"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "order_items_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
@@ -725,8 +911,82 @@ export type Database = {
           },
         ]
       }
+      order_production_progress: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          expected_completion_at: string | null
+          expected_start_at: string | null
+          id: string
+          metadata: Json
+          notes: string | null
+          operator_name: string | null
+          order_id: string
+          percentage: number
+          stage_id: string
+          started_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          expected_completion_at?: string | null
+          expected_start_at?: string | null
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          operator_name?: string | null
+          order_id: string
+          percentage?: number
+          stage_id: string
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          expected_completion_at?: string | null
+          expected_start_at?: string | null
+          id?: string
+          metadata?: Json
+          notes?: string | null
+          operator_name?: string | null
+          order_id?: string
+          percentage?: number
+          stage_id?: string
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_production_progress_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_production_progress_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_orders_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_production_progress_stage_id_fkey"
+            columns: ["stage_id"]
+            isOneToOne: false
+            referencedRelation: "production_stages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
+          atacadista_notes: string | null
           billing_address: Json | null
           cancelled_at: string | null
           coupon_id: string | null
@@ -735,17 +995,21 @@ export type Database = {
           customer_notes: string | null
           delivered_at: string | null
           discount: number | null
+          estimated_delivery_at: string | null
           id: string
           internal_notes: string | null
           invoice_key: string | null
           invoice_number: string | null
           invoiced_at: string | null
           order_number: number
+          overall_progress_percentage: number
           paid_at: string | null
           partner_id: string | null
           payment_id: string | null
           payment_method: string | null
           payment_status: Database["public"]["Enums"]["payment_status"] | null
+          production_started_at: string | null
+          requested_delivery_date: string | null
           sales_channel: string | null
           shipped_at: string | null
           shipping_address: Json | null
@@ -756,8 +1020,10 @@ export type Database = {
           total: number
           tracking_code: string | null
           updated_at: string
+          wholesale_customer_id: string | null
         }
         Insert: {
+          atacadista_notes?: string | null
           billing_address?: Json | null
           cancelled_at?: string | null
           coupon_id?: string | null
@@ -766,17 +1032,21 @@ export type Database = {
           customer_notes?: string | null
           delivered_at?: string | null
           discount?: number | null
+          estimated_delivery_at?: string | null
           id?: string
           internal_notes?: string | null
           invoice_key?: string | null
           invoice_number?: string | null
           invoiced_at?: string | null
           order_number?: number
+          overall_progress_percentage?: number
           paid_at?: string | null
           partner_id?: string | null
           payment_id?: string | null
           payment_method?: string | null
           payment_status?: Database["public"]["Enums"]["payment_status"] | null
+          production_started_at?: string | null
+          requested_delivery_date?: string | null
           sales_channel?: string | null
           shipped_at?: string | null
           shipping_address?: Json | null
@@ -787,8 +1057,10 @@ export type Database = {
           total?: number
           tracking_code?: string | null
           updated_at?: string
+          wholesale_customer_id?: string | null
         }
         Update: {
+          atacadista_notes?: string | null
           billing_address?: Json | null
           cancelled_at?: string | null
           coupon_id?: string | null
@@ -797,17 +1069,21 @@ export type Database = {
           customer_notes?: string | null
           delivered_at?: string | null
           discount?: number | null
+          estimated_delivery_at?: string | null
           id?: string
           internal_notes?: string | null
           invoice_key?: string | null
           invoice_number?: string | null
           invoiced_at?: string | null
           order_number?: number
+          overall_progress_percentage?: number
           paid_at?: string | null
           partner_id?: string | null
           payment_id?: string | null
           payment_method?: string | null
           payment_status?: Database["public"]["Enums"]["payment_status"] | null
+          production_started_at?: string | null
+          requested_delivery_date?: string | null
           sales_channel?: string | null
           shipped_at?: string | null
           shipping_address?: Json | null
@@ -818,6 +1094,7 @@ export type Database = {
           total?: number
           tracking_code?: string | null
           updated_at?: string
+          wholesale_customer_id?: string | null
         }
         Relationships: [
           {
@@ -832,6 +1109,13 @@ export type Database = {
             columns: ["partner_id"]
             isOneToOne: false
             referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_wholesale_customer_id_fkey"
+            columns: ["wholesale_customer_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_customers"
             referencedColumns: ["id"]
           },
         ]
@@ -997,6 +1281,13 @@ export type Database = {
             referencedRelation: "orders"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "payments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_orders_summary"
+            referencedColumns: ["id"]
+          },
         ]
       }
       price_tables: {
@@ -1061,6 +1352,53 @@ export type Database = {
           },
           {
             foreignKeyName: "product_applications_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_external_mappings: {
+        Row: {
+          created_at: string
+          external_code: string | null
+          external_product_id: string | null
+          external_sku: string | null
+          id: string
+          is_active: boolean
+          metadata: Json
+          product_id: string
+          source_system: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          external_code?: string | null
+          external_product_id?: string | null
+          external_sku?: string | null
+          id?: string
+          is_active?: boolean
+          metadata?: Json
+          product_id: string
+          source_system: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          external_code?: string | null
+          external_product_id?: string | null
+          external_sku?: string | null
+          id?: string
+          is_active?: boolean
+          metadata?: Json
+          product_id?: string
+          source_system?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_external_mappings_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
@@ -1144,6 +1482,48 @@ export type Database = {
           },
         ]
       }
+      production_stages: {
+        Row: {
+          code: string
+          color: string | null
+          created_at: string
+          default_duration_days: number
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          sort_order: number
+          updated_at: string
+          weight_percentage: number
+        }
+        Insert: {
+          code: string
+          color?: string | null
+          created_at?: string
+          default_duration_days?: number
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          sort_order?: number
+          updated_at?: string
+          weight_percentage?: number
+        }
+        Update: {
+          code?: string
+          color?: string | null
+          created_at?: string
+          default_duration_days?: number
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          sort_order?: number
+          updated_at?: string
+          weight_percentage?: number
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           brand_id: string | null
@@ -1156,6 +1536,7 @@ export type Database = {
           height: number | null
           icms_rate: number | null
           id: string
+          internal_code: string | null
           ipi_rate: number | null
           is_active: boolean | null
           is_featured: boolean | null
@@ -1194,6 +1575,7 @@ export type Database = {
           height?: number | null
           icms_rate?: number | null
           id?: string
+          internal_code?: string | null
           ipi_rate?: number | null
           is_active?: boolean | null
           is_featured?: boolean | null
@@ -1232,6 +1614,7 @@ export type Database = {
           height?: number | null
           icms_rate?: number | null
           id?: string
+          internal_code?: string | null
           ipi_rate?: number | null
           is_active?: boolean | null
           is_featured?: boolean | null
@@ -1364,6 +1747,13 @@ export type Database = {
             columns: ["converted_order_id"]
             isOneToOne: false
             referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_converted_order_id_fkey"
+            columns: ["converted_order_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_orders_summary"
             referencedColumns: ["id"]
           },
         ]
@@ -1527,6 +1917,8 @@ export type Database = {
       }
       wholesale_customers: {
         Row: {
+          access_credentials_delivery: string | null
+          access_credentials_sent_at: string | null
           approved_at: string | null
           approved_by: string | null
           city: string | null
@@ -1552,6 +1944,8 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          access_credentials_delivery?: string | null
+          access_credentials_sent_at?: string | null
           approved_at?: string | null
           approved_by?: string | null
           city?: string | null
@@ -1577,6 +1971,8 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          access_credentials_delivery?: string | null
+          access_credentials_sent_at?: string | null
           approved_at?: string | null
           approved_by?: string | null
           city?: string | null
@@ -1613,15 +2009,68 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      wholesale_orders_summary: {
+        Row: {
+          cnpj: string | null
+          created_at: string | null
+          estimated_delivery_at: string | null
+          id: string | null
+          order_number: number | null
+          overall_progress_percentage: number | null
+          payment_status: Database["public"]["Enums"]["payment_status"] | null
+          production_started_at: string | null
+          razao_social: string | null
+          requested_delivery_date: string | null
+          sales_channel: string | null
+          status: Database["public"]["Enums"]["order_status"] | null
+          subtotal: number | null
+          total: number | null
+          wholesale_customer_id: string | null
+          wholesale_user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_wholesale_customer_id_fkey"
+            columns: ["wholesale_customer_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
+      advance_order_stage_by_code: {
+        Args: { p_operator?: string; p_order_id: string; p_stage_code: string }
+        Returns: boolean
+      }
+      create_wholesale_order: {
+        Args: {
+          p_atacadista_notes?: string
+          p_items: Json
+          p_requested_delivery_date?: string
+        }
+        Returns: Json
+      }
+      get_wholesale_email_by_cnpj: { Args: { p_cnpj: string }; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      link_wholesale_to_current_user: {
+        Args: { p_email: string }
+        Returns: string
+      }
+      recalculate_order_progress: {
+        Args: { p_order_id: string }
+        Returns: number
+      }
+      seed_order_production_progress: {
+        Args: { p_order_id: string; p_start_at?: string }
+        Returns: number
       }
     }
     Enums: {
@@ -1632,6 +2081,12 @@ export type Database = {
         | "adjustment"
         | "reservation"
         | "return"
+        | "entry_from_production"
+        | "sale"
+        | "manual_adjustment"
+        | "damaged_loss"
+        | "cancellation_reversal"
+        | "release_reservation"
       lead_source:
         | "newsletter"
         | "contact_form"
@@ -1789,6 +2244,12 @@ export const Constants = {
         "adjustment",
         "reservation",
         "return",
+        "entry_from_production",
+        "sale",
+        "manual_adjustment",
+        "damaged_loss",
+        "cancellation_reversal",
+        "release_reservation",
       ],
       lead_source: [
         "newsletter",
