@@ -1,0 +1,4333 @@
+[
+  {
+    "internal_code": "H001",
+    "name": "Sup. ARTICULADO Hornet, CBR 600F 12/17, CB 1000R 10/17",
+    "long_description": "Sup. ARTICULADO Hornet, CBR 600F 12/17, CB 1000R 10/17 - p/ Setas Universais – Honda",
+    "brand": "HONDA",
+    "wholesale_price": 60.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "87141000",
+    "row_index": 2,
+    "image_files": [
+      "10000000000001C8000001BC.jpg"
+    ]
+  },
+  {
+    "internal_code": "H002",
+    "name": "Sup. FIXO Hornet, CB CBR 600F (2012 a 2016), CB 1000R (2010 a 2018)",
+    "long_description": "Sup. FIXO Hornet, CB CBR 600F (2012 a 2016), CB 1000R (2010 a 2018) - Uso das Peças Originais - Honda",
+    "brand": "HONDA",
+    "wholesale_price": 50.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 3,
+    "image_files": [
+      "100000000000009000000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "H003",
+    "name": "Sup. ARTICULADO Hornet, CBR 600F, CB 1000R, 2010 a 2014",
+    "long_description": "Sup. ARTICULADO Hornet, CBR 600F, CB 1000R, 2010 a 2014  - Peças Originais – Honda",
+    "brand": "HONDA",
+    "wholesale_price": 66.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 4,
+    "image_files": [
+      "100000000000008D00000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "H004",
+    "name": "Sup. ARTICULADO CBR 1000rr FireBlade",
+    "long_description": "Sup. ARTICULADO CBR 1000rr FireBlade - Honda (2010 a 2016)  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "HONDA",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 5,
+    "image_files": [
+      "10000000000000ED000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H005",
+    "name": "Sup. ARTICULADO CB e CBR 650F",
+    "long_description": "Sup. ARTICULADO CB e CBR 650F - Honda - p/ Setas Universais + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "HONDA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 6,
+    "image_files": [
+      "100000000000027C00000291.jpg"
+    ]
+  },
+  {
+    "internal_code": "H006",
+    "name": "Sup. ARTICULADO CB e CBR 650F p/ Setas ORIGINAIS.",
+    "long_description": "Sup. ARTICULADO CB e CBR 650F p/ Setas ORIGINAIS. - Honda  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "HONDA",
+    "wholesale_price": 68.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 7,
+    "image_files": [
+      "1000000000000228000001B9.jpg"
+    ]
+  },
+  {
+    "internal_code": "H007",
+    "name": "Sup. FIXO CB e CBR 650F",
+    "long_description": "Sup. FIXO CB e CBR 650F - Honda - uso peças originais",
+    "brand": "HONDA",
+    "wholesale_price": 58.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 8,
+    "image_files": [
+      "10000000000001CE000001E3.jpg"
+    ]
+  },
+  {
+    "internal_code": "H008",
+    "name": "Sup. FIXO NC 700",
+    "long_description": "Sup. FIXO NC 700 - Honda - p/ peças originais  2013-2015 - Lant. LED",
+    "brand": "HONDA",
+    "wholesale_price": 98.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 9,
+    "image_files": [
+      "100000000000014D0000016E.jpg"
+    ]
+  },
+  {
+    "internal_code": "H009",
+    "name": "Sup. ARTICULADO CB e CBR 500 2017 em diante",
+    "long_description": "Sup. ARTICULADO CB e CBR 500 2017 em diante - Honda – p/ Setas UNIVERSAIS   + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "HONDA",
+    "wholesale_price": 66.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 10,
+    "image_files": [
+      "100000000000017D00000141.jpg"
+    ]
+  },
+  {
+    "internal_code": "H010",
+    "name": "Sup. ARTICULADO CB e CBR 500 2017 em diante p/ Setas ORIGINAIS.",
+    "long_description": "Sup. ARTICULADO CB e CBR 500 2017 em diante p/ Setas ORIGINAIS. - Honda  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "HONDA",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 11,
+    "image_files": [
+      "1000000000000300000002A9.jpg"
+    ]
+  },
+  {
+    "internal_code": "H011",
+    "name": "Suporte De Placa Tornado E Bros 2004 A 2008 Honda",
+    "long_description": "Suporte De Placa Tornado E Bros 2004 A 2008 Honda - Lant. LED",
+    "brand": "HONDA",
+    "wholesale_price": 99.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 12,
+    "image_files": [
+      "10000000000001E8000001B6.jpg"
+    ]
+  },
+  {
+    "internal_code": "H012",
+    "name": "Suporte Placa FIXO  CB e CBR 500 2017 diante Peças Orig.",
+    "long_description": "Suporte Placa FIXO  CB e CBR 500 2017 diante Peças Orig. - Honda",
+    "brand": "HONDA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 13,
+    "image_files": [
+      "10000000000000A5000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H013",
+    "name": "Sup. ARTICULADO. Hornet (2012 a 2016), CBR 600F (2011 a 2016), CB 1000R (2010 a 2018)",
+    "long_description": "Sup. ARTICULADO. Hornet (2012 a 2016), CBR 600F (2011 a 2016), CB 1000R (2010 a 2018) - Honda - P/ Setas Originais + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "HONDA",
+    "wholesale_price": 68.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 14,
+    "image_files": [
+      "100000000000027000000255.jpg"
+    ]
+  },
+  {
+    "internal_code": "H014",
+    "name": "Sup. FIXO XRE 300 Lant. LEDs – Honda – 2009 a 2018",
+    "long_description": "Sup. FIXO XRE 300 Lant. LEDs – Honda – 2009 a 2018",
+    "brand": "HONDA",
+    "wholesale_price": 99.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 15,
+    "image_files": [
+      "10000000000000F0000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H015",
+    "name": "Sup. FIXO CBR 600rr",
+    "long_description": "Sup. FIXO CBR 600rr - 2008 a 2012 - Honda (lanterna Vermelha",
+    "brand": "HONDA",
+    "wholesale_price": 99.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 16,
+    "image_files": [
+      "10000000000000EA000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H016",
+    "name": "Sup.  Placa ART. CBR 250r + Luz de Placa LED e Sup Olho Gato",
+    "long_description": "Sup.  Placa ART. CBR 250r + Luz de Placa LED e Sup Olho Gato",
+    "brand": "HONDA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 17,
+    "image_files": [
+      "100000000000042800000403.jpg"
+    ]
+  },
+  {
+    "internal_code": "H017",
+    "name": "Sup. Placa Eliminador Rabeta Cbr 600rr 2008 a 2012 Lant Retangular",
+    "long_description": "Sup. Placa Eliminador Rabeta Cbr 600rr 2008 a 2012 Lant Retangular",
+    "brand": "HONDA",
+    "wholesale_price": 99.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 18,
+    "image_files": [
+      "10000000000001E600000171.jpg"
+    ]
+  },
+  {
+    "internal_code": "H018",
+    "name": "Sup. Placa Art. Universal para Setas Originais Honda 2005 a 2007 (adaptação)",
+    "long_description": "Sup. Placa Art. Universal para Setas Originais Honda 2005 a 2007 (adaptação)",
+    "brand": "HONDA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 19,
+    "image_files": [
+      "1000000000000108000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H019",
+    "name": "Sup. De Placa FIXO Honda Nx Falcon 400 Lanterna LEDs  Ecoferro",
+    "long_description": "Sup. De Placa FIXO Honda Nx Falcon 400 Lanterna LEDs  Ecoferro",
+    "brand": "HONDA",
+    "wholesale_price": 99.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 20,
+    "image_files": [
+      "10000000000000EA000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H020",
+    "name": "Suporte De Placa Tornado E Bros 2004 A 2008 Honda",
+    "long_description": "Suporte De Placa Tornado E Bros 2004 A 2008 Honda - SEM Lant. LEDs",
+    "brand": "HONDA",
+    "wholesale_price": 75.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 21,
+    "image_files": []
+  },
+  {
+    "internal_code": "H021",
+    "name": "Sup. Placa FIXO CB 650R + Luz Placa LED p/ Setas Originais 2019 a 2021",
+    "long_description": "Sup. Placa FIXO CB 650R + Luz Placa LED p/ Setas Originais 2019 a 2021",
+    "brand": "HONDA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 22,
+    "image_files": [
+      "100000000000008A00000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "H022",
+    "name": "Sup. Placa FIXO Honda CB 1000r Cb1000 2019 Diante (Neo Sports Café) p/ Setas Originais 2019 diante ( Luz Placa LED + Sup Olho Gato c/ Reflet",
+    "long_description": "Sup. Placa FIXO Honda CB 1000r Cb1000 2019 Diante (Neo Sports Café) p/ Setas Originais 2019 diante ( Luz Placa LED + Sup Olho Gato c/ Refletivo)",
+    "brand": "HONDA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 23,
+    "image_files": [
+      "10000000000000C30000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "H023",
+    "name": "Sup. Placa ARTICULADO Twister 2016 a 2022",
+    "long_description": "Sup. Placa ARTICULADO Twister 2016 a 2022 - p/ Setas Universais",
+    "brand": "HONDA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 24,
+    "image_files": [
+      "10000000000000DB000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H024",
+    "name": "Sup. Placa ARTICULADO Twister 250F",
+    "long_description": "Sup. Placa ARTICULADO Twister 250F - 2016 a 2022 - p/ Setas ORIGINAIS",
+    "brand": "HONDA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 25,
+    "image_files": [
+      "10000000000004F50000049F.png"
+    ]
+  },
+  {
+    "internal_code": "H025",
+    "name": "Sup. Placa FIXO Twister 250F",
+    "long_description": "Sup. Placa FIXO Twister 250F - 2016 a 2022 - p/ Setas ORIGINAIS",
+    "brand": "HONDA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 26,
+    "image_files": [
+      "100000000000009300000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "H026",
+    "name": "Sup. Placa FIXO Hornet + Luz Placa + Sup Olho Gato",
+    "long_description": "Sup. Placa FIXO Hornet + Luz Placa + Sup Olho Gato - Setas Univ.",
+    "brand": "HONDA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 27,
+    "image_files": [
+      "100000000000009600000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "H027",
+    "name": "Sup. Placa FIXO Hornet + Luz Placa LED + Sup Olho Gato",
+    "long_description": "Sup. Placa FIXO Hornet + Luz Placa LED + Sup Olho Gato - Setas ORIGINAIS",
+    "brand": "HONDA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 28,
+    "image_files": [
+      "10000000000000A200000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "H028",
+    "name": "Protetor Radiador CB 650F 2014 a 2019 – Linhas",
+    "long_description": "Protetor Radiador CB 650F 2014 a 2019 – Linhas",
+    "brand": "HONDA",
+    "wholesale_price": 48.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 29,
+    "image_files": [
+      "10000000000003B1000002EB.jpg"
+    ]
+  },
+  {
+    "internal_code": "H029",
+    "name": "Sup. Placa FIXO Alongado CB 650F p/ Peças Originais",
+    "long_description": "Sup. Placa FIXO Alongado CB 650F p/ Peças Originais",
+    "brand": "HONDA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 30,
+    "image_files": [
+      "10000000000000EA000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H031",
+    "name": "Adaptadores p/ 02 Setas Universais Honda- Twister",
+    "long_description": "Adaptadores p/ 02 Setas Universais Honda- Twister - FAN 150/160 e Titan 150/160",
+    "brand": "HONDA",
+    "wholesale_price": 10.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 32,
+    "image_files": [
+      "10000000000000BA000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H032",
+    "name": "Sup. ARTICULADO CBR 600rr",
+    "long_description": "Sup. ARTICULADO CBR 600rr - 2008 a 2012 - Honda (lente Vermelha)",
+    "brand": "HONDA",
+    "wholesale_price": 105.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 33,
+    "image_files": [
+      "10000000000000AE000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H033",
+    "name": "Sup. Placa ARTICULADO Twister 250F – 2016 a 2023 – p/ Setas Originais e Setas Universais",
+    "long_description": "Sup. Placa ARTICULADO Twister 250F – 2016 a 2023 – p/ Setas Originais e Setas Universais",
+    "brand": "HONDA",
+    "wholesale_price": 90.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 34,
+    "image_files": [
+      "10000000000000C0000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H034",
+    "name": "Sup. FIXO NC 750",
+    "long_description": "Sup. FIXO NC 750 - Honda – 2017 diante, par de Parafuso Luz de Placa LEDs, p/ Setas Originais e Universais",
+    "brand": "HONDA",
+    "wholesale_price": 75.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 35,
+    "image_files": [
+      "100000000000015200000150.jpg"
+    ]
+  },
+  {
+    "internal_code": "H035",
+    "name": "Sup. FIXO NC 750",
+    "long_description": "Sup. FIXO NC 750 - Honda - p/ Peças Originais  2016 diante",
+    "brand": "HONDA",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 36,
+    "image_files": [
+      "10000000000000A8000000B1.jpg",
+      "100025630000042200000422.svg",
+      "100000010000002C0000002C.png"
+    ]
+  },
+  {
+    "internal_code": "H036",
+    "name": "Suporte para Setas Originais HONDA: CBR600F 2010-2015 – Hornet, CB600F 2012-2015 – CB100R 2010-2018 –  CB e CBR 650F todas",
+    "long_description": "Suporte para Setas Originais HONDA: CBR600F 2010-2015 – Hornet, CB600F 2012-2015 – CB100R 2010-2018 –  CB e CBR 650F todas",
+    "brand": "HONDA",
+    "wholesale_price": 15.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 37,
+    "image_files": []
+  },
+  {
+    "internal_code": "H037",
+    "name": "Suporte  para Setas Originais – CB e CBR 650r – CB1000r Neo Sport Café  –  CB 1000rr 2017 a 2025",
+    "long_description": "Suporte  para Setas Originais – CB e CBR 650r – CB1000r Neo Sport Café  –  CB 1000rr 2017 a 2025",
+    "brand": "HONDA",
+    "wholesale_price": 15.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 38,
+    "image_files": []
+  },
+  {
+    "internal_code": "H038",
+    "name": "Sup. Placa ARTICULADO Honda Cbr 1000rr 2003 2004 2005 2006 2007",
+    "long_description": "Sup. Placa ARTICULADO Honda Cbr 1000rr 2003 2004 2005 2006 2007",
+    "brand": "HONDA",
+    "wholesale_price": 72.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 39,
+    "image_files": [
+      "100000000000017700000171.jpg"
+    ]
+  },
+  {
+    "internal_code": "H039",
+    "name": "Suporte Para Setas Originais Honda Twister 2016 a 2023",
+    "long_description": "Suporte Para Setas Originais Honda Twister 2016 a 2023",
+    "brand": "HONDA",
+    "wholesale_price": 18.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 40,
+    "image_files": [
+      "10000000000000E1000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H040",
+    "name": "Sup. Placa FIXO Twister 250F 2016 a 2023 – p/ Setas Originais e Setas Universais",
+    "long_description": "Sup. Placa FIXO Twister 250F 2016 a 2023 – p/ Setas Originais e Setas Universais",
+    "brand": "HONDA",
+    "wholesale_price": 90.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 41,
+    "image_files": [
+      "10000000000001A000000183.jpg"
+    ]
+  },
+  {
+    "internal_code": "H041",
+    "name": "Suporte Placa ARTICULADO Tornado E Bros 2004 A 2008 Honda",
+    "long_description": "Suporte Placa ARTICULADO Tornado E Bros 2004 A 2008 Honda - Lant. LED",
+    "brand": "HONDA",
+    "wholesale_price": 105.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 42,
+    "image_files": [
+      "1000000000000333000002E2.jpg"
+    ]
+  },
+  {
+    "internal_code": "H042",
+    "name": "Sup. Placa FIXO Honda NXR 160 e 150 BROS 2009 a 2014",
+    "long_description": "Sup. Placa FIXO Honda NXR 160 e 150 BROS 2009 a 2014 - Lant. LED",
+    "brand": "HONDA",
+    "wholesale_price": 120.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 43,
+    "image_files": [
+      "10000000000000CC000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H043",
+    "name": "Sup. Placa FIXO Honda NXR 160 e 150 BROS 2015 a 2023",
+    "long_description": "Sup. Placa FIXO Honda NXR 160 e 150 BROS 2015 a 2023 - Lant. LED",
+    "brand": "HONDA",
+    "wholesale_price": 15.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 44,
+    "image_files": [
+      "10000000000000CC000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H044",
+    "name": "Protetor De Radiador Honda Cb 1000r Cb1000r 2019 Diante (Neo Sports Café)",
+    "long_description": "Protetor De Radiador Honda Cb 1000r Cb1000r 2019 Diante (Neo Sports Café)",
+    "brand": "HONDA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 45,
+    "image_files": [
+      "10000000000000AA0000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "H045",
+    "name": "Protetor De Radiador Honda Cb CBR 650R – Telado",
+    "long_description": "Protetor De Radiador Honda Cb CBR 650R – Telado",
+    "brand": "HONDA",
+    "wholesale_price": 70.0,
+    "weight_kg": 0.42,
+    "measures": "330x270x35",
+    "ncm": "",
+    "row_index": 46,
+    "image_files": [
+      "1000000000000DD000000A94.png"
+    ]
+  },
+  {
+    "internal_code": "H046",
+    "name": "Protetor De Radiador Honda Cb CBR 650F – sem nome – Telado",
+    "long_description": "Protetor De Radiador Honda Cb CBR 650F – sem nome – Telado",
+    "brand": "HONDA",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 47,
+    "image_files": [
+      "10000000000000D5000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H047",
+    "name": "Sup. Placa Art. Honda CBR 1000rr Fireblade SP",
+    "long_description": "Sup. Placa Art. Honda CBR 1000rr Fireblade SP - 2017 a 2021  (completo Luz de Placa e Suporte Olho de Gato com Refletivo)",
+    "brand": "HONDA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 48,
+    "image_files": [
+      "100000000000008100000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "H048",
+    "name": "Sup. Placa FIXO Hornet (2012 a 2016)",
+    "long_description": "Sup. Placa FIXO Hornet (2012 a 2016) - CBR 600F (2010 a 2016) - CB 1000R (2010 a 2018) + Luz Placa + Sup Olho Gato – Setas ORIGINAIS e UNIVERSAIS",
+    "brand": "HONDA",
+    "wholesale_price": 68.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 49,
+    "image_files": [
+      "10000000000002D00000022B.jpg"
+    ]
+  },
+  {
+    "internal_code": "H049",
+    "name": "Protetor De Radiador Honda Hornet – 2008-2014",
+    "long_description": "Protetor De Radiador Honda Hornet – 2008-2014",
+    "brand": "HONDA",
+    "wholesale_price": 48.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 50,
+    "image_files": [
+      "100000000000021F000001AD.jpg"
+    ]
+  },
+  {
+    "internal_code": "H050",
+    "name": "Suporte Base Articulado para Setas Originais -Twister Honda",
+    "long_description": "Suporte Base Articulado para Setas Originais -Twister Honda",
+    "brand": "HONDA",
+    "wholesale_price": 15.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 51,
+    "image_files": [
+      "10000000000000D20000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "H051",
+    "name": "Suporte De Placa FIXO Tornado E Bros 2004 A 2008 Honda",
+    "long_description": "Suporte De Placa FIXO Tornado E Bros 2004 A 2008 Honda - Lant. LED INTEGRADA",
+    "brand": "HONDA",
+    "wholesale_price": 105.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 52,
+    "image_files": [
+      "100000000000007E00000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "H052",
+    "name": "Sup. Placa ARTICULADO Honda CB 1000r Cb1000 2019 Diante (Neo Sports Café) p/ Setas Originais 2019 diante ( Luz Placa LED + Sup Olho Gato c/ ",
+    "long_description": "Sup. Placa ARTICULADO Honda CB 1000r Cb1000 2019 Diante (Neo Sports Café) p/ Setas Originais 2019 diante ( Luz Placa LED + Sup Olho Gato c/ Refletivo)",
+    "brand": "HONDA",
+    "wholesale_price": 85.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 53,
+    "image_files": []
+  },
+  {
+    "internal_code": "H053",
+    "name": "Sup. Placa ARTICULADO CB 650R + Luz Placa LED p/ Setas Originais",
+    "long_description": "Sup. Placa ARTICULADO CB 650R + Luz Placa LED p/ Setas Originais",
+    "brand": "HONDA",
+    "wholesale_price": 85.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 54,
+    "image_files": [
+      "100000000000026A0000023A.jpg"
+    ]
+  },
+  {
+    "internal_code": "H054",
+    "name": "Sup. Placa FIXO CB e CBR 650R – 2022 + Luz Placa LED p/ Setas Originais",
+    "long_description": "Sup. Placa FIXO CB e CBR 650R – 2022 + Luz Placa LED p/ Setas Originais",
+    "brand": "HONDA",
+    "wholesale_price": 90.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 55,
+    "image_files": [
+      "10000000000002BB000002C4.jpg"
+    ]
+  },
+  {
+    "internal_code": "H055",
+    "name": "Protetor Radiador CB CBR 500 – 2017 a 2026 – Linhas",
+    "long_description": "Protetor Radiador CB CBR 500 – 2017 a 2026 – Linhas",
+    "brand": "HONDA",
+    "wholesale_price": 42.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 56,
+    "image_files": [
+      "10000000000004660000036A.png"
+    ]
+  },
+  {
+    "internal_code": "H056",
+    "name": "Protetor de Radiador Hornet 2004 a 2007 – Hexagono",
+    "long_description": "Protetor de Radiador Hornet 2004 a 2007 – Hexagono",
+    "brand": "HONDA",
+    "wholesale_price": 48.0,
+    "weight_kg": 0.52,
+    "measures": "421x180x36",
+    "ncm": "",
+    "row_index": 57,
+    "image_files": [
+      "100000000000030C0000021C.jpg"
+    ]
+  },
+  {
+    "internal_code": "H057",
+    "name": "Protetor de Carter XRE 300",
+    "long_description": "Protetor de Carter XRE 300  - 2009 a 2023",
+    "brand": "HONDA",
+    "wholesale_price": 48.0,
+    "weight_kg": 0.8,
+    "measures": "290x260x70",
+    "ncm": "",
+    "row_index": 58,
+    "image_files": [
+      "100000000000011700000198.jpg"
+    ]
+  },
+  {
+    "internal_code": "H058",
+    "name": "Protetor de Farol XRE 300 2009 a 2018",
+    "long_description": "Protetor de Farol XRE 300 2009 a 2018",
+    "brand": "HONDA",
+    "wholesale_price": 45.0,
+    "weight_kg": 0.2,
+    "measures": "260x220x100",
+    "ncm": "",
+    "row_index": 59,
+    "image_files": [
+      "10000000000000E1000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H059",
+    "name": "Sup. Placa ARTICULADO CB e CBR 650R",
+    "long_description": "Sup. Placa ARTICULADO CB e CBR 650R - 2022 + Luz Placa LED p/ Setas Originais",
+    "brand": "HONDA",
+    "wholesale_price": 95.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 60,
+    "image_files": [
+      "10000000000002130000022B.jpg"
+    ]
+  },
+  {
+    "internal_code": "H060",
+    "name": "Sup. Placa FIXO ADV 150 – 2020 e ADV 160 2025 p/ Setas Originais",
+    "long_description": "Sup. Placa FIXO ADV 150 – 2020 e ADV 160 2025 p/ Setas Originais",
+    "brand": "HONDA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 61,
+    "image_files": [
+      "100000000000021F000001F2.jpg"
+    ]
+  },
+  {
+    "internal_code": "H061",
+    "name": "Sup. Placa ARTICULADO ADV 150+ 2020 e ADV 160+ 2024  p/ Setas Originais + Par de Luz de Placa LEDs",
+    "long_description": "Sup. Placa ARTICULADO ADV 150+ 2020 e ADV 160+ 2024  p/ Setas Originais + Par de Luz de Placa LEDs",
+    "brand": "HONDA",
+    "wholesale_price": 90.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 62,
+    "image_files": [
+      "1000000000000318000002D6.jpg"
+    ]
+  },
+  {
+    "internal_code": "H062",
+    "name": "Slider PP – XRE 300 – 2009 a 2018",
+    "long_description": "Slider PP – XRE 300 – 2009 a 2018",
+    "brand": "HONDA",
+    "wholesale_price": 75.0,
+    "weight_kg": 1.4,
+    "measures": "180x270x90 Desmontado",
+    "ncm": "8714",
+    "row_index": 63,
+    "image_files": [
+      "100000000000028200000168.jpg"
+    ]
+  },
+  {
+    "internal_code": "H063",
+    "name": "Slider PP –  CB 650F e CB 650R – Todas",
+    "long_description": "Slider PP –  CB 650F e CB 650R – Todas",
+    "brand": "HONDA",
+    "wholesale_price": 75.0,
+    "weight_kg": null,
+    "measures": "110x110x80",
+    "ncm": "8714",
+    "row_index": 64,
+    "image_files": [
+      "1000000000000105000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H064",
+    "name": "Protetor De Radiador Honda CB e CBR 650R – Linhas – Todos os anos",
+    "long_description": "Protetor De Radiador Honda CB e CBR 650R – Linhas – Todos os anos",
+    "brand": "HONDA",
+    "wholesale_price": 59.0,
+    "weight_kg": 0.38,
+    "measures": "340x270x50",
+    "ncm": "",
+    "row_index": 65,
+    "image_files": [
+      "100000000000018C0000013B.jpg"
+    ]
+  },
+  {
+    "internal_code": "H065",
+    "name": "Suporte de Placa ARTICULADO Honda Cb 300F Twister 2023+ para Setas Originais",
+    "long_description": "Suporte de Placa ARTICULADO Honda Cb 300F Twister 2023+ para Setas Originais",
+    "brand": "HONDA",
+    "wholesale_price": 85.0,
+    "weight_kg": 0.57,
+    "measures": "170x120x70",
+    "ncm": "",
+    "row_index": 66,
+    "image_files": [
+      "10000000000000C0000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H066",
+    "name": "Suporte de Placa ARTICULADO Honda Cb 300F Twister 2023+ para Setas Originais e Universais",
+    "long_description": "Suporte de Placa ARTICULADO Honda Cb 300F Twister 2023+ para Setas Originais e Universais",
+    "brand": "HONDA",
+    "wholesale_price": 95.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 67,
+    "image_files": []
+  },
+  {
+    "internal_code": "H067",
+    "name": "Suporte de Placa FIXO Honda Cb 300F Twister 2023+ para Peças Originais",
+    "long_description": "Suporte de Placa FIXO Honda Cb 300F Twister 2023+ para Peças Originais",
+    "brand": "HONDA",
+    "wholesale_price": 75.0,
+    "weight_kg": 0.58,
+    "measures": "170x230x80",
+    "ncm": "",
+    "row_index": 68,
+    "image_files": [
+      "10000000000000A8000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H068",
+    "name": "Protetor de Radiador Honda Cb 300F Twister 2023+",
+    "long_description": "Protetor de Radiador Honda Cb 300F Twister 2023+",
+    "brand": "HONDA",
+    "wholesale_price": 40.0,
+    "weight_kg": 0.16,
+    "measures": "260x140x30",
+    "ncm": "",
+    "row_index": 69,
+    "image_files": [
+      "100000000000010B000000AA.jpg"
+    ]
+  },
+  {
+    "internal_code": "H069",
+    "name": "Slider PP Honda:  Cb 300F Twister 2023+ //// CB 250 Twister 2016+",
+    "long_description": "Slider PP Honda:  Cb 300F Twister 2023+ //// CB 250 Twister 2016+",
+    "brand": "HONDA",
+    "wholesale_price": 75.0,
+    "weight_kg": 1.1,
+    "measures": "140x180x70",
+    "ncm": "8714",
+    "row_index": 70,
+    "image_files": [
+      "1000000000000105000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H070",
+    "name": "Slider ALUMÍNIO Honda Cb 300F Twister 2023+",
+    "long_description": "Slider ALUMÍNIO Honda Cb 300F Twister 2023+",
+    "brand": "HONDA",
+    "wholesale_price": 160.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 71,
+    "image_files": []
+  },
+  {
+    "internal_code": "H071",
+    "name": "Slider de Escapamento Honda Cb 300F Twister 2023+",
+    "long_description": "Slider de Escapamento Honda Cb 300F Twister 2023+",
+    "brand": "HONDA",
+    "wholesale_price": 45.0,
+    "weight_kg": 0.2,
+    "measures": "50xx50x170",
+    "ncm": "8714",
+    "row_index": 72,
+    "image_files": [
+      "10000000000000E1000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H072",
+    "name": "Suporte p/ Bau Honda Twister 250 2016",
+    "long_description": "Suporte p/ Bau Honda Twister 250 2016",
+    "brand": "HONDA",
+    "wholesale_price": 78.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 73,
+    "image_files": [
+      "10000000000000C9000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H073",
+    "name": "Slider PP Honda Cb 500 2017 a 2024",
+    "long_description": "Slider PP Honda Cb 500 2017 a 2024",
+    "brand": "HONDA",
+    "wholesale_price": 75.0,
+    "weight_kg": 0.65,
+    "measures": "120x190x6",
+    "ncm": "8714",
+    "row_index": 74,
+    "image_files": [
+      "100000000000010B000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H074",
+    "name": "Protetor De Radiador Honda Hornet – 2008 a 2014 e CBR 600F 2010 a 2014 –        SEM NOME",
+    "long_description": "Protetor De Radiador Honda Hornet – 2008 a 2014 e CBR 600F 2010 a 2014 –        SEM NOME",
+    "brand": "HONDA",
+    "wholesale_price": 48.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 75,
+    "image_files": [
+      "10000000000000D8000000B1.png",
+      "10000000000000E1000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "H075",
+    "name": "Slider de Escapamento Honda CB CBR 500 – 2014 a 2024 (Modelo160mm)",
+    "long_description": "Slider de Escapamento Honda CB CBR 500 – 2014 a 2024 (Modelo160mm)",
+    "brand": "HONDA",
+    "wholesale_price": 45.0,
+    "weight_kg": 0.2,
+    "measures": "50xx50x160",
+    "ncm": "8714",
+    "row_index": 76,
+    "image_files": []
+  },
+  {
+    "internal_code": "H076",
+    "name": "Slider PP – CB 1000r – 2010 a 2018",
+    "long_description": "Slider PP – CB 1000r – 2010 a 2018",
+    "brand": "HONDA",
+    "wholesale_price": 75.0,
+    "weight_kg": 0.6,
+    "measures": "",
+    "ncm": "8715",
+    "row_index": 77,
+    "image_files": [
+      "100000000000056A00000340.png"
+    ]
+  },
+  {
+    "internal_code": "H077",
+    "name": "Slider PP – CB 300R – 2010 a 2016 e CBX 250 Twister  2001 a 2008.",
+    "long_description": "Slider PP – CB 300R – 2010 a 2016 e CBX 250 Twister  2001 a 2008.",
+    "brand": "HONDA",
+    "wholesale_price": 70.0,
+    "weight_kg": 1.9,
+    "measures": "",
+    "ncm": "8716",
+    "row_index": 78,
+    "image_files": [
+      "100000000000010800000099.png"
+    ]
+  },
+  {
+    "internal_code": "H078",
+    "name": "Slider de Balança PP – CB300F 2023+",
+    "long_description": "Slider de Balança PP – CB300F 2023+",
+    "brand": "HONDA",
+    "wholesale_price": 45.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 79,
+    "image_files": [
+      "10000000000000D8000000A5.png"
+    ]
+  },
+  {
+    "internal_code": "H079",
+    "name": "Slider PP – CG 160 Start  – CG 160 Fan – CG 160 Titan – 2014 a 2026",
+    "long_description": "Slider PP – CG 160 Start  – CG 160 Fan – CG 160 Titan – 2014 a 2026",
+    "brand": "HONDA",
+    "wholesale_price": 70.0,
+    "weight_kg": 0.15,
+    "measures": "40x110x90",
+    "ncm": "8716",
+    "row_index": 80,
+    "image_files": [
+      "1000000000000108000000AA.png"
+    ]
+  },
+  {
+    "internal_code": "H080",
+    "name": "Slider PP – SAHARA 300 e Tornado 300 2025",
+    "long_description": "Slider PP – SAHARA 300 e Tornado 300 2025",
+    "brand": "HONDA",
+    "wholesale_price": 75.0,
+    "weight_kg": 1.6,
+    "measures": "AxLxC =  100x190x190",
+    "ncm": "8716",
+    "row_index": 81,
+    "image_files": [
+      "100000000000010800000093.png"
+    ]
+  },
+  {
+    "internal_code": "H081",
+    "name": "Suporte Placa ARTICULADO XRE 300 2019+ e SAHARA",
+    "long_description": "Suporte Placa ARTICULADO XRE 300 2019+ e SAHARA",
+    "brand": "HONDA",
+    "wholesale_price": 0.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 82,
+    "image_files": [
+      "1000000000000AC000000A31.png"
+    ]
+  },
+  {
+    "internal_code": "H082",
+    "name": "Suporte Placa FIXO XRE 300 2019+ e SAHARA",
+    "long_description": "Suporte Placa FIXO XRE 300 2019+ e SAHARA",
+    "brand": "HONDA",
+    "wholesale_price": 0.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 83,
+    "image_files": []
+  },
+  {
+    "internal_code": "H083",
+    "name": "Protetor de Radiador Honda Cb 300F Twister 2023 – TELADO",
+    "long_description": "Protetor de Radiador Honda Cb 300F Twister 2023 – TELADO",
+    "brand": "HONDA",
+    "wholesale_price": 55.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 84,
+    "image_files": [
+      "100000000000011A00000099.png"
+    ]
+  },
+  {
+    "internal_code": "H084",
+    "name": "Protetor de Radiador Honda Cb 500  2013 a 2016 e CB 500X todas (TELADO)",
+    "long_description": "Protetor de Radiador Honda Cb 500  2013 a 2016 e CB 500X todas (TELADO)",
+    "brand": "HONDA",
+    "wholesale_price": 55.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 85,
+    "image_files": [
+      "1000000000000123000000EA.png"
+    ]
+  },
+  {
+    "internal_code": "H085",
+    "name": "Protetor de Radiador Honda Cb 500 2017 a 2026 (Telado)",
+    "long_description": "Protetor de Radiador Honda Cb 500 2017 a 2026 (Telado)",
+    "brand": "HONDA",
+    "wholesale_price": 55.0,
+    "weight_kg": 0.28,
+    "measures": "260x210x45",
+    "ncm": "",
+    "row_index": 86,
+    "image_files": [
+      "100000000000011D000000E1.png"
+    ]
+  },
+  {
+    "internal_code": "H086",
+    "name": "Slider de Escapamento Honda – CB 300R – 2010 a 2016 e CBX 250 Twister  2001 a 2008 (Modelo 180 mm) e CB Twister 250F anos 2016 a 2022",
+    "long_description": "Slider de Escapamento Honda – CB 300R – 2010 a 2016 e CBX 250 Twister  2001 a 2008 (Modelo 180 mm) e CB Twister 250F anos 2016 a 2022",
+    "brand": "HONDA",
+    "wholesale_price": 45.0,
+    "weight_kg": 0.55,
+    "measures": "45x200",
+    "ncm": "8714",
+    "row_index": 87,
+    "image_files": [
+      "100000000000093600000619.png"
+    ]
+  },
+  {
+    "internal_code": "H087",
+    "name": "Protetor de Radiador Honda NC750",
+    "long_description": "Protetor de Radiador Honda NC750",
+    "brand": "HONDA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 88,
+    "image_files": [
+      "1000000000000144000000D5.png"
+    ]
+  },
+  {
+    "internal_code": "H088",
+    "name": "Protetor de Radiador Honda CB 300R – Linhas",
+    "long_description": "Protetor de Radiador Honda CB 300R – Linhas",
+    "brand": "HONDA",
+    "wholesale_price": 35.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 89,
+    "image_files": [
+      "1000000000000144000000C3.png"
+    ]
+  },
+  {
+    "internal_code": "H089",
+    "name": "Suporte Placa ARTICULADO – Africa Twin 1100 – 2020 a 2025",
+    "long_description": "Suporte Placa ARTICULADO – Africa Twin 1100 – 2020 a 2025",
+    "brand": "HONDA",
+    "wholesale_price": 75.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 90,
+    "image_files": []
+  },
+  {
+    "internal_code": "H090",
+    "name": "Suporte Placa FIXO – Africa Twin 1100 – 2019 a 2026",
+    "long_description": "Suporte Placa FIXO – Africa Twin 1100 – 2019 a 2026",
+    "brand": "HONDA",
+    "wholesale_price": 75.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 91,
+    "image_files": []
+  },
+  {
+    "internal_code": "H091",
+    "name": "Slider de Escapamento Honda – Africa Twin 1100 – 2019 a 2026",
+    "long_description": "Slider de Escapamento Honda – Africa Twin 1100 – 2019 a 2026",
+    "brand": "HONDA",
+    "wholesale_price": 45.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 92,
+    "image_files": []
+  },
+  {
+    "internal_code": "H092",
+    "name": "Slider Protetor PP – Bros Tornado 2009 a 2026",
+    "long_description": "Slider Protetor PP – Bros Tornado 2009 a 2026",
+    "brand": "HONDA",
+    "wholesale_price": 95.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 93,
+    "image_files": [
+      "100000000000011A000000C0.png"
+    ]
+  },
+  {
+    "internal_code": "YA001",
+    "name": "Suporte Placa Articulado Yamaha XTZ 250 Lander X Motard  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa Articulado Yamaha XTZ 250 Lander X Motard  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 97,
+    "image_files": [
+      "10000000000000B4000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA002",
+    "name": "Suporte de Placa ART. Yamaha Xj6 N, Xj6 F p/ Setas UNIVERSAIS  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte de Placa ART. Yamaha Xj6 N, Xj6 F p/ Setas UNIVERSAIS  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 98,
+    "image_files": [
+      "100000000000021600000213.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA003",
+    "name": "Suporte de Placa Articulado Yamaha Xj6 N, Xj6 F (2010 a 2019) p/ Setas Originais  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte de Placa Articulado Yamaha Xj6 N, Xj6 F (2010 a 2019) p/ Setas Originais  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 99,
+    "image_files": [
+      "10000000000001EF000001B6.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA004",
+    "name": "Suporte de Placa Articulado R1 (2006 a 2016) Setas UNIVERSAIS  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte de Placa Articulado R1 (2006 a 2016) Setas UNIVERSAIS  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 100,
+    "image_files": [
+      "10000000000000A8000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA005",
+    "name": "Suporte de Placa Articulado Yamaha MT-07 p/ Piscas UNIVERSAIS  + Luz de Placa LED + Haste c/ Refletivo – Anos 2014 a 2025",
+    "long_description": "Suporte de Placa Articulado Yamaha MT-07 p/ Piscas UNIVERSAIS  + Luz de Placa LED + Haste c/ Refletivo – Anos 2014 a 2025",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 101,
+    "image_files": [
+      "10000000000001EB000001CB.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA006",
+    "name": "Suporte de Placa Articulado Yamaha MT-07",
+    "long_description": "Suporte de Placa Articulado Yamaha MT-07 - p/ Setas Orig.  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 68.0,
+    "weight_kg": 0.53,
+    "measures": "170x110x75",
+    "ncm": "",
+    "row_index": 102,
+    "image_files": [
+      "10000000000001F8000001BC.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA007",
+    "name": "Suporte de Placa Articulado R1 (2006 a 2016) p/ Setas ORIGINAIS  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte de Placa Articulado R1 (2006 a 2016) p/ Setas ORIGINAIS  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 103,
+    "image_files": [
+      "10000000000000D2000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA008",
+    "name": "Suporte de Placa Articulado Yamaha MT-09",
+    "long_description": "Suporte de Placa Articulado Yamaha MT-09 - p/ Setas UNIVERSAIS (até 2019) + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 104,
+    "image_files": [
+      "1000000000000219000001F5.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA009",
+    "name": "Suporte de Placa Articulado Yamaha MT-09",
+    "long_description": "Suporte de Placa Articulado Yamaha MT-09 - p/ Setas Originais (até 2019) + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 105,
+    "image_files": [
+      "10000000000000C9000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA010",
+    "name": "Suporte Placa FIXO Yamaha MT-07",
+    "long_description": "Suporte Placa FIXO Yamaha MT-07 - Peças Originais",
+    "brand": "YAMAHA",
+    "wholesale_price": 55.0,
+    "weight_kg": 0.52,
+    "measures": "220x175x80",
+    "ncm": "",
+    "row_index": 106,
+    "image_files": [
+      "100000000000007800000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA011",
+    "name": "Suporte Placa FIXO Yamaha MT 09",
+    "long_description": "Suporte Placa FIXO Yamaha MT 09 - 2014 a 2018 - Peças Originais",
+    "brand": "YAMAHA",
+    "wholesale_price": 55.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 107,
+    "image_files": [
+      "10000000000001A000000180.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA012",
+    "name": "Sup. Placa FIXO Yamaha Xtz 125 (todas)",
+    "long_description": "Sup. Placa FIXO Yamaha Xtz 125 (todas) - Lander 250 2007 - 2018,  e Teneré (2010 - 2014) Lanterna LEDs VERMELHA",
+    "brand": "YAMAHA",
+    "wholesale_price": 99.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 108,
+    "image_files": [
+      "10000000000005C700000696.png"
+    ]
+  },
+  {
+    "internal_code": "YA013",
+    "name": "Suporte de Placa Art. Yamaha MT-03 e R3",
+    "long_description": "Suporte de Placa Art. Yamaha MT-03 e R3 - Setas universais",
+    "brand": "YAMAHA",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 109,
+    "image_files": [
+      "10000000000000D5000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA014",
+    "name": "Suporte de Placa ARTICUALADO Yamaha MT-03 e R3",
+    "long_description": "Suporte de Placa ARTICUALADO Yamaha MT-03 e R3 - p/ Setas Orig.  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 70.0,
+    "weight_kg": 0.66,
+    "measures": "150x175x70",
+    "ncm": "",
+    "row_index": 110,
+    "image_files": [
+      "1000000000000258000001B0.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA015",
+    "name": "Suporte Placa FIXO Yamaha Xj6 N, Xj6 F (2010 a 2019)",
+    "long_description": "Suporte Placa FIXO Yamaha Xj6 N, Xj6 F (2010 a 2019) - Peças Originais",
+    "brand": "YAMAHA",
+    "wholesale_price": 50.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 111,
+    "image_files": [
+      "100000000000007800000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA016",
+    "name": "Suporte para Setas Originais Yamaha",
+    "long_description": "Suporte para Setas Originais Yamaha",
+    "brand": "YAMAHA",
+    "wholesale_price": 14.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 112,
+    "image_files": [
+      "10000000000000AE00000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA017",
+    "name": "Sup. Placa ARTICULADO Yamaha Fazer 250 e FZ25  2018 diante",
+    "long_description": "Sup. Placa ARTICULADO Yamaha Fazer 250 e FZ25  2018 diante - p/ Setas Universais  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 113,
+    "image_files": [
+      "1000000000000CDE00000CD9.png"
+    ]
+  },
+  {
+    "internal_code": "YA018",
+    "name": "Sup. Placa ARTICULADO Yamaha Fazer 250 e FZ25 2018 diante – p/ uso Setas Originais",
+    "long_description": "Sup. Placa ARTICULADO Yamaha Fazer 250 e FZ25 2018 diante – p/ uso Setas Originais",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 114,
+    "image_files": [
+      "1000000000000D0A00000CF1.png"
+    ]
+  },
+  {
+    "internal_code": "YA019",
+    "name": "Sup. Placa ARTICULADO Yamaha XT600 Lant. Leds",
+    "long_description": "Sup. Placa ARTICULADO Yamaha XT600 Lant. Leds",
+    "brand": "YAMAHA",
+    "wholesale_price": 105.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 115,
+    "image_files": [
+      "100000000000005100000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA020",
+    "name": "Sup. Placa FIXO Yamaha XT660 Lant. Leds",
+    "long_description": "Sup. Placa FIXO Yamaha XT660 Lant. Leds",
+    "brand": "YAMAHA",
+    "wholesale_price": 99.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 116,
+    "image_files": [
+      "100000000000008400000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA021",
+    "name": "Sup. Placa Articulado Yamaha Fazer 250 até 2017",
+    "long_description": "Sup. Placa Articulado Yamaha Fazer 250 até 2017 - p/  uso Setas Originais  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 64.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 117,
+    "image_files": []
+  },
+  {
+    "internal_code": "YA022",
+    "name": "Sup. Placa FIXO Yamaha MT-03 e R3 2015 diante",
+    "long_description": "Sup. Placa FIXO Yamaha MT-03 e R3 2015 diante - p/ Setas Universais  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 62.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 118,
+    "image_files": [
+      "10000000000001A00000019B.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA023",
+    "name": "Sup. Placa FIXO Yamaha Xtz 125 (todas)",
+    "long_description": "Sup. Placa FIXO Yamaha Xtz 125 (todas) - Lander 250 2007 - 2018,  e Teneré (2010 - 2014) Lanterna LEDs CRISTAL",
+    "brand": "YAMAHA",
+    "wholesale_price": 98.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 119,
+    "image_files": [
+      "100000000000051400000529.png"
+    ]
+  },
+  {
+    "internal_code": "YA024",
+    "name": "Sup. Placa FIXO Yamaha Xtz 125 (todas)",
+    "long_description": "Sup. Placa FIXO Yamaha Xtz 125 (todas) - Lander 250 2007 - 2018,  e Teneré (2010 - 2014) Lanterna LEDs FUMÊ",
+    "brand": "YAMAHA",
+    "wholesale_price": 98.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 120,
+    "image_files": [
+      "1000000000000C3B00000BE0.png"
+    ]
+  },
+  {
+    "internal_code": "YA025",
+    "name": "Sup. Placa FIXO Yamaha XT660",
+    "long_description": "Sup. Placa FIXO Yamaha XT660 - SEM Lant. Leds",
+    "brand": "YAMAHA",
+    "wholesale_price": 75.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 121,
+    "image_files": []
+  },
+  {
+    "internal_code": "YA026",
+    "name": "Sup. Placa FIXO Yamaha Fazer 250 2018 diante",
+    "long_description": "Sup. Placa FIXO Yamaha Fazer 250 2018 diante - p/ Setas Originais + Luz Placa + Sup. Olho de Gato (sem refletivo)",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 122,
+    "image_files": [
+      "100000000000009C00000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA027",
+    "name": "Sup. Placa FIXO Yamaha MT-03 e R3 2015 diante",
+    "long_description": "Sup. Placa FIXO Yamaha MT-03 e R3 2015 diante - p/ Setas Originais + Luz Placa + Sup. Olho de Gato (sem refletivo)",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 123,
+    "image_files": [
+      "10000000000000F3000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA028",
+    "name": "Sup. Placa FIXO Yamaha Lander Teneré 2015 diante",
+    "long_description": "Sup. Placa FIXO Yamaha Lander Teneré 2015 diante - SEM Lant. Leds",
+    "brand": "YAMAHA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 124,
+    "image_files": []
+  },
+  {
+    "internal_code": "YA029",
+    "name": "Aberto – antigo Lander 250 fixo – lant fumê",
+    "long_description": "Aberto – antigo Lander 250 fixo – lant fumê",
+    "brand": "YAMAHA",
+    "wholesale_price": 98.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 125,
+    "image_files": []
+  },
+  {
+    "internal_code": "YA030",
+    "name": "Bolha ParaBrisa Capa Painel Yamaha MT 07",
+    "long_description": "Bolha ParaBrisa Capa Painel Yamaha MT 07 - 2014 a 2018",
+    "brand": "YAMAHA",
+    "wholesale_price": 45.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 126,
+    "image_files": [
+      "100000000000006600000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA031",
+    "name": "Sup. Placa FIXO Yamaha Fz25 Fazer 250 2018 diante",
+    "long_description": "Sup. Placa FIXO Yamaha Fz25 Fazer 250 2018 diante - p/ Peças Originais",
+    "brand": "YAMAHA",
+    "wholesale_price": 50.0,
+    "weight_kg": 0.46,
+    "measures": "170x210x80",
+    "ncm": "",
+    "row_index": 127,
+    "image_files": [
+      "10000000000000BA000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA032",
+    "name": "Protetor Radiador MT 07",
+    "long_description": "Protetor Radiador MT 07 - Yamaha – 2014 a 2022",
+    "brand": "YAMAHA",
+    "wholesale_price": 0.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 128,
+    "image_files": []
+  },
+  {
+    "internal_code": "YA033",
+    "name": "Sup. Placa FIXO Yamaha Nova Lander 250 p/ Setas Orig. 2019 diante",
+    "long_description": "Sup. Placa FIXO Yamaha Nova Lander 250 p/ Setas Orig. 2019 diante",
+    "brand": "YAMAHA",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 129,
+    "image_files": [
+      "100000000000043A000003BC.jpg",
+      "100024F70000042200000422.svg",
+      "100000010000002C0000002C.png"
+    ]
+  },
+  {
+    "internal_code": "YA034",
+    "name": "Sup. Placa FIXO Yamaha Fazer 250 2018 diante",
+    "long_description": "Sup. Placa FIXO Yamaha Fazer 250 2018 diante - p/ Setas Universais + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 130,
+    "image_files": [
+      "10000000000000EA000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA035",
+    "name": "Sup. Placa ART. Yamaha Teneré 2015 a 2019 diante",
+    "long_description": "Sup. Placa ART. Yamaha Teneré 2015 a 2019 diante - Lant. Leds Eco",
+    "brand": "YAMAHA",
+    "wholesale_price": 105.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 131,
+    "image_files": []
+  },
+  {
+    "internal_code": "YA036",
+    "name": "Espaçador p/ Setas Originais Yamaha – Oring  Øint 26,64 x esp 2,62",
+    "long_description": "Espaçador p/ Setas Originais Yamaha – Oring  Øint 26,64 x esp 2,62",
+    "brand": "YAMAHA",
+    "wholesale_price": 5.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 132,
+    "image_files": [
+      "10000000000000A200000084.jpg",
+      "10000000000000A200000084.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA037",
+    "name": "Sup. Placa FIXO Yamaha XT660 Lant. Leds Lanterna Red Fumê",
+    "long_description": "Sup. Placa FIXO Yamaha XT660 Lant. Leds Lanterna Red Fumê",
+    "brand": "YAMAHA",
+    "wholesale_price": 98.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 133,
+    "image_files": [
+      "10000000000000C6000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA038",
+    "name": "Bolha ParaBrisa Capa Painel Yamaha MT 07",
+    "long_description": "Bolha ParaBrisa Capa Painel Yamaha MT 07 - 2019 diante",
+    "brand": "YAMAHA",
+    "wholesale_price": 40.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 134,
+    "image_files": [
+      "10000000000000AA000000A5.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA039",
+    "name": "Sup. Placa FIXO Yamaha Fazer 250 2008-2016- p/  uso Setas Originais  + Luz de Placa LED + Haste c/ Refletivo – (ADAPTAÇÃO)",
+    "long_description": "Sup. Placa FIXO Yamaha Fazer 250 2008-2016- p/  uso Setas Originais  + Luz de Placa LED + Haste c/ Refletivo – (ADAPTAÇÃO)",
+    "brand": "YAMAHA",
+    "wholesale_price": 55.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 135,
+    "image_files": [
+      "10000000000000B4000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA040",
+    "name": "Sup. Placa ARTICULADO Yamaha Nova Lander 250 p/  Peças Orig. 2019 diante",
+    "long_description": "Sup. Placa ARTICULADO Yamaha Nova Lander 250 p/  Peças Orig. 2019 diante",
+    "brand": "YAMAHA",
+    "wholesale_price": 75.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 136,
+    "image_files": [
+      "10000000000001A70000019D.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA041",
+    "name": "Suporte Placa FIXO Tracer 900 GT",
+    "long_description": "Suporte Placa FIXO Tracer 900 GT - 2020 diante - p/ Pçs Originais",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 137,
+    "image_files": []
+  },
+  {
+    "internal_code": "YA042",
+    "name": "Sup. Placa ART. Yamaha Lander 250 até 2018,  Xtz 125 e Teneré (10-14) SEM LANTERNA",
+    "long_description": "Sup. Placa ART. Yamaha Lander 250 até 2018,  Xtz 125 e Teneré (10-14) SEM LANTERNA",
+    "brand": "YAMAHA",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 138,
+    "image_files": []
+  },
+  {
+    "internal_code": "YA043",
+    "name": "Protetor De Radiador TELADO – Yamaha MT-03 – 2015 a 2026",
+    "long_description": "Protetor De Radiador TELADO – Yamaha MT-03 – 2015 a 2026",
+    "brand": "YAMAHA",
+    "wholesale_price": 50.0,
+    "weight_kg": 0.3,
+    "measures": "270x180x70",
+    "ncm": "",
+    "row_index": 139,
+    "image_files": [
+      "10000000000000F9000000B1.jpg",
+      "10002C470000048C0000048C.svg",
+      "100000010000003100000031.png"
+    ]
+  },
+  {
+    "internal_code": "YA044",
+    "name": "Sup. Placa FIXO p/ Peças Originais Yamaha R3 MT-03 2015 a 2026",
+    "long_description": "Sup. Placa FIXO p/ Peças Originais Yamaha R3 MT-03 2015 a 2026",
+    "brand": "YAMAHA",
+    "wholesale_price": 50.0,
+    "weight_kg": 0.55,
+    "measures": "230x175x80",
+    "ncm": "",
+    "row_index": 140,
+    "image_files": [
+      "100000000000006F00000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA046",
+    "name": "Protetor De Radiador  Yamaha XJ6",
+    "long_description": "Protetor De Radiador  Yamaha XJ6",
+    "brand": "YAMAHA",
+    "wholesale_price": 48.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 141,
+    "image_files": [
+      "100000000000026D00000255.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA047",
+    "name": "Protetor Radiador MT-07 – TELADO",
+    "long_description": "Protetor Radiador MT-07 – TELADO - Yamaha – 2014 a 2024",
+    "brand": "YAMAHA",
+    "wholesale_price": 55.0,
+    "weight_kg": 0.36,
+    "measures": "340x175x20",
+    "ncm": "",
+    "row_index": 142,
+    "image_files": [
+      "10000000000000E1000000A8.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA048",
+    "name": "Sup. Placa FIXO Yamaha CROSSER 150 Lant. Leds VERM",
+    "long_description": "Sup. Placa FIXO Yamaha CROSSER 150 Lant. Leds VERM",
+    "brand": "YAMAHA",
+    "wholesale_price": 98.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 143,
+    "image_files": [
+      "10000000000003330000026D.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA049",
+    "name": "Suporte de Placa FIXO Yamaha MT-07",
+    "long_description": "Suporte de Placa FIXO Yamaha MT-07 - p/ Setas Originais + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 144,
+    "image_files": [
+      "100000000000021F000001BF.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA050",
+    "name": "Suporte Placa FIXO Yamaha XTZ 250 Lander X Motard  + 02 Luzes de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa FIXO Yamaha XTZ 250 Lander X Motard  + 02 Luzes de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 72.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 145,
+    "image_files": [
+      "1000000000000222000001EF.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA051",
+    "name": "Protetor De Radiador TELADO Yamaha R3 2015 a 2024",
+    "long_description": "Protetor De Radiador TELADO Yamaha R3 2015 a 2024",
+    "brand": "YAMAHA",
+    "wholesale_price": 55.0,
+    "weight_kg": 0.3,
+    "measures": "270x180x70",
+    "ncm": "",
+    "row_index": 146,
+    "image_files": [
+      "10000000000000FF000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA052",
+    "name": "Sup. Placa ARTICULADO Yamaha CROSSER 150 Lant. Leds VERM",
+    "long_description": "Sup. Placa ARTICULADO Yamaha CROSSER 150 Lant. Leds VERM",
+    "brand": "YAMAHA",
+    "wholesale_price": 105.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 147,
+    "image_files": [
+      "10000000000002C400000216.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA053",
+    "name": "Sup. Placa ARTICULADO Yamaha MT-09 2019+ + Luz de Placa LED + Haste c/ Refletivo + Sup. p/ Setas Originais e Universais e Esticador Roda",
+    "long_description": "Sup. Placa ARTICULADO Yamaha MT-09 2019+ + Luz de Placa LED + Haste c/ Refletivo + Sup. p/ Setas Originais e Universais e Esticador Roda",
+    "brand": "YAMAHA",
+    "wholesale_price": 290.0,
+    "weight_kg": 0.9,
+    "measures": "",
+    "ncm": "",
+    "row_index": 148,
+    "image_files": [
+      "10000000000002E200000303.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA054",
+    "name": "Protetor de Carter Crosser",
+    "long_description": "Protetor de Carter Crosser",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 149,
+    "image_files": [
+      "10000000000001D7000001DD.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA055",
+    "name": "Sup. Placa FIXO Yamaha MT-09 2019+ + Luz de Placa LED + Haste c/ Refletivo + Sup. p/ Setas Originais e Universais e Esticador Roda",
+    "long_description": "Sup. Placa FIXO Yamaha MT-09 2019+ + Luz de Placa LED + Haste c/ Refletivo + Sup. p/ Setas Originais e Universais e Esticador Roda",
+    "brand": "YAMAHA",
+    "wholesale_price": 290.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 150,
+    "image_files": [
+      "10000000000002BE0000026D.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA056",
+    "name": "Protetor de Carter Lander 250 2007-2019 e XTZ 125 2007-2026",
+    "long_description": "Protetor de Carter Lander 250 2007-2019 e XTZ 125 2007-2026",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 151,
+    "image_files": [
+      "10000000000001D7000001F5.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA057",
+    "name": "Suporte BAU Lander 250 2007-2019 e Lander X Motard 2007 a 2019",
+    "long_description": "Suporte BAU Lander 250 2007-2019 e Lander X Motard 2007 a 2019",
+    "brand": "YAMAHA",
+    "wholesale_price": 85.0,
+    "weight_kg": 1.3,
+    "measures": "300x300x70",
+    "ncm": "",
+    "row_index": 152,
+    "image_files": [
+      "100000000000030C00000270.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA058",
+    "name": "Protetor de Corrente Yamaha: \nLander 250 2007-2026; Lander X Motard 2007-2026",
+    "long_description": "Protetor de Corrente Yamaha: \nLander 250 2007-2026; Lander X Motard 2007-2026",
+    "brand": "YAMAHA",
+    "wholesale_price": 42.0,
+    "weight_kg": 0.45,
+    "measures": "",
+    "ncm": "",
+    "row_index": 153,
+    "image_files": [
+      "1000000000000246000000E4.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA059",
+    "name": "Protetor de Corrente Yamaha:  Teneré 250 2011-2018",
+    "long_description": "Protetor de Corrente Yamaha:  Teneré 250 2011-2018",
+    "brand": "YAMAHA",
+    "wholesale_price": 42.0,
+    "weight_kg": 0.45,
+    "measures": "",
+    "ncm": "",
+    "row_index": 154,
+    "image_files": [
+      "100000000000025800000102.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA060",
+    "name": "Protetor de Corrente Yamaha:  XTZ 125 anos 2008-2019",
+    "long_description": "Protetor de Corrente Yamaha:  XTZ 125 anos 2008-2019",
+    "brand": "YAMAHA",
+    "wholesale_price": 45.0,
+    "weight_kg": 0.45,
+    "measures": "",
+    "ncm": "",
+    "row_index": 155,
+    "image_files": [
+      "10000000000003B4000001A7.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA061",
+    "name": "Sup. Placa FIXO p/ Peças Originais Yamaha Fazer FZ15 – 2023+",
+    "long_description": "Sup. Placa FIXO p/ Peças Originais Yamaha Fazer FZ15 – 2023+",
+    "brand": "YAMAHA",
+    "wholesale_price": 75.0,
+    "weight_kg": 0.55,
+    "measures": "170x150x90",
+    "ncm": "",
+    "row_index": 156,
+    "image_files": [
+      "10000000000001B000000195.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA062",
+    "name": "Sup. Placa ARTICULADO p/ Setas Originais e Universais",
+    "long_description": "Sup. Placa ARTICULADO p/ Setas Originais e Universais - Yamaha Fazer FZ15 – 2023+ c/ 02 Luzes de Placa LED + Haste c/ Refletivo e 04 ADP",
+    "brand": "YAMAHA",
+    "wholesale_price": 85.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 157,
+    "image_files": [
+      "10000000000001C5000001B3.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA063",
+    "name": "Suporte BAU MT-03 R3 – 2017 a 2020",
+    "long_description": "Suporte BAU MT-03 R3 – 2017 a 2020",
+    "brand": "YAMAHA",
+    "wholesale_price": 80.0,
+    "weight_kg": 1.3,
+    "measures": "",
+    "ncm": "",
+    "row_index": 158,
+    "image_files": [
+      "10000000000002490000014A.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA064",
+    "name": "Sup. Placa FIXO Yamaha Fazer 250 até 2017",
+    "long_description": "Sup. Placa FIXO Yamaha Fazer 250 até 2017 - p/  uso Setas Originais  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 159,
+    "image_files": [
+      "10000000000000FF000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA065",
+    "name": "Slider PP – Fazer 250 – ano 2018 em diante",
+    "long_description": "Slider PP – Fazer 250 – ano 2018 em diante",
+    "brand": "YAMAHA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "8714",
+    "row_index": 160,
+    "image_files": [
+      "10000000000000C9000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA066",
+    "name": "Slider Alumínio Cores – Fazer 250 – ano 2018 em diante",
+    "long_description": "Slider Alumínio Cores – Fazer 250 – ano 2018 em diante",
+    "brand": "YAMAHA",
+    "wholesale_price": 0.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 161,
+    "image_files": []
+  },
+  {
+    "internal_code": "YA067",
+    "name": "Protetor de Escapamento Yamaha Fazer 250 2007 a 2026+ / FZ15 / MT-03 e R3 – paraf. M8x180Mm",
+    "long_description": "Protetor de Escapamento Yamaha Fazer 250 2007 a 2026+ / FZ15 / MT-03 e R3 – paraf. M8x180Mm",
+    "brand": "YAMAHA",
+    "wholesale_price": 45.0,
+    "weight_kg": 0.55,
+    "measures": "45x200",
+    "ncm": "8714",
+    "row_index": 162,
+    "image_files": [
+      "10000000000000FF000000B1.png"
+    ]
+  },
+  {
+    "internal_code": "YA068",
+    "name": "Slider PP – MT-03 – ano 2015 em diante",
+    "long_description": "Slider PP – MT-03 – ano 2015 em diante",
+    "brand": "YAMAHA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "8715",
+    "row_index": 163,
+    "image_files": [
+      "10000000000005A70000035C.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA069",
+    "name": "Slider FAZER 250",
+    "long_description": "Slider FAZER 250 - PP – anos 2006 a 2017",
+    "brand": "YAMAHA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "8715",
+    "row_index": 164,
+    "image_files": [
+      "1000000000000B02000006F7.png",
+      "100000000000078700000454.png",
+      "100000000000006800000032.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA070",
+    "name": "Slider PP- FZ15 2023, 2024 2025  (lado direito e esquerdo)",
+    "long_description": "Slider PP- FZ15 2023, 2024 2025  (lado direito e esquerdo)",
+    "brand": "YAMAHA",
+    "wholesale_price": 80.0,
+    "weight_kg": 1.61,
+    "measures": "300x200x80",
+    "ncm": "8715",
+    "row_index": 165,
+    "image_files": []
+  },
+  {
+    "internal_code": "YA071",
+    "name": "Bloco Bucha eixo roda traseira MT09 – 2019+",
+    "long_description": "Bloco Bucha eixo roda traseira MT09 – 2019+",
+    "brand": "YAMAHA",
+    "wholesale_price": 250.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 166,
+    "image_files": [
+      "100000000000078200000670.png"
+    ]
+  },
+  {
+    "internal_code": "YA072",
+    "name": "Suporte Placa ARTICULADO – R15 2024",
+    "long_description": "Suporte Placa ARTICULADO – R15 2024",
+    "brand": "YAMAHA",
+    "wholesale_price": 78.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 167,
+    "image_files": [
+      "10000000000009F8000008A3.png"
+    ]
+  },
+  {
+    "internal_code": "YA073",
+    "name": "Suporte Placa FIXO peças Originais – R15 2024",
+    "long_description": "Suporte Placa FIXO peças Originais – R15 2024",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 168,
+    "image_files": [
+      "10000000000009DE00000A2C.png"
+    ]
+  },
+  {
+    "internal_code": "YA074",
+    "name": "Slider Protetor PP",
+    "long_description": "Slider Protetor PP - R15 2024",
+    "brand": "YAMAHA",
+    "wholesale_price": 110.0,
+    "weight_kg": 2.5,
+    "measures": "360x160x50",
+    "ncm": "8715",
+    "row_index": 169,
+    "image_files": [
+      "100000000000011A000000A8.png"
+    ]
+  },
+  {
+    "internal_code": "YA075",
+    "name": "Trava do Pisca Original Yamaha – Cod Orignal: PP-TD30",
+    "long_description": "Trava do Pisca Original Yamaha – Cod Orignal: PP-TD30",
+    "brand": "YAMAHA",
+    "wholesale_price": 4.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 170,
+    "image_files": []
+  },
+  {
+    "internal_code": "YA076",
+    "name": "Slider PP MT-07 – 2015 a 2026",
+    "long_description": "Slider PP MT-07 – 2015 a 2026",
+    "brand": "YAMAHA",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 171,
+    "image_files": [
+      "1000000000000117000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA077",
+    "name": "Suporte Bau Lander 250 – 2019 a 2024",
+    "long_description": "Suporte Bau Lander 250 – 2019 a 2024",
+    "brand": "YAMAHA",
+    "wholesale_price": 65.0,
+    "weight_kg": 1.25,
+    "measures": "250x270x40",
+    "ncm": "",
+    "row_index": 172,
+    "image_files": [
+      "1000000000000102000000EA.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA078",
+    "name": "Suporte Alaforge Bau Lateral",
+    "long_description": "Suporte Alaforge Bau Lateral - Lander 250 – 2019 a 2025",
+    "brand": "YAMAHA",
+    "wholesale_price": 85.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 173,
+    "image_files": []
+  },
+  {
+    "internal_code": "YA079",
+    "name": "Protetor de Escapamento Yamaha R15 (modelo 180mm + bucha)",
+    "long_description": "Protetor de Escapamento Yamaha R15 (modelo 180mm + bucha)",
+    "brand": "YAMAHA",
+    "wholesale_price": 48.0,
+    "weight_kg": 0.55,
+    "measures": "45x200",
+    "ncm": "8714",
+    "row_index": 174,
+    "image_files": [
+      "10000000000000FC000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA080",
+    "name": "LIVRE",
+    "long_description": "LIVRE",
+    "brand": "YAMAHA",
+    "wholesale_price": 0.0,
+    "weight_kg": 0.0,
+    "measures": "",
+    "ncm": "8714",
+    "row_index": 175,
+    "image_files": []
+  },
+  {
+    "internal_code": "YA081",
+    "name": "Slider Protetor PP – Mod WING – MT-07 2026",
+    "long_description": "Slider Protetor PP – Mod WING – MT-07 2026",
+    "brand": "YAMAHA",
+    "wholesale_price": 190.0,
+    "weight_kg": 0.0,
+    "measures": "",
+    "ncm": "8714",
+    "row_index": 176,
+    "image_files": [
+      "1000000000000261000001EE.png"
+    ]
+  },
+  {
+    "internal_code": "YA082",
+    "name": "Suporte Placa FIXO MT-07",
+    "long_description": "Suporte Placa FIXO MT-07 - 2026 - Peças Originais",
+    "brand": "YAMAHA",
+    "wholesale_price": 80.0,
+    "weight_kg": 0.38,
+    "measures": "110x165x210",
+    "ncm": "87141000",
+    "row_index": 177,
+    "image_files": [
+      "10000000000000DB000000EA.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA083",
+    "name": "Protetor de Radiador MT-07 2026 – TELADO",
+    "long_description": "Protetor de Radiador MT-07 2026 – TELADO",
+    "brand": "YAMAHA",
+    "wholesale_price": 95.0,
+    "weight_kg": 0.38,
+    "measures": "320x175x3",
+    "ncm": "87141000",
+    "row_index": 178,
+    "image_files": [
+      "100000000000011A000000A5.jpg"
+    ]
+  },
+  {
+    "internal_code": "YA084",
+    "name": "Suporte Placa ARTICULADO MT-07",
+    "long_description": "Suporte Placa ARTICULADO MT-07 - 2026 – p/ Setas Originais e parafuso luz de placa LED",
+    "brand": "YAMAHA",
+    "wholesale_price": 85.0,
+    "weight_kg": 0.6,
+    "measures": "180x85x160",
+    "ncm": "87141000",
+    "row_index": 179,
+    "image_files": [
+      "10000000000000E4000000EA.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA001",
+    "name": "Suporte de Placa Articulado Kawazaki Z1000 (2012 a 2014) Setas Universais  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte de Placa Articulado Kawazaki Z1000 (2012 a 2014) Setas Universais  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 184,
+    "image_files": [
+      "10000000000000BD000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA002",
+    "name": "Suporte de Placa Articulado Kawazaki Z800 (2013 a 2016) p/ Setas Universais  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte de Placa Articulado Kawazaki Z800 (2013 a 2016) p/ Setas Universais  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 185,
+    "image_files": [
+      "10000000000000E4000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA003",
+    "name": "Sup.  Placa Articulado Kawazaki Ninja 250 (p/ Setas Universais Esportivas e Setas Originais)  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Sup.  Placa Articulado Kawazaki Ninja 250 (p/ Setas Universais Esportivas e Setas Originais)  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 75.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 186,
+    "image_files": [
+      "10000000000000C3000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA004",
+    "name": "Suporte de Placa Articulado Kawazaki Ninja 250 Peças Originais",
+    "long_description": "Suporte de Placa Articulado Kawazaki Ninja 250 Peças Originais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 75.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 187,
+    "image_files": [
+      "1000000000000E7E00000D86.png"
+    ]
+  },
+  {
+    "internal_code": "KA005",
+    "name": "Suporte Placa Articulado Kawazaki Ninja 300 e Z 300 p/ Setas UNIVERSAIS   + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa Articulado Kawazaki Ninja 300 e Z 300 p/ Setas UNIVERSAIS   + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 188,
+    "image_files": [
+      "10000000000000B1000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA006",
+    "name": "Sup. Placa Art. Kawasaki ER6n – Versys 650",
+    "long_description": "Sup. Placa Art. Kawasaki ER6n – Versys 650 - Ninja 650r - 2013 a 2016 – uso setas universais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 189,
+    "image_files": [
+      "10000000000000AE000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA007",
+    "name": "Suporte Placa ART. Kawazaki Ninja 300 e Z 300 – Uso Setas Orig.  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa ART. Kawazaki Ninja 300 e Z 300 – Uso Setas Orig.  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 190,
+    "image_files": [
+      "10000000000001C8000001B9.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA008",
+    "name": "Sup. Placa ART. Kawasaki ER6n – Versys 650",
+    "long_description": "Sup. Placa ART. Kawasaki ER6n – Versys 650 - Ninja 650r - 2013 a 2016 – uso setas ORIGINAIS",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 191,
+    "image_files": [
+      "10000000000000C3000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA009",
+    "name": "Suporte Placa ART. Kawazaki Z900 – 2018 a 2025",
+    "long_description": "Suporte Placa ART. Kawazaki Z900 – 2018 a 2025 -  p/ setas universais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 192,
+    "image_files": []
+  },
+  {
+    "internal_code": "KA010",
+    "name": "Suporte de Placa Articulado Kawazaki Z800 (2013 a 2016) p/ uso Setas Originais   + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte de Placa Articulado Kawazaki Z800 (2013 a 2016) p/ uso Setas Originais   + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 193,
+    "image_files": [
+      "10000000000000B1000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA011",
+    "name": "Sup. Placa ART. Kawazaki Er-6n, Versys, Ninja 650",
+    "long_description": "Sup. Placa ART. Kawazaki Er-6n, Versys, Ninja 650 - 2009-2012 - Setas Univ.",
+    "brand": "KAWASAKI",
+    "wholesale_price": 55.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 194,
+    "image_files": []
+  },
+  {
+    "internal_code": "KA012",
+    "name": "Suporte Placa Art. Kawasaki Zx6r 2009-2023  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa Art. Kawasaki Zx6r 2009-2023  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 195,
+    "image_files": [
+      "100000000000017100000159.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA013",
+    "name": "Suporte Placa Art. Kawasaki Zx10r 2011-2015",
+    "long_description": "Suporte Placa Art. Kawasaki Zx10r 2011-2015 - + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 196,
+    "image_files": [
+      "1000000000000198000001D1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA014",
+    "name": "Suporte para Setas ORIGINAIS Kawasaki",
+    "long_description": "Suporte para Setas ORIGINAIS Kawasaki",
+    "brand": "KAWASAKI",
+    "wholesale_price": 15.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 197,
+    "image_files": [
+      "10000000000000D80000007E.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA015",
+    "name": "Sup. Placa ART. Kawasaki ER6n e Versys 650  2017 a 2024 – uso setas ORIGINAIS",
+    "long_description": "Sup. Placa ART. Kawasaki ER6n e Versys 650  2017 a 2024 – uso setas ORIGINAIS",
+    "brand": "KAWASAKI",
+    "wholesale_price": 68.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 198,
+    "image_files": [
+      "100000000000075E000006F2.png"
+    ]
+  },
+  {
+    "internal_code": "KA016",
+    "name": "Sup. Placa ART. Kawazaki Ninja 400 e Z400",
+    "long_description": "Sup. Placa ART. Kawazaki Ninja 400 e Z400 - uso Setas Originais  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 68.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 199,
+    "image_files": [
+      "100000000000024600000240.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA017",
+    "name": "Suporte Placa ART. Kawazaki Ninja 400 e Z 400",
+    "long_description": "Suporte Placa ART. Kawazaki Ninja 400 e Z 400 - p/ Setas Universais  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 200,
+    "image_files": [
+      "10000000000005D7000005E4.png"
+    ]
+  },
+  {
+    "internal_code": "KA018",
+    "name": "Sup.  Placa ART. Kawasaki Z900 – 2018 a 2025",
+    "long_description": "Sup.  Placa ART. Kawasaki Z900 – 2018 a 2025 - Uso Setas ORIGINAIS  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 201,
+    "image_files": [
+      "100000000000016E0000016E.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA019",
+    "name": "Sup. Placa ART. Kawasaki Er-6n, Versys E Ninja 650",
+    "long_description": "Sup. Placa ART. Kawasaki Er-6n, Versys E Ninja 650 - 2009 a 2012 - p/ uso Setas Originais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 68.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 202,
+    "image_files": [
+      "10000000000000B4000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA020",
+    "name": "Suporte Placa FIXO Kawasaki Ninja 300 Ou Z300 p/ uso Peças Originais",
+    "long_description": "Suporte Placa FIXO Kawasaki Ninja 300 Ou Z300 p/ uso Peças Originais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 50.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 203,
+    "image_files": [
+      "10000000000001A4000001A0.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA021",
+    "name": "Suporte p/ Setas ORIGINAIS Kawasaki",
+    "long_description": "Suporte p/ Setas ORIGINAIS Kawasaki",
+    "brand": "KAWASAKI",
+    "wholesale_price": 16.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 204,
+    "image_files": [
+      "100000000000010B0000009C.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA022",
+    "name": "Suporte Placa ART. Kawasaki Z1000 (2012 a 2022) p/ Setas Originais + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa ART. Kawasaki Z1000 (2012 a 2022) p/ Setas Originais + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 205,
+    "image_files": [
+      "10000000000001E0000001F2.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA023",
+    "name": "Sup. Placa FIXO Kawasaki Er-6n, Versys E Ninja 650",
+    "long_description": "Sup. Placa FIXO Kawasaki Er-6n, Versys E Ninja 650 - 2013 diante - uso Setas Orig. + Luz de Placa LED + Suporte Olho Gato (sem refletivo)",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 206,
+    "image_files": [
+      "100000000000009000000066.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA024",
+    "name": "Sup. Placa ART. Kawasaki Zx6r (12/22) e Zx10r (08-10)",
+    "long_description": "Sup. Placa ART. Kawasaki Zx6r (12/22) e Zx10r (08-10) - p/ Setas Originais + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 207,
+    "image_files": [
+      "100000000000007E00000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA025",
+    "name": "Adaptadores para Setas Universais Kawasaki",
+    "long_description": "Adaptadores para Setas Universais Kawasaki - p/ 04 Setas",
+    "brand": "KAWASAKI",
+    "wholesale_price": 10.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 208,
+    "image_files": [
+      "100000000000008D00000063.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA026",
+    "name": "Sup. Placa ART. Kawasaki NINJA 650r e Z650 – 2017 a 2024",
+    "long_description": "Sup. Placa ART. Kawasaki NINJA 650r e Z650 – 2017 a 2024 - p/ Setas Originais + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 0.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 209,
+    "image_files": [
+      "1000000000000BD60000095C.png"
+    ]
+  },
+  {
+    "internal_code": "KA027",
+    "name": "Sup. Placa FIXO Kawasaki Ninja 400 e Z 400",
+    "long_description": "Sup. Placa FIXO Kawasaki Ninja 400 e Z 400 - p/ Setas Originais + Luz de Placa LED + Haste",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 210,
+    "image_files": [
+      "10000000000000F9000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA028",
+    "name": "vazio",
+    "long_description": "vazio",
+    "brand": "KAWASAKI",
+    "wholesale_price": 0.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 211,
+    "image_files": []
+  },
+  {
+    "internal_code": "KA029",
+    "name": "Sup. Placa FIXO Kawasaki Z900 – 2018 a 2025",
+    "long_description": "Sup. Placa FIXO Kawasaki Z900 – 2018 a 2025  - Uso Setas Orig. + Luz de Placa LED + Suporte Olho Gato",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 212,
+    "image_files": [
+      "100000000000024C000001CE.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA030",
+    "name": "Sup. Placa FIXO Kawasaki Ninja 400 e Z 400",
+    "long_description": "Sup. Placa FIXO Kawasaki Ninja 400 e Z 400 - P/ Peças Originais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 55.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 213,
+    "image_files": [
+      "100000000000007200000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA031",
+    "name": "vazio",
+    "long_description": "vazio",
+    "brand": "KAWASAKI",
+    "wholesale_price": 0.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 214,
+    "image_files": []
+  },
+  {
+    "internal_code": "KA032",
+    "name": "Sup. Placa FIXO Kawazaki Z1000 + PLP1 + SOG1",
+    "long_description": "Sup. Placa FIXO Kawazaki Z1000 + PLP1 + SOG1 - Uso Setas Originais 2012-2023 + Luz de Placa LED + Suporte Olho Gato",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 215,
+    "image_files": [
+      "10000000000000D8000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA033",
+    "name": "Sup. Placa FIXO Kawazaki Z800 Uso Setas Originais + Luz de Placa LED + Suporte Olho Gato",
+    "long_description": "Sup. Placa FIXO Kawazaki Z800 Uso Setas Originais + Luz de Placa LED + Suporte Olho Gato",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 216,
+    "image_files": [
+      "1000000000000267000001CE.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA034",
+    "name": "Sup. Placa FIXO Kawazaki Z800 + PLP1 + SOG1",
+    "long_description": "Sup. Placa FIXO Kawazaki Z800 + PLP1 + SOG1 - Uso Setas Universais + Luz de Placa LED + Suporte Olho Gato",
+    "brand": "KAWASAKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 217,
+    "image_files": [
+      "10000000000000ED000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA035",
+    "name": "Sup. Placa Articulado Kawazaki Z750 + PLP1 + SOG1",
+    "long_description": "Sup. Placa Articulado Kawazaki Z750 + PLP1 + SOG1 - Uso Setas Universais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 50.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 218,
+    "image_files": [
+      "10000000000000B7000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA036",
+    "name": "Sup. Placa Articulado Kawazaki Z750 – 2008 a 2012 + PLP1 + SOG1",
+    "long_description": "Sup. Placa Articulado Kawazaki Z750 – 2008 a 2012 + PLP1 + SOG1 - Uso Setas ORIGINAIS e Universais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 72.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 219,
+    "image_files": [
+      "10000000000000F3000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA037",
+    "name": "Sup. Placa Articulado Kawazaki Zx10R 2016 diante",
+    "long_description": "Sup. Placa Articulado Kawazaki Zx10R 2016 diante - Uso Setas ORIGINAIS + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "KAWASAKI",
+    "wholesale_price": 59.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 220,
+    "image_files": [
+      "10000000000000B4000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA038",
+    "name": "Sup. Placa FIXO Kawasaki Z900 – 2018 a 2025 – Peças Originais",
+    "long_description": "Sup. Placa FIXO Kawasaki Z900 – 2018 a 2025 – Peças Originais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 75.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 221,
+    "image_files": [
+      "1000000000000B8000000B52.png"
+    ]
+  },
+  {
+    "internal_code": "KA039",
+    "name": "Sup. Placa FIXO Kawazaki Versys X 300 Peças Originais",
+    "long_description": "Sup. Placa FIXO Kawazaki Versys X 300 Peças Originais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 222,
+    "image_files": [
+      "100000000000006F00000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA040",
+    "name": "Protetor De Radiador  Ninja E Z 400",
+    "long_description": "Protetor De Radiador  Ninja E Z 400",
+    "brand": "KAWASAKI",
+    "wholesale_price": 48.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 223,
+    "image_files": [
+      "1000000000000141000000EA.png"
+    ]
+  },
+  {
+    "internal_code": "KA041",
+    "name": "Sup. Placa FIXO Kawasaki Z650RS p/ Peças Originais – 2020+",
+    "long_description": "Sup. Placa FIXO Kawasaki Z650RS p/ Peças Originais – 2020+",
+    "brand": "KAWASAKI",
+    "wholesale_price": 68.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 224,
+    "image_files": [
+      "1000000000000099000000AE.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA042",
+    "name": "Sup. Placa FIXO Kawazaki Z750 – 2008 a 2012 + PLP1 + SOG1",
+    "long_description": "Sup. Placa FIXO Kawazaki Z750 – 2008 a 2012 + PLP1 + SOG1 - Uso Setas ORIGINAIS e Universais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 68.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 225,
+    "image_files": [
+      "10000000000000BD000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA044",
+    "name": "Sup. Placa ARTICULADO Kawazaki Versys 300 – p/ Setas Originais",
+    "long_description": "Sup. Placa ARTICULADO Kawazaki Versys 300 – p/ Setas Originais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 227,
+    "image_files": [
+      "100000000000028000000323.png"
+    ]
+  },
+  {
+    "internal_code": "KA045",
+    "name": "Protetor Radiador  Kawasaki Ninja 500",
+    "long_description": "Protetor Radiador  Kawasaki Ninja 500",
+    "brand": "KAWASAKI",
+    "wholesale_price": 55.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 228,
+    "image_files": [
+      "100000000000062000000434.png"
+    ]
+  },
+  {
+    "internal_code": "KA046",
+    "name": "Suporte Placa  ARTICULADO  ZX4R 2025+ Luz Placa Bloco e p/ Setas Originais",
+    "long_description": "Suporte Placa  ARTICULADO  ZX4R 2025+ Luz Placa Bloco e p/ Setas Originais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 56.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 229,
+    "image_files": [
+      "100000000000073500000746.png"
+    ]
+  },
+  {
+    "internal_code": "KA047",
+    "name": "Protetor Radiador  Kawasaki Z900",
+    "long_description": "Protetor Radiador  Kawasaki Z900",
+    "brand": "KAWASAKI",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "360x270x2",
+    "ncm": "",
+    "row_index": 230,
+    "image_files": [
+      "1000000000000144000000E4.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA048",
+    "name": "Suporte Placa ARTICULADO  Z900 – 2026 – P/ Setas ORIGINAIS",
+    "long_description": "Suporte Placa ARTICULADO  Z900 – 2026 – P/ Setas ORIGINAIS",
+    "brand": "KAWASAKI",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 231,
+    "image_files": [
+      "10000000000000FC000000EA.jpg"
+    ]
+  },
+  {
+    "internal_code": "KA049",
+    "name": "Suporte Placa FIXO  Z900 – 2026 – P/ Peças Originais",
+    "long_description": "Suporte Placa FIXO  Z900 – 2026 – P/ Peças Originais",
+    "brand": "KAWASAKI",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 232,
+    "image_files": [
+      "10000000000000F3000000EA.jpg"
+    ]
+  },
+  {
+    "internal_code": "SU001",
+    "name": "Sup. Placa ARTICULADO Suzuki GSR 750 p/ uso setas Originais (2013 diante)  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Sup. Placa ARTICULADO Suzuki GSR 750 p/ uso setas Originais (2013 diante)  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "SUZUKI",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 236,
+    "image_files": [
+      "100000000000019200000180.jpg"
+    ]
+  },
+  {
+    "internal_code": "SU002",
+    "name": "Suporte Placa ARTICULADO Suzuki SRAD GSX-R 750 (2007 a 2009)  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa ARTICULADO Suzuki SRAD GSX-R 750 (2007 a 2009)  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "SUZUKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 237,
+    "image_files": [
+      "1000000000000102000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "SU003",
+    "name": "Suporte Placa ARTICULADO Suzuki GSX Srad 1000 (2006 a 2009)  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa ARTICULADO Suzuki GSX Srad 1000 (2006 a 2009)  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "SUZUKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 238,
+    "image_files": [
+      "100000000000010B000000AA.jpg"
+    ]
+  },
+  {
+    "internal_code": "SU004",
+    "name": "Suporte Placa ARTICULADO Suzuki SRAD GSX-R 750 (2010 a 2013)  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa ARTICULADO Suzuki SRAD GSX-R 750 (2010 a 2013)  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "SUZUKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "180x120x70",
+    "ncm": "",
+    "row_index": 239,
+    "image_files": [
+      "10000000000008B9000008C1.png"
+    ]
+  },
+  {
+    "internal_code": "SU005",
+    "name": "Suporte Placa Art. Suzuki GSX Srad 1000 (2011 a 2016)  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa Art. Suzuki GSX Srad 1000 (2011 a 2016)  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "SUZUKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 240,
+    "image_files": [
+      "100000000000010E0000010E.jpg"
+    ]
+  },
+  {
+    "internal_code": "SU006",
+    "name": "Suporte Placa ARTICULADO Suzuki SRAD GSX-R 750 (2014 em diante)  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa ARTICULADO Suzuki SRAD GSX-R 750 (2014 em diante)  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "SUZUKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 241,
+    "image_files": [
+      "10000000000008B80000079B.jpg"
+    ]
+  },
+  {
+    "internal_code": "SU007",
+    "name": "Suporte Placa Articulado Suzuki Bandit (2012 em diante) + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa Articulado Suzuki Bandit (2012 em diante) + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "SUZUKI",
+    "wholesale_price": 60.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 242,
+    "image_files": [
+      "10000000000001A700000174.jpg"
+    ]
+  },
+  {
+    "internal_code": "SU008",
+    "name": "Suporte Placa Art. Suzuki GSR 750 (2013 em diante) p/ Setas Universais",
+    "long_description": "Suporte Placa Art. Suzuki GSR 750 (2013 em diante) p/ Setas Universais",
+    "brand": "SUZUKI",
+    "wholesale_price": 50.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 243,
+    "image_files": []
+  },
+  {
+    "internal_code": "SU009",
+    "name": "ABERTO",
+    "long_description": "ABERTO",
+    "brand": "SUZUKI",
+    "wholesale_price": 0.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 244,
+    "image_files": []
+  },
+  {
+    "internal_code": "SU010",
+    "name": "Suporte Placa ARTICULADO Suzuki Gsxr 1300 Hayabusa",
+    "long_description": "Suporte Placa ARTICULADO Suzuki Gsxr 1300 Hayabusa - + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "SUZUKI",
+    "wholesale_price": 50.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 245,
+    "image_files": []
+  },
+  {
+    "internal_code": "SU011",
+    "name": "Suporte Placa ARTICULADO Suzuki Gsx-s 1000a e 1000 ou 750 SETAS ORIGINAIS  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa ARTICULADO Suzuki Gsx-s 1000a e 1000 ou 750 SETAS ORIGINAIS  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "SUZUKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 246,
+    "image_files": [
+      "10000000000001EB000001D4.jpg"
+    ]
+  },
+  {
+    "internal_code": "SU012",
+    "name": "Suporte Placa Fixo Suzuki SUZUKI GLADIUS 650 Lant. LEDs",
+    "long_description": "Suporte Placa Fixo Suzuki SUZUKI GLADIUS 650 Lant. LEDs",
+    "brand": "SUZUKI",
+    "wholesale_price": 105.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 247,
+    "image_files": []
+  },
+  {
+    "internal_code": "SU013",
+    "name": "Suporte De Placa Fixo Suzuki B-king Lant. LED",
+    "long_description": "Suporte De Placa Fixo Suzuki B-king Lant. LED",
+    "brand": "SUZUKI",
+    "wholesale_price": 105.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 248,
+    "image_files": [
+      "10000000000000C0000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "SU014",
+    "name": "Suporte Placa Suzuki SV 650",
+    "long_description": "Suporte Placa Suzuki SV 650 - 2017 Em Diante p/ Setas Universais",
+    "brand": "SUZUKI",
+    "wholesale_price": 55.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 249,
+    "image_files": [
+      "10000000000000D5000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "SU015",
+    "name": "Suporte Placa Srad GSXR 1000",
+    "long_description": "Suporte Placa Srad GSXR 1000 - 2003 a 2005 - p/ setas universais",
+    "brand": "SUZUKI",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 250,
+    "image_files": [
+      "10000000000000D5000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "SU016",
+    "name": "Suporte Placa Suzuki SV 650",
+    "long_description": "Suporte Placa Suzuki SV 650 - 2017 Em Diante p/ uso Setas Originais",
+    "brand": "SUZUKI",
+    "wholesale_price": 50.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 251,
+    "image_files": []
+  },
+  {
+    "internal_code": "SU017",
+    "name": "vazio",
+    "long_description": "vazio",
+    "brand": "SUZUKI",
+    "wholesale_price": 0.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 252,
+    "image_files": []
+  },
+  {
+    "internal_code": "SU018",
+    "name": "vazio",
+    "long_description": "vazio",
+    "brand": "SUZUKI",
+    "wholesale_price": 0.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 253,
+    "image_files": []
+  },
+  {
+    "internal_code": "SU019",
+    "name": "Suporte Placa ARTICULADO Suzuki SRAD GSX-R 750 (2004 a 2006) uso das Setas Originais e Universais + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa ARTICULADO Suzuki SRAD GSX-R 750 (2004 a 2006) uso das Setas Originais e Universais + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "SUZUKI",
+    "wholesale_price": 50.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 254,
+    "image_files": [
+      "1000000000000207000001D4.jpg"
+    ]
+  },
+  {
+    "internal_code": "SU020",
+    "name": "Suporte Placa Art. Suzuki GSX Srad 1000",
+    "long_description": "Suporte Placa Art. Suzuki GSX Srad 1000 - 2018 diante - Setas Universais",
+    "brand": "SUZUKI",
+    "wholesale_price": 0.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 255,
+    "image_files": []
+  },
+  {
+    "internal_code": "SU021",
+    "name": "Suporte Placa Art. Suzuki GSX Srad 1000",
+    "long_description": "Suporte Placa Art. Suzuki GSX Srad 1000 - 2018 diante P/ Setas Originais   + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "SUZUKI",
+    "wholesale_price": 70.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 256,
+    "image_files": [
+      "10000000000000C3000000AE.png"
+    ]
+  },
+  {
+    "internal_code": "SU022",
+    "name": "Adaptadores p/ setas Universais Suzuki",
+    "long_description": "Adaptadores p/ setas Universais Suzuki - p/ 02 Setas",
+    "brand": "SUZUKI",
+    "wholesale_price": 10.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 257,
+    "image_files": [
+      "100000000000009600000075.png"
+    ]
+  },
+  {
+    "internal_code": "SU023",
+    "name": "Suporte para Setas Originais SUZUKI",
+    "long_description": "Suporte para Setas Originais SUZUKI",
+    "brand": "SUZUKI",
+    "wholesale_price": 15.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 258,
+    "image_files": [
+      "10000000000000B700000072.png"
+    ]
+  },
+  {
+    "internal_code": "SU024",
+    "name": "Sup. Placa FIXO Suzuki Gsx-s 750 e 1000 p/ SETAS ORIGINAIS  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Sup. Placa FIXO Suzuki Gsx-s 750 e 1000 p/ SETAS ORIGINAIS  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "SUZUKI",
+    "wholesale_price": 60.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 259,
+    "image_files": [
+      "10000000000000A800000078.jpg"
+    ]
+  },
+  {
+    "internal_code": "SU025",
+    "name": "Sup. Placa FIXO Suzuki Gsx-s 750 e 1000 p/ uso peças Originais  (Luz de Placa e Setas Originais)",
+    "long_description": "Sup. Placa FIXO Suzuki Gsx-s 750 e 1000 p/ uso peças Originais  (Luz de Placa e Setas Originais)",
+    "brand": "SUZUKI",
+    "wholesale_price": 65.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 260,
+    "image_files": [
+      "10000000000000B7000000B1.png"
+    ]
+  },
+  {
+    "internal_code": "SU026",
+    "name": "Protetor Radiador Telado – Suzuki GSX-8S",
+    "long_description": "Protetor Radiador Telado – Suzuki GSX-8S",
+    "brand": "SUZUKI",
+    "wholesale_price": 85.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 261,
+    "image_files": []
+  },
+  {
+    "internal_code": "SU027",
+    "name": "Protetor Reservatório Fluido Freio Traseiro – Suzuki GSX-8S",
+    "long_description": "Protetor Reservatório Fluido Freio Traseiro – Suzuki GSX-8S",
+    "brand": "SUZUKI",
+    "wholesale_price": 35.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 262,
+    "image_files": []
+  },
+  {
+    "internal_code": "SU028",
+    "name": "Slider Protetor PP – Suzuki GSX-8S",
+    "long_description": "Slider Protetor PP – Suzuki GSX-8S",
+    "brand": "SUZUKI",
+    "wholesale_price": 110.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 263,
+    "image_files": []
+  },
+  {
+    "internal_code": "BM001",
+    "name": "Suporte Placa Art. BMWRr S1000 S1000rr (2009 a 2019)  + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte Placa Art. BMWRr S1000 S1000rr (2009 a 2019)  + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "BMW",
+    "wholesale_price": 68.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 267,
+    "image_files": [
+      "10000000000002FD000002B8.jpg"
+    ]
+  },
+  {
+    "internal_code": "BM002",
+    "name": "Suporte Placa Art. BMW",
+    "long_description": "Suporte Placa Art. BMW - R1200 GS + Sup. Olho Gato",
+    "brand": "BMW",
+    "wholesale_price": 68.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 268,
+    "image_files": [
+      "10000000000001B0000001F8.jpg"
+    ]
+  },
+  {
+    "internal_code": "BM003",
+    "name": "Suporte para Setas Originais BMW  2009 a 2019",
+    "long_description": "Suporte para Setas Originais BMW  2009 a 2019",
+    "brand": "BMW",
+    "wholesale_price": 15.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 269,
+    "image_files": [
+      "10000000000000C600000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "BM004",
+    "name": "Suporte Placa Art. BMWRr S1000 S1000rr 2020 diante (completo)",
+    "long_description": "Suporte Placa Art. BMWRr S1000 S1000rr 2020 diante (completo)",
+    "brand": "BMW",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 270,
+    "image_files": [
+      "10000000000000DE000000AE.png"
+    ]
+  },
+  {
+    "internal_code": "BM005",
+    "name": "Suporte Placa Art. BMW R 1250 GS",
+    "long_description": "Suporte Placa Art. BMW R 1250 GS",
+    "brand": "BMW",
+    "wholesale_price": 80.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 271,
+    "image_files": [
+      "10000000000000EA000000B1.png"
+    ]
+  },
+  {
+    "internal_code": "BM006",
+    "name": "Protetor Radiador BMW S1000 e S1000rr – 2020 a 2026",
+    "long_description": "Protetor Radiador BMW S1000 e S1000rr – 2020 a 2026",
+    "brand": "BMW",
+    "wholesale_price": 95.0,
+    "weight_kg": 0.7,
+    "measures": "410x340x70",
+    "ncm": "",
+    "row_index": 272,
+    "image_files": [
+      "100000000000031F00000335.jpg"
+    ]
+  },
+  {
+    "internal_code": "BM007",
+    "name": "Protetor Radiador BMW S1000 e S1000rr – 2009 a 2019",
+    "long_description": "Protetor Radiador BMW S1000 e S1000rr – 2009 a 2019",
+    "brand": "BMW",
+    "wholesale_price": 95.0,
+    "weight_kg": 0.7,
+    "measures": "410x340x70",
+    "ncm": "",
+    "row_index": 273,
+    "image_files": [
+      "1000000000000B8800000E40.png"
+    ]
+  },
+  {
+    "internal_code": "BM008",
+    "name": "Protetor Radiador BMW R 1300 GS – 2024+",
+    "long_description": "Protetor Radiador BMW R 1300 GS – 2024+",
+    "brand": "BMW",
+    "wholesale_price": 90.0,
+    "weight_kg": 0.7,
+    "measures": "260x170x10",
+    "ncm": "",
+    "row_index": 274,
+    "image_files": []
+  },
+  {
+    "internal_code": "BM009",
+    "name": "Protetor Radiador BMW R G310",
+    "long_description": "Protetor Radiador BMW R G310",
+    "brand": "BMW",
+    "wholesale_price": 70.0,
+    "weight_kg": 0.35,
+    "measures": "310x240x10",
+    "ncm": "",
+    "row_index": 275,
+    "image_files": [
+      "10000000000004B0000004D0.png"
+    ]
+  },
+  {
+    "internal_code": "TR001",
+    "name": "Protetor Radiador TRIUMPH – Speed 400 – 2024 em diante",
+    "long_description": "Protetor Radiador TRIUMPH – Speed 400 – 2024 em diante",
+    "brand": "TRIUMPH",
+    "wholesale_price": 70.0,
+    "weight_kg": 0.53,
+    "measures": "230x335x30",
+    "ncm": "",
+    "row_index": 278,
+    "image_files": [
+      "100000010000009F000000EA.png"
+    ]
+  },
+  {
+    "internal_code": "RE001",
+    "name": "Protetor de Radiador Himalayan 450",
+    "long_description": "Protetor de Radiador Himalayan 450",
+    "brand": "Royal Enfield",
+    "wholesale_price": 70.0,
+    "weight_kg": 0.0,
+    "measures": "",
+    "ncm": "",
+    "row_index": 281,
+    "image_files": [
+      "1000000000000622000005DC.png"
+    ]
+  },
+  {
+    "internal_code": "MT001",
+    "name": "Slider Protetor PP – Mottu Sport ESD 110cc – 2025",
+    "long_description": "Slider Protetor PP – Mottu Sport ESD 110cc – 2025",
+    "brand": "Mottu",
+    "wholesale_price": 75.0,
+    "weight_kg": 0.0,
+    "measures": "",
+    "ncm": "",
+    "row_index": 285,
+    "image_files": []
+  },
+  {
+    "internal_code": "MT002",
+    "name": "Suporte Baú – Mottu Sport ESD 110cc – 2025",
+    "long_description": "Suporte Baú – Mottu Sport ESD 110cc – 2025",
+    "brand": "Mottu",
+    "wholesale_price": 75.0,
+    "weight_kg": 1.85,
+    "measures": "caixa  25x25xx50",
+    "ncm": "",
+    "row_index": 286,
+    "image_files": [
+      "100000000000011A000000D8.png"
+    ]
+  },
+  {
+    "internal_code": "EC001",
+    "name": "Suporte de Placa Articulado Universal",
+    "long_description": "Suporte de Placa Articulado Universal - SPAU",
+    "brand": "ECOFERRO",
+    "wholesale_price": 43.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 290,
+    "image_files": [
+      "10000000000000BA000000AE.png"
+    ]
+  },
+  {
+    "internal_code": "EC002",
+    "name": "Sup. de Placa Articulado Universal c/ sup. para setas",
+    "long_description": "Sup. de Placa Articulado Universal c/ sup. para setas - SPAU seta",
+    "brand": "ECOFERRO",
+    "wholesale_price": 50.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 291,
+    "image_files": [
+      "10000000000000B1000000B1.png"
+    ]
+  },
+  {
+    "internal_code": "EC003",
+    "name": "Suporte Anti-Quebra para Placa de Motos – Modelo Mercosul",
+    "long_description": "Suporte Anti-Quebra para Placa de Motos – Modelo Mercosul",
+    "brand": "ECOFERRO",
+    "wholesale_price": 12.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 292,
+    "image_files": [
+      "10000000000000A2000000B1.png"
+    ]
+  },
+  {
+    "internal_code": "EC004",
+    "name": "Base BAU Ecoferro Metal",
+    "long_description": "Base BAU Ecoferro Metal",
+    "brand": "ECOFERRO",
+    "wholesale_price": 35.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "8714",
+    "row_index": 293,
+    "image_files": [
+      "100000000000010E000000B4.png"
+    ]
+  },
+  {
+    "internal_code": "EC005",
+    "name": "Suporte de Placa FIXO c/ Suporte para Seta + Luz de Placa LED + Haste c/ Refletivo",
+    "long_description": "Suporte de Placa FIXO c/ Suporte para Seta + Luz de Placa LED + Haste c/ Refletivo",
+    "brand": "ECOFERRO",
+    "wholesale_price": 38.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 294,
+    "image_files": [
+      "1000000000000204000001A7.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC006",
+    "name": "Suporte Olho de Gato Universal Motos tipo “V”  p/ placas 20 cm de Largura X 17 cm de Altura",
+    "long_description": "Suporte Olho de Gato Universal Motos tipo “V”  p/ placas 20 cm de Largura X 17 cm de Altura",
+    "brand": "ECOFERRO",
+    "wholesale_price": 19.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 295,
+    "image_files": [
+      "100000000000008A0000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC007",
+    "name": "Haste Olho de Gato 01 haste p/ sup. Ecoferro (aço c/ pint. Eletrostática)",
+    "long_description": "Haste Olho de Gato 01 haste p/ sup. Ecoferro (aço c/ pint. Eletrostática)",
+    "brand": "ECOFERRO",
+    "wholesale_price": 16.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 296,
+    "image_files": [
+      "10000000000000B70000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC008",
+    "name": "Parafuso Luz de Placa LED",
+    "long_description": "Parafuso Luz de Placa LED - 2 peças (par)",
+    "brand": "ECOFERRO",
+    "wholesale_price": 22.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 297,
+    "image_files": [
+      "1000000000000249000001B3.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC009",
+    "name": "Espaçador PSAI Ø32x38mm",
+    "long_description": "Espaçador PSAI Ø32x38mm",
+    "brand": "ECOFERRO",
+    "wholesale_price": 12.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 298,
+    "image_files": [
+      "10000000000003E0000003E0.png"
+    ]
+  },
+  {
+    "internal_code": "EC010",
+    "name": "Adaptadores  p/ 02 Setas --- Honda: CB 500, CB e CBR 600, CBR 600rr",
+    "long_description": "Adaptadores  p/ 02 Setas --- Honda: CB 500, CB e CBR 600, CBR 600rr - CB e CBR 650F, CB e CBR 650R, Hornet, CB 1000r, CBR 1000rr --- Yamaha: Fazer 250, XTZ 150, Lander e Lander X Motard 250, Teneré, Crosser, XT660, MT03, XJ6, MT07, MT09, R1, R3, R6 --- Kawasaki:  Ninja 250 – Vulcan 650 e 1000",
+    "brand": "ECOFERRO",
+    "wholesale_price": 10.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 299,
+    "image_files": [
+      "10000000000000A80000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC011",
+    "name": "Para-Barro p/suportes com Refletivo",
+    "long_description": "Para-Barro p/suportes com Refletivo",
+    "brand": "ECOFERRO",
+    "wholesale_price": 19.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 300,
+    "image_files": [
+      "100000000000005A0000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC012",
+    "name": "Slider PSAI 100mm",
+    "long_description": "Slider PSAI 100mm - furo 10mm – (parafuso M10x90)",
+    "brand": "ECOFERRO",
+    "wholesale_price": 35.0,
+    "weight_kg": 0.16,
+    "measures": "45x100mm",
+    "ncm": "8714",
+    "row_index": 301,
+    "image_files": [
+      "10000000000000C0000000B1.png"
+    ]
+  },
+  {
+    "internal_code": "EC013",
+    "name": "Slider PP 138mm – (parafuso M10x130)",
+    "long_description": "Slider PP 138mm – (parafuso M10x130)",
+    "brand": "ECOFERRO",
+    "wholesale_price": 36.0,
+    "weight_kg": 1.16,
+    "measures": "46x155mm",
+    "ncm": "8714",
+    "row_index": 302,
+    "image_files": [
+      "10000000000000B1000000B1.png"
+    ]
+  },
+  {
+    "internal_code": "EC014",
+    "name": "Par Setas de LEDs – Modelo HD",
+    "long_description": "Par Setas de LEDs – Modelo HD",
+    "brand": "ECOFERRO",
+    "wholesale_price": 35.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "8512",
+    "row_index": 303,
+    "image_files": [
+      "100000000000098800000560.png"
+    ]
+  },
+  {
+    "internal_code": "EC015",
+    "name": "Suporte p/ Setas Universais “L” (PAR = 02 peças)",
+    "long_description": "Suporte p/ Setas Universais “L” (PAR = 02 peças)",
+    "brand": "ECOFERRO",
+    "wholesale_price": 12.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 304,
+    "image_files": [
+      "10000000000000FF0000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC016",
+    "name": "Slider PSAI 100mm",
+    "long_description": "Slider PSAI 100mm - furo 8mm – EC016",
+    "brand": "ECOFERRO",
+    "wholesale_price": 35.0,
+    "weight_kg": 0.16,
+    "measures": "45x100mm",
+    "ncm": "8714",
+    "row_index": 305,
+    "image_files": [
+      "10000000000000C0000000B1.png"
+    ]
+  },
+  {
+    "internal_code": "EC017",
+    "name": "Parafuso Luz de Placa LED",
+    "long_description": "Parafuso Luz de Placa LED - 1 peça",
+    "brand": "ECOFERRO",
+    "wholesale_price": 12.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 306,
+    "image_files": [
+      "1000000000000255000001A4.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC018",
+    "name": "Relé de Pisca Eletrônico com Regulagem",
+    "long_description": "Relé de Pisca Eletrônico com Regulagem",
+    "brand": "ECOFERRO",
+    "wholesale_price": 15.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "8536",
+    "row_index": 307,
+    "image_files": [
+      "100000000000007800000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC019",
+    "name": "Slider de Balança PP – Parf M6 (par)",
+    "long_description": "Slider de Balança PP – Parf M6 (par)",
+    "brand": "ECOFERRO",
+    "wholesale_price": 28.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "8714",
+    "row_index": 308,
+    "image_files": [
+      "100000000000043300000441.png",
+      "100000000000043300000441.png"
+    ]
+  },
+  {
+    "internal_code": "EC020",
+    "name": "Slider de Balança PP – Parf M8 (par)",
+    "long_description": "Slider de Balança PP – Parf M8 (par)",
+    "brand": "ECOFERRO",
+    "wholesale_price": 28.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "8715",
+    "row_index": 309,
+    "image_files": []
+  },
+  {
+    "internal_code": "EC021",
+    "name": "Setas de LEDs vazadas 02 peças + Relê + 04 Adaptadores",
+    "long_description": "Setas de LEDs vazadas 02 peças + Relê + 04 Adaptadores",
+    "brand": "ECOFERRO",
+    "wholesale_price": 90.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 310,
+    "image_files": []
+  },
+  {
+    "internal_code": "EC022",
+    "name": "Retrovisor Tipo Rizoma Preto",
+    "long_description": "Retrovisor Tipo Rizoma Preto",
+    "brand": "ECOFERRO",
+    "wholesale_price": 95.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 311,
+    "image_files": [
+      "10000000000000C3000000B1.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC023",
+    "name": "Pisca Seta Moto Led Palito Flexível Universal (PAR)",
+    "long_description": "Pisca Seta Moto Led Palito Flexível Universal (PAR)",
+    "brand": "ECOFERRO",
+    "wholesale_price": 35.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "8512",
+    "row_index": 312,
+    "image_files": [
+      "10000000000000C600000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC024",
+    "name": "Lente Lanterna VERMELHA Ecoferro",
+    "long_description": "Lente Lanterna VERMELHA Ecoferro",
+    "brand": "ECOFERRO",
+    "wholesale_price": 12.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 313,
+    "image_files": [
+      "1000000000000C4F000007D9.png"
+    ]
+  },
+  {
+    "internal_code": "EC025",
+    "name": "Lanterna de LEDs para Moto Universal Lente FUMÊ Ecoferro",
+    "long_description": "Lanterna de LEDs para Moto Universal Lente FUMÊ Ecoferro",
+    "brand": "ECOFERRO",
+    "wholesale_price": 38.0,
+    "weight_kg": 0.07,
+    "measures": "120x50x37",
+    "ncm": "8512",
+    "row_index": 314,
+    "image_files": [
+      "10000000000000F300000099.png"
+    ]
+  },
+  {
+    "internal_code": "EC026",
+    "name": "Lanterna de LEDs para Moto Universal Lente VERMELHA Ecoferro",
+    "long_description": "Lanterna de LEDs para Moto Universal Lente VERMELHA Ecoferro",
+    "brand": "ECOFERRO",
+    "wholesale_price": 38.0,
+    "weight_kg": 0.07,
+    "measures": "120x50x37",
+    "ncm": "8512",
+    "row_index": 315,
+    "image_files": [
+      "10000000000000F50000008A.png"
+    ]
+  },
+  {
+    "internal_code": "EC027",
+    "name": "Olho de Gato Refletivo 5x2 cm",
+    "long_description": "Olho de Gato Refletivo 5x2 cm",
+    "brand": "ECOFERRO",
+    "wholesale_price": 3.25,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 316,
+    "image_files": [
+      "10000000000000BA0000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC028",
+    "name": "Suporte p/ Setas Piscas Universal",
+    "long_description": "Suporte p/ Setas Piscas Universal",
+    "brand": "ECOFERRO",
+    "wholesale_price": 12.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 317,
+    "image_files": [
+      "10000000000000C300000075.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC029",
+    "name": "Lente Lanterna FUMÊ Ecoferro",
+    "long_description": "Lente Lanterna FUMÊ Ecoferro",
+    "brand": "ECOFERRO",
+    "wholesale_price": 12.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 318,
+    "image_files": [
+      "1000000000000BFA00000762.png"
+    ]
+  },
+  {
+    "internal_code": "EC030",
+    "name": "Lente Lanterna FUMÊ Ecoferro",
+    "long_description": "Lente Lanterna FUMÊ Ecoferro",
+    "brand": "ECOFERRO",
+    "wholesale_price": 12.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 319,
+    "image_files": [
+      "1000000000000F220000080D.png"
+    ]
+  },
+  {
+    "internal_code": "EC031",
+    "name": "Placa Eletrônica de LEDs",
+    "long_description": "Placa Eletrônica de LEDs - reposição",
+    "brand": "ECOFERRO",
+    "wholesale_price": 14.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 320,
+    "image_files": [
+      "10000000000000AA0000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC032",
+    "name": "Suporte Anti-Quebra de Placa com Refletivo Olho de Gato",
+    "long_description": "Suporte Anti-Quebra de Placa com Refletivo Olho de Gato",
+    "brand": "ECOFERRO",
+    "wholesale_price": 18.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 321,
+    "image_files": [
+      "10000000000000900000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC033",
+    "name": "Suporte p/ Placa Articulado 46 p/ Setas Universais",
+    "long_description": "Suporte p/ Placa Articulado 46 p/ Setas Universais",
+    "brand": "ECOFERRO",
+    "wholesale_price": 18.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 322,
+    "image_files": []
+  },
+  {
+    "internal_code": "EC034",
+    "name": "Relé de Pisca Eletrônico 02 pólos",
+    "long_description": "Relé de Pisca Eletrônico 02 pólos",
+    "brand": "ECOFERRO",
+    "wholesale_price": 8.9,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "8536",
+    "row_index": 323,
+    "image_files": [
+      "10000000000000A50000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC035",
+    "name": "Suporte p/ Placa Articulado 46 (sem sup p/ setas)",
+    "long_description": "Suporte p/ Placa Articulado 46 (sem sup p/ setas)",
+    "brand": "ECOFERRO",
+    "wholesale_price": 18.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 324,
+    "image_files": [
+      "10000000000000C60000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC036",
+    "name": "Lanterna Integrada de LEDs Lente Fumê (lanterna com setas)",
+    "long_description": "Lanterna Integrada de LEDs Lente Fumê (lanterna com setas)",
+    "brand": "ECOFERRO",
+    "wholesale_price": 40.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 325,
+    "image_files": [
+      "10000000000000EA0000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC037",
+    "name": "Lanterna de LEDs para Moto Universal Lente Cristal Ecoferro",
+    "long_description": "Lanterna de LEDs para Moto Universal Lente Cristal Ecoferro",
+    "brand": "ECOFERRO",
+    "wholesale_price": 38.0,
+    "weight_kg": 0.07,
+    "measures": "120x50x37",
+    "ncm": "8512",
+    "row_index": 326,
+    "image_files": [
+      "10000000000000CC0000007A.png"
+    ]
+  },
+  {
+    "internal_code": "EC038",
+    "name": "Pisca tipo Flecha LT Fumê 02 peças",
+    "long_description": "Pisca tipo Flecha LT Fumê 02 peças",
+    "brand": "ECOFERRO",
+    "wholesale_price": 30.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "8512",
+    "row_index": 327,
+    "image_files": [
+      "100000000000009600000066.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC039",
+    "name": "Parafuso Para Placa com Ponta (PAR)",
+    "long_description": "Parafuso Para Placa com Ponta (PAR)",
+    "brand": "ECOFERRO",
+    "wholesale_price": 15.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 328,
+    "image_files": [
+      "100000000000008D0000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "EC040",
+    "name": "Pisca Seta Moto Led Modelo HD – Universal (PAR)",
+    "long_description": "Pisca Seta Moto Led Modelo HD – Universal (PAR)",
+    "brand": "ECOFERRO",
+    "wholesale_price": 30.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "8512",
+    "row_index": 329,
+    "image_files": [
+      "100000000000098800000560.png"
+    ]
+  },
+  {
+    "internal_code": "EC041",
+    "name": "Espaçador Bucha PP – 20x6 furo 6mm",
+    "long_description": "Espaçador Bucha PP – 20x6 furo 6mm",
+    "brand": "ECOFERRO",
+    "wholesale_price": 1.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 330,
+    "image_files": []
+  },
+  {
+    "internal_code": "EC042",
+    "name": "Espaçador Bucha PP – 20x9 furo 6mm",
+    "long_description": "Espaçador Bucha PP – 20x9 furo 6mm",
+    "brand": "ECOFERRO",
+    "wholesale_price": 1.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 331,
+    "image_files": []
+  },
+  {
+    "internal_code": "EC043",
+    "name": "Espaçador Bucha PP – 20x6 furo 8mm",
+    "long_description": "Espaçador Bucha PP – 20x6 furo 8mm",
+    "brand": "ECOFERRO",
+    "wholesale_price": 1.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 332,
+    "image_files": []
+  },
+  {
+    "internal_code": "EC044",
+    "name": "Slider  Alumínio 45mm – Cor Preto Anodizado",
+    "long_description": "Slider  Alumínio 45mm – Cor Preto Anodizado",
+    "brand": "ECOFERRO",
+    "wholesale_price": 95.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 333,
+    "image_files": []
+  },
+  {
+    "internal_code": "EC045",
+    "name": "Slider  Alumínio 45mm – Cor Vermelho Anodizado",
+    "long_description": "Slider  Alumínio 45mm – Cor Vermelho Anodizado",
+    "brand": "ECOFERRO",
+    "wholesale_price": 95.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 334,
+    "image_files": []
+  },
+  {
+    "internal_code": "EC046",
+    "name": "Slider  Alumínio 45mm – Cor Azul Anodizado",
+    "long_description": "Slider  Alumínio 45mm – Cor Azul Anodizado",
+    "brand": "ECOFERRO",
+    "wholesale_price": 95.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 335,
+    "image_files": []
+  },
+  {
+    "internal_code": "EC047",
+    "name": "Slider  Alumínio 45mm – Cor Prata Polido",
+    "long_description": "Slider  Alumínio 45mm – Cor Prata Polido",
+    "brand": "ECOFERRO",
+    "wholesale_price": 95.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 336,
+    "image_files": []
+  },
+  {
+    "internal_code": "EC100",
+    "name": "Peça Especial",
+    "long_description": "Peça Especial",
+    "brand": "ECOFERRO",
+    "wholesale_price": null,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 338,
+    "image_files": []
+  },
+  {
+    "internal_code": "BK001",
+    "name": "Suporte de Parede para Bicicletas",
+    "long_description": "Suporte de Parede para Bicicletas",
+    "brand": "BIKES",
+    "wholesale_price": 35.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 342,
+    "image_files": [
+      "10000000000000B40000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "FR001",
+    "name": "Gabarito para Furo Circular p/ Tupia",
+    "long_description": "Gabarito para Furo Circular p/ Tupia",
+    "brand": "FERRAMENTAS",
+    "wholesale_price": 120.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 345,
+    "image_files": [
+      "10000000000000C90000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "FR002",
+    "name": "Esquadro 90x180mm – esp. 2Mm – pint. Eletrostática",
+    "long_description": "Esquadro 90x180mm – esp. 2Mm – pint. Eletrostática",
+    "brand": "FERRAMENTAS",
+    "wholesale_price": 12.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "NCM 8207.90.00",
+    "row_index": 346,
+    "image_files": [
+      "10000000000001020000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "FR003",
+    "name": "Esquadro 150x300mm – esp. 2,65mm – pint. Eletrostática",
+    "long_description": "Esquadro 150x300mm – esp. 2,65mm – pint. Eletrostática",
+    "brand": "FERRAMENTAS",
+    "wholesale_price": 22.0,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "",
+    "row_index": 347,
+    "image_files": [
+      "10000000000001080000008D.jpg"
+    ]
+  },
+  {
+    "internal_code": "CN001",
+    "name": "Ralo Invisível Linear  15x15 cm",
+    "long_description": "Ralo Invisível Linear  15x15 cm  - cor cinza",
+    "brand": "CONSTRUÇÃO",
+    "wholesale_price": 14.25,
+    "weight_kg": null,
+    "measures": "",
+    "ncm": "3922",
+    "row_index": 350,
+    "image_files": [
+      "10000000000000B40000008D.jpg"
+    ]
+  }
+]
