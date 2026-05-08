@@ -27,6 +27,7 @@ const ProductPage = () => {
         .select("*, product_images(url, is_primary, sort_order), categories(id, name, slug, parent_id), brands(name, slug), reviews(rating, customer_name, comment, title, photos, created_at)")
         .eq("slug", slug)
         .eq("is_active", true)
+        .eq("wholesale_only", false)
         .single();
       if (data) {
         setProduct(data);
