@@ -66,7 +66,8 @@ const CatalogPage = () => {
       let query = supabase
         .from("products")
         .select("id, name, slug, price, original_price, stock, is_new, sku, brand_id, product_images(url, is_primary), categories(id, name, slug, parent_id), brands(name, slug)", { count: "exact" })
-        .eq("is_active", true);
+        .eq("is_active", true)
+        .eq("wholesale_only", false);
 
       if (q) query = query.ilike("name", `%${q}%`);
       if (marca) {
