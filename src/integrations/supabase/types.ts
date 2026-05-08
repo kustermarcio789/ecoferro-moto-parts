@@ -2060,6 +2060,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      link_wholesale_to_current_user: {
+        Args: { p_email: string }
+        Returns: string
+      }
       recalculate_order_progress: {
         Args: { p_order_id: string }
         Returns: number
