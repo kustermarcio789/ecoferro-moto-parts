@@ -108,7 +108,7 @@ const AdminWholesale = () => {
   const approveAndCreate = async (row: WholesaleRow, action: "approve" | "resend_password") => {
     setActingId(row.id);
     try {
-      const { data, error } = await supabase.functions.invoke("smart-service", {
+      const { data, error } = await supabase.functions.invoke("wholesale-approve", {
         body: { wholesale_customer_id: row.id, action, delivery: "manual" },
       });
       if (error) throw error;
