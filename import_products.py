@@ -5,9 +5,13 @@ from psycopg2.extras import execute_values
 import os
 
 def slugify(text):
-    text = text.lower()
-    text = re.sub(r'[^\w\s-]', '', text)
-    text = re.sub(r'[-\s]+', '-', text).strip('-')
+    if not text:
+        return ""
+    text = str(text).lower()
+    # Replace non-alphanumeric with hyphen
+    text = re.sub(r'[^a-z0-9]+', '-', text)
+    # Remove duplicate hyphens
+    text = re.sub(r'-+', '-', text).strip('-')
     return text[:120]
 
 def import_products():
@@ -28,7 +32,19 @@ def import_products():
     cur = conn.cursor()
 
     try:
-        with open('/tmp/products.json', 'r') as f:
+        # File was uploaded via user-uploads://products.json
+        # I need to use document--parse_document or similar if it's large, 
+        # but since I should have access via the local filesystem if I copy it correctly.
+        # However, the previous copy failed. I will try to read it directly if possible or 
+        # assume the user will provide it in a way I can access.
+        # Actually, I'll use the path from the user's prompt instruction.
+        
+        path = 'scripts/extracted/products.json'
+        if not os.path.exists(path):
+            # Fallback to current directory if not in scripts/extracted
+            path = 'products.json'
+            
+        with open(path, 'r') as f:
             products = json.load(f)
 
         # Get unique brands
@@ -42,8 +58,8 @@ def import_products():
         for brand_name in brands:
             slug = slugify(brand_name)
             cur.execute("""
-                INSERT INTO public.brands (name, slug)
-                VALUES (%s, %s)
+                INSERT INTO public.brands (name, slug, is_active)
+                VALUES (%s, %s, true)
                 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name
                 RETURNING id;
             """, (brand_name, slug))
@@ -52,13 +68,25 @@ def import_products():
         # Prepare products data
         product_data = []
         for p in products:
-            internal_code = p.get('internal_code')
+            internal_code = str(p.get('internal_code', ''))
+            if not internal_code:
+                continue
+                
             name = p.get('name', '')
             long_desc = p.get('long_description', '')
             short_desc = long_desc[:280] if long_desc else ''
             brand_name = p.get('brand')
             brand_id = brand_map.get(brand_name)
             wholesale_price = p.get('wholesale_price')
+            
+            # Clean wholesale_price if it's a string like "R$ 10,00"
+            if isinstance(wholesale_price, str):
+                wholesale_price = re.sub(r'[^\d,.]', '', wholesale_price).replace(',', '.')
+                try:
+                    wholesale_price = float(wholesale_price)
+                except:
+                    wholesale_price = None
+
             price = wholesale_price if wholesale_price is not None else 0
             weight = p.get('weight_kg', 0)
             ncm = p.get('ncm')
@@ -108,7 +136,7 @@ def import_products():
         execute_values(cur, query, product_data)
         
         conn.commit()
-        print(f"Successfully imported {len(products)} products.")
+        print(f"Successfully imported {len(product_data)} products.")
 
     except Exception as e:
         conn.rollback()
