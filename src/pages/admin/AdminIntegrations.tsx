@@ -173,12 +173,12 @@ const AdminIntegrations = () => {
 
           <div className="rounded-lg bg-muted/30 p-4">
             <span className="text-xs font-body uppercase tracking-wider text-muted-foreground block mb-1">SKUs Recebidos</span>
-            <span className="font-display font-bold text-lg">{lastStockSync?.total_skus_received || 0}</span>
+            <span className="font-display font-bold text-lg">{lastStockSync?.total_received || 0}</span>
           </div>
 
           <div className="rounded-lg bg-muted/30 p-4">
             <span className="text-xs font-body uppercase tracking-wider text-muted-foreground block mb-1">SKUs Atualizados</span>
-            <span className="font-display font-bold text-lg text-primary">{lastStockSync?.total_skus_updated || 0}</span>
+            <span className="font-display font-bold text-lg text-primary">{lastStockSync?.total_updated || 0}</span>
           </div>
         </div>
 
@@ -217,8 +217,8 @@ const AdminIntegrations = () => {
                         {log.status}
                       </span>
                     </td>
-                    <td className="p-3 text-center">{log.total_skus_received || 0}</td>
-                    <td className="p-3 text-center font-bold text-primary">{log.total_skus_updated || 0}</td>
+                    <td className="p-3 text-center">{log.total_received || 0}</td>
+                    <td className="p-3 text-center font-bold text-primary">{log.total_updated || 0}</td>
                     <td className="p-3 text-destructive max-w-xs truncate" title={log.error_message}>{log.error_message || '-'}</td>
                   </tr>
                 ))
