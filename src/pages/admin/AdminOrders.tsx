@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Search, Eye, X, Package, MapPin, CreditCard, Clock, User, Save, Truck, FileText, AlertTriangle } from "lucide-react";
+import { Search, Eye, X, Package, MapPin, CreditCard, Clock, User, Save, Truck, FileText, AlertTriangle, Trash2, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
@@ -11,6 +11,8 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { formatCurrency } from "@/lib/tracking";
 import { updateOrderStatusWithInventory } from "@/services/inventoryService";
+import { OrderItemEditor } from "@/components/admin/orders/OrderItemEditor";
+import { OrderHistory } from "@/components/admin/orders/OrderHistory";
 
 const statusLabels: Record<string, { label: string; color: string }> = {
   pending: { label: "Pendente", color: "bg-amber-100 text-amber-700" },
