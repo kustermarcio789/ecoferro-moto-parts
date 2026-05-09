@@ -562,22 +562,33 @@ const AdminOrders = () => {
                 </div>
               </div>
 
+              {/* History */}
+              <OrderHistory orderId={selectedOrder.id} />
+
               {/* Notes */}
               <div className="grid sm:grid-cols-2 gap-4">
-                {selectedOrder.customer_notes && (
-                  <div className="bg-muted/50 rounded-lg p-4">
-                    <h3 className="font-display text-xs font-bold uppercase tracking-wider mb-2">Obs. do Cliente</h3>
-                    <p className="text-sm font-body text-muted-foreground">{selectedOrder.customer_notes}</p>
-                  </div>
-                )}
                 <div className="bg-muted/50 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <FileText className="h-4 w-4 text-muted-foreground" />
-                    <h3 className="font-display text-xs font-bold uppercase tracking-wider">Obs. Internas</h3>
+                    <h3 className="font-display text-xs font-bold uppercase tracking-wider">Obs. Atacadista (Visível)</h3>
+                  </div>
+                  <textarea
+                    value={editAtacadistaNotes}
+                    onChange={e => setEditAtacadistaNotes(e.target.value)}
+                    disabled={!isEditing}
+                    placeholder="Notas que o atacadista também vê..."
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring min-h-[60px] resize-y"
+                  />
+                </div>
+                <div className="bg-muted/50 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                    <h3 className="font-display text-xs font-bold uppercase tracking-wider">Obs. Internas (Só Admin)</h3>
                   </div>
                   <textarea
                     value={editInternalNotes}
                     onChange={e => setEditInternalNotes(e.target.value)}
+                    disabled={!isEditing}
                     placeholder="Notas internas sobre o pedido..."
                     className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring min-h-[60px] resize-y"
                   />
