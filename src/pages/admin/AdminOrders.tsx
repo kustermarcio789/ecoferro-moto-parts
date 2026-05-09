@@ -271,44 +271,47 @@ const AdminOrders = () => {
                 </div>
               </div>
 
-              {/* Items */}
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <Package className="h-4 w-4 text-muted-foreground" />
-                  <h3 className="font-display text-xs font-bold uppercase tracking-wider">Itens do Pedido</h3>
-                </div>
-                {detailLoading ? (
-                  <div className="h-20 bg-muted rounded-lg animate-pulse" />
-                ) : orderItems.length === 0 ? (
-                  <p className="text-sm text-muted-foreground font-body p-4 bg-muted/50 rounded-lg">Nenhum item registrado</p>
-                ) : (
-                  <div className="bg-muted/50 rounded-lg overflow-hidden">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-border">
-                          <th className="text-left p-3 text-xs font-display uppercase tracking-wider text-muted-foreground">Produto</th>
-                          <th className="text-center p-3 text-xs font-display uppercase tracking-wider text-muted-foreground">Qtd</th>
-                          <th className="text-right p-3 text-xs font-display uppercase tracking-wider text-muted-foreground">Unit.</th>
-                          <th className="text-right p-3 text-xs font-display uppercase tracking-wider text-muted-foreground">Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {orderItems.map(item => (
-                          <tr key={item.id} className="border-b border-border/50">
-                            <td className="p-3 font-body">
-                              {item.product_name}
-                              {item.sku && <span className="text-xs text-muted-foreground ml-2">({item.sku})</span>}
-                            </td>
-                            <td className="p-3 text-center font-body">{item.quantity}</td>
-                            <td className="p-3 text-right font-body">{formatCurrency(Number(item.unit_price))}</td>
-                            <td className="p-3 text-right font-body font-medium">{formatCurrency(Number(item.total))}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Package className="h-4 w-4 text-muted-foreground" />
+                    <h3 className="font-display text-xs font-bold uppercase tracking-wider">Itens do Pedido</h3>
                   </div>
-                )}
-              </div>
+                  {detailLoading ? (
+                    <div className="h-20 bg-muted rounded-lg animate-pulse" />
+                  ) : (
+                    <div className="bg-muted/50 rounded-lg overflow-hidden">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-border">
+                            <th className="text-left p-3 text-xs font-display uppercase tracking-wider text-muted-foreground">Produto</th>
+                            <th className="text-center p-3 text-xs font-display uppercase tracking-wider text-muted-foreground">Qtd Sol.</th>
+                            <th className="text-center p-3 text-xs font-display uppercase tracking-wider text-muted-foreground">Qtd Conf.</th>
+                            <th className="text-center p-3 text-xs font-display uppercase tracking-wider text-muted-foreground">Qtd Entr.</th>
+                            <th className="text-right p-3 text-xs font-display uppercase tracking-wider text-muted-foreground">Total</th>
+                            <th className="text-right p-3"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {orderItems.map(item => (
+                            <tr key={item.id} className="border-b border-border/50">
+                              <td className="p-3 font-body">{item.product_name}</td>
+                              <td className="p-3 text-center">{item.quantity}</td>
+                              <td className="p-3 text-center">{item.confirmed_quantity || 0}</td>
+                              <td className="p-3 text-center">{item.delivered_quantity || 0}</td>
+                              <td className="p-3 text-right font-medium">{formatCurrency(Number(item.total))}</td>
+                              <td className="p-3 text-right">
+                                <Button variant="ghost" size="icon" className="h-6 w-6 text-destructive" onClick={() => {}}>
+                                  <Trash2 className="h-3 w-3" />
+                                </Button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                  <OrderItemEditor orderId={selectedOrder.id} onItemAdded={() => openDetail(selectedOrder)} />
+                </div>
 
               {/* Totals */}
               <div className="bg-muted/50 rounded-lg p-4 space-y-2">
