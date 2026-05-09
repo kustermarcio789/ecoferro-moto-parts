@@ -47,6 +47,7 @@ const AdminProducts = () => {
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [showForm, setShowForm] = useState(false);
@@ -66,7 +67,7 @@ const AdminProducts = () => {
     setLoading(true);
     let query = supabaseAny
       .from("products")
-      .select("id, name, sku, internal_code, price, cost, stock, min_stock, is_active, categories(name), product_images(url, is_primary)", { count: "exact" })
+      .select("id, name, sku, internal_code, price, cost, stock, min_stock, is_active, wholesale_only, categories(name), product_images(url, is_primary)", { count: "exact" })
       .order("created_at", { ascending: false });
 
     if (search) query = query.ilike("name", `%${search}%`);
@@ -74,6 +75,9 @@ const AdminProducts = () => {
     if (statusFilter === "active") query = query.eq("is_active", true);
     if (statusFilter === "inactive") query = query.eq("is_active", false);
     if (statusFilter === "lowstock") query = query.lte("stock", 5);
+    
+    if (typeFilter === "retail") query = query.or("wholesale_only.eq.false,wholesale_only.is.null");
+    if (typeFilter === "wholesale") query = query.eq("wholesale_only", true);
 
     const from = (page - 1) * ITEMS_PER_PAGE;
     const { data, count, error } = await query.range(from, from + ITEMS_PER_PAGE - 1);
@@ -101,7 +105,7 @@ const AdminProducts = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [search, categoryFilter, statusFilter, page]);
+  }, [search, categoryFilter, statusFilter, typeFilter, page]);
 
   const fetchMlProducts = async () => {
     setMlLoading(true);
@@ -262,6 +266,14 @@ const AdminProducts = () => {
             <SelectTrigger className="w-36 text-xs font-body"><SelectValue placeholder="Status" /></SelectTrigger>
             <SelectContent><SelectItem value="all">Todos</SelectItem><SelectItem value="active">Ativos</SelectItem><SelectItem value="inactive">Inativos</SelectItem><SelectItem value="lowstock">Estoque Baixo</SelectItem></SelectContent>
           </Select>
+          <Select value={typeFilter} onValueChange={setTypeFilter}>
+            <SelectTrigger className="w-36 text-xs font-body"><SelectValue placeholder="Tipo" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos (Tipos)</SelectItem>
+              <SelectItem value="retail">Somente varejo</SelectItem>
+              <SelectItem value="wholesale">Somente atacado</SelectItem>
+            </SelectContent>
+          </Select>
           <Button variant="outline" onClick={() => { setShowMlImport(true); fetchMlProducts(); }} className="text-xs font-display uppercase tracking-wider"><ShoppingBag className="mr-2 h-4 w-4" />Importar do ML</Button>
           <Button onClick={() => { setEditingProduct(null); setFormData(emptyForm); setShowForm(true); }} className="text-xs font-display uppercase tracking-wider"><Plus className="mr-2 h-4 w-4" />Novo Produto</Button>
         </div>
@@ -310,11 +322,16 @@ const AdminProducts = () => {
       <div className="overflow-hidden rounded-xl border border-border bg-card">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="border-b border-border bg-muted/50"><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">Produto</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">Codigo / SKU</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">Categoria</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Preco</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Margem</th><th className="p-4 text-center text-xs font-display uppercase tracking-wider text-muted-foreground">Disponivel</th><th className="p-4 text-center text-xs font-display uppercase tracking-wider text-muted-foreground">Status</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Acoes</th></tr></thead>
+            <thead><tr className="border-b border-border bg-muted/50"><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">Produto</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">TIPO</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">Codigo / SKU</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">Categoria</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Preco</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Margem</th><th className="p-4 text-center text-xs font-display uppercase tracking-wider text-muted-foreground">Disponivel</th><th className="p-4 text-center text-xs font-display uppercase tracking-wider text-muted-foreground">Status</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Acoes</th></tr></thead>
             <tbody>
-              {loading ? Array.from({ length: 5 }).map((_, index) => <tr key={index}><td colSpan={8} className="p-4"><div className="h-12 animate-pulse rounded bg-muted" /></td></tr>) : products.map((product) => (
+              {loading ? Array.from({ length: 5 }).map((_, index) => <tr key={index}><td colSpan={9} className="p-4"><div className="h-12 animate-pulse rounded bg-muted" /></td></tr>) : products.map((product) => (
                 <tr key={product.id} className="border-b border-border transition-colors hover:bg-muted/30">
                   <td className="p-4">{getImage(product) && <img src={getImage(product)} alt="" className="mr-3 inline h-10 w-10 rounded object-cover" />}<span className="font-body font-medium text-foreground">{product.name}</span></td>
+                  <td className="p-4 text-xs font-body">
+                    <span className={`rounded-full px-2 py-1 ${product.wholesale_only ? "bg-amber-100 text-amber-800" : "bg-blue-100 text-blue-800"}`}>
+                      {product.wholesale_only ? "Atacado" : "Varejo"}
+                    </span>
+                  </td>
                   <td className="p-4 text-xs font-body text-muted-foreground"><div>{product.internal_code || "-"}</div><div>{product.sku || "-"}</div></td>
                   <td className="p-4 text-xs font-body text-muted-foreground">{product.categories?.name || "-"}</td>
                   <td className="p-4 text-right font-body font-medium">{formatCurrency(Number(product.price))}</td>
