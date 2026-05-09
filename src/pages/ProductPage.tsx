@@ -28,6 +28,7 @@ const ProductPage = () => {
         .eq("slug", slug)
         .eq("is_active", true)
         .eq("wholesale_only", false)
+        .gt("available_stock", 0)
         .single();
       if (data) {
         setProduct(data);

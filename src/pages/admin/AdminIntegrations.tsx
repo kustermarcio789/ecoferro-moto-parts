@@ -8,14 +8,52 @@ import {
   INTEGRATION_STATUS_STYLES,
 } from "@/services/inventoryService";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { RefreshCw, CheckCircle2, XCircle, AlertCircle, Clock } from "lucide-react";
+import { toast } from "sonner";
 
 const supabaseAny = supabase as any;
 
 const AdminIntegrations = () => {
   const [logs, setLogs] = useState<any[]>([]);
+  const [stockLogs, setStockLogs] = useState<any[]>([]);
+  const [lastStockSync, setLastStockSync] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
   const [sourceFilter, setSourceFilter] = useState("all");
+
+  const fetchStockLogs = async () => {
+    const { data } = await supabase
+      .from("stock_sync_logs" as any)
+      .select("*")
+      .order("started_at", { ascending: false })
+      .limit(10);
+    
+    if (data) {
+      setStockLogs(data);
+      if (data.length > 0) {
+        setLastStockSync(data[0]);
+      }
+    }
+  };
+
+  const handleManualSync = async () => {
+    setSyncing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("sync-ml-stock");
+      
+      if (error) throw error;
+      
+      toast.success(`Sincronização concluída: ${data.updated} SKUs atualizados.`);
+      fetchStockLogs();
+    } catch (err: any) {
+      console.error("Sync error:", err);
+      toast.error(`Falha na sincronização: ${err.message || "Erro desconhecido"}`);
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   const fetchLogs = async () => {
     setLoading(true);
@@ -58,6 +96,7 @@ const AdminIntegrations = () => {
 
   useEffect(() => {
     fetchLogs();
+    fetchStockLogs();
   }, [statusFilter, sourceFilter]);
 
   const sources = useMemo(() => {
@@ -81,6 +120,118 @@ const AdminIntegrations = () => {
 
   return (
     <AdminLayout title="Integracoes">
+      <div className="mb-8 rounded-xl border border-border bg-card p-6">
+        <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h2 className="font-display text-lg font-bold uppercase tracking-wider text-foreground">Sincronização de Estoque ML</h2>
+            <p className="text-sm text-muted-foreground font-body">Integração automática com vendas.ecoferro.com.br</p>
+          </div>
+          <Button 
+            onClick={handleManualSync} 
+            disabled={syncing}
+            className="font-display uppercase tracking-wider text-xs"
+          >
+            <RefreshCw className={`mr-2 h-4 w-4 ${syncing ? "animate-spin" : ""}`} />
+            {syncing ? "Sincronizando..." : "Sincronizar Agora"}
+          </Button>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+          <div className="rounded-lg bg-muted/30 p-4">
+            <span className="text-xs font-body uppercase tracking-wider text-muted-foreground block mb-1">Status Atual</span>
+            {lastStockSync ? (
+              <div className="flex items-center gap-2">
+                {lastStockSync.status === 'success' ? (
+                  <CheckCircle2 className="h-4 w-4 text-green-500" />
+                ) : lastStockSync.status === 'running' ? (
+                  <RefreshCw className="h-4 w-4 text-blue-500 animate-spin" />
+                ) : (
+                  <XCircle className="h-4 w-4 text-destructive" />
+                )}
+                <span className="font-display font-bold uppercase text-sm">
+                  {lastStockSync.status === 'success' ? 'Sucesso' : lastStockSync.status === 'running' ? 'Em andamento' : 'Falha'}
+                </span>
+              </div>
+            ) : (
+              <span className="text-sm font-body text-muted-foreground">Nenhuma execução</span>
+            )}
+          </div>
+          
+          <div className="rounded-lg bg-muted/30 p-4">
+            <span className="text-xs font-body uppercase tracking-wider text-muted-foreground block mb-1">Última Sincronização</span>
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-body">
+                {lastStockSync?.finished_at 
+                  ? new Date(lastStockSync.finished_at).toLocaleString('pt-BR') 
+                  : lastStockSync?.started_at
+                  ? 'Em andamento...'
+                  : 'N/A'}
+              </span>
+            </div>
+          </div>
+
+          <div className="rounded-lg bg-muted/30 p-4">
+            <span className="text-xs font-body uppercase tracking-wider text-muted-foreground block mb-1">SKUs Recebidos</span>
+            <span className="font-display font-bold text-lg">{lastStockSync?.total_skus_received || 0}</span>
+          </div>
+
+          <div className="rounded-lg bg-muted/30 p-4">
+            <span className="text-xs font-body uppercase tracking-wider text-muted-foreground block mb-1">SKUs Atualizados</span>
+            <span className="font-display font-bold text-lg text-primary">{lastStockSync?.total_skus_updated || 0}</span>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-xs font-body">
+            <thead>
+              <tr className="border-b border-border bg-muted/50">
+                <th className="p-3 text-left font-display uppercase tracking-wider text-muted-foreground">Início</th>
+                <th className="p-3 text-center font-display uppercase tracking-wider text-muted-foreground">Duração</th>
+                <th className="p-3 text-center font-display uppercase tracking-wider text-muted-foreground">Status</th>
+                <th className="p-3 text-center font-display uppercase tracking-wider text-muted-foreground">Recebidos</th>
+                <th className="p-3 text-center font-display uppercase tracking-wider text-muted-foreground">Atualizados</th>
+                <th className="p-3 text-left font-display uppercase tracking-wider text-muted-foreground">Erro</th>
+              </tr>
+            </thead>
+            <tbody>
+              {stockLogs.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="p-8 text-center text-muted-foreground">Nenhum log de estoque disponível.</td>
+                </tr>
+              ) : (
+                stockLogs.map((log) => (
+                  <tr key={log.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                    <td className="p-3 whitespace-nowrap">{new Date(log.started_at).toLocaleString('pt-BR')}</td>
+                    <td className="p-3 text-center">
+                      {log.finished_at 
+                        ? `${Math.round((new Date(log.finished_at).getTime() - new Date(log.started_at).getTime()) / 1000)}s` 
+                        : '-'}
+                    </td>
+                    <td className="p-3 text-center">
+                      <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider ${
+                        log.status === 'success' ? 'bg-green-100 text-green-700' : 
+                        log.status === 'running' ? 'bg-blue-100 text-blue-700' : 
+                        'bg-red-100 text-red-700'
+                      }`}>
+                        {log.status}
+                      </span>
+                    </td>
+                    <td className="p-3 text-center">{log.total_skus_received || 0}</td>
+                    <td className="p-3 text-center font-bold text-primary">{log.total_skus_updated || 0}</td>
+                    <td className="p-3 text-destructive max-w-xs truncate" title={log.error_message}>{log.error_message || '-'}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="mb-6">
+        <h2 className="font-display text-lg font-bold uppercase tracking-wider text-foreground">Logs Gerais de Inventário</h2>
+      </div>
+
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <div className="rounded-xl border border-border bg-card p-5">
           <span className="text-xs font-body uppercase tracking-wider text-muted-foreground">Processados</span>

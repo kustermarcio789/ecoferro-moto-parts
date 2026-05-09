@@ -67,7 +67,8 @@ const CatalogPage = () => {
         .from("products")
         .select("id, name, slug, price, original_price, stock, is_new, sku, brand_id, product_images(url, is_primary), categories(id, name, slug, parent_id), brands(name, slug)", { count: "exact" })
         .eq("is_active", true)
-        .eq("wholesale_only", false);
+        .eq("wholesale_only", false)
+        .gt("available_stock", 0);
 
       if (q) query = query.ilike("name", `%${q}%`);
       if (marca) {
