@@ -91,7 +91,7 @@ const WholesaleOrderDetail = () => {
         .maybeSingle(),
       supabase
         .from("order_items")
-        .select("id, product_name, sku, quantity, unit_price, total")
+        .select("id, product_name, sku, quantity, unit_price, total, confirmed_quantity, delivered_quantity")
         .eq("order_id", id)
         .order("created_at"),
       supabase
@@ -287,7 +287,8 @@ const WholesaleOrderDetail = () => {
             <thead>
               <tr className="border-b border-border text-xs font-display uppercase tracking-wider text-muted-foreground">
                 <th className="text-left p-2">Produto</th>
-                <th className="text-center p-2">Qtd</th>
+                <th className="text-center p-2">Solicitada</th>
+                <th className="text-center p-2">Confirmada</th>
                 <th className="text-right p-2">Unitário</th>
                 <th className="text-right p-2">Total</th>
               </tr>
@@ -300,8 +301,20 @@ const WholesaleOrderDetail = () => {
                     {it.sku && <div className="text-xs text-muted-foreground">SKU: {it.sku}</div>}
                   </td>
                   <td className="p-2 text-center font-body">{it.quantity}</td>
+                  <td className="p-2 text-center font-body">
+                    {it.confirmed_quantity !== null ? (
+                      <span className={it.confirmed_quantity < it.quantity ? "text-amber-600 font-bold" : ""}>
+                        {it.confirmed_quantity}
+                        {it.confirmed_quantity < it.quantity && (
+                          <span className="block text-[10px] font-normal">Reduzido pelo admin</span>
+                        )}
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground">—</span>
+                    )}
+                  </td>
                   <td className="p-2 text-right font-body">{formatBRL(Number(it.unit_price))}</td>
-                  <td className="p-2 text-right font-body">{formatBRL(Number(it.total))}</td>
+                  <td className="p-2 text-right font-body">{formatBRL((it.confirmed_quantity ?? it.quantity) * Number(it.unit_price))}</td>
                 </tr>
               ))}
             </tbody>

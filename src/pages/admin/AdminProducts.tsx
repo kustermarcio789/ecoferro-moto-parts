@@ -302,6 +302,30 @@ const AdminProducts = () => {
               <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Categoria</label><Select value={formData.category_id || "none"} onValueChange={(value) => setFormData((current) => ({ ...current, category_id: value === "none" ? "" : value }))}><SelectTrigger className="text-sm font-body"><SelectValue placeholder="Selecione" /></SelectTrigger><SelectContent><SelectItem value="none">Nenhuma</SelectItem>{categories.map((category) => <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>)}</SelectContent></Select></div>
               <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Marca</label><Select value={formData.brand_id || "none"} onValueChange={(value) => setFormData((current) => ({ ...current, brand_id: value === "none" ? "" : value }))}><SelectTrigger className="text-sm font-body"><SelectValue placeholder="Selecione" /></SelectTrigger><SelectContent><SelectItem value="none">Nenhuma</SelectItem>{brands.map((brand) => <SelectItem key={brand.id} value={brand.id}>{brand.name}</SelectItem>)}</SelectContent></Select></div>
             </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="flex items-center space-x-2 rounded-lg border border-border p-3">
+                <input 
+                  type="checkbox" 
+                  id="wholesale_only" 
+                  checked={formData.wholesale_only} 
+                  onChange={(e) => setFormData(prev => ({ ...prev, wholesale_only: e.target.checked }))} 
+                  className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                />
+                <label htmlFor="wholesale_only" className="text-sm font-body font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Visível só para atacadistas (Wholesale Only)
+                </label>
+              </div>
+              <div>
+                <label className="mb-1 block text-xs font-body font-medium text-foreground">Preço de Atacado</label>
+                <input 
+                  type="number" 
+                  step="0.01" 
+                  value={formData.wholesale_price} 
+                  onChange={(e) => setFormData(prev => ({ ...prev, wholesale_price: e.target.value }))} 
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" 
+                />
+              </div>
+            </div>
             <div className="rounded-xl border border-border bg-muted/30 p-4">
               <h3 className="font-display text-sm font-bold uppercase tracking-wider text-foreground">Mapeamento com a producao</h3>
               <p className="mt-1 text-xs font-body text-muted-foreground">Origem esperada: {PRODUCTION_SOURCE_SYSTEM}. Estes campos permitem o match por codigo, SKU ou ID externo.</p>
