@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -8,118 +8,109 @@ const corsHeaders = {
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+    return new Response('ok', { headers: corsHeaders })
   }
 
-  const supabase = createClient(
+  const supabaseAdmin = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
   )
 
-  const sourceUrl = Deno.env.get('VENDAS_ECOFERRO_URL')
-  const token = Deno.env.get('VENDAS_ECOFERRO_TOKEN')
+  const VENDAS_URL = Deno.env.get('VENDAS_ECOFERRO_URL') || 'https://vendas.ecoferro.com.br/api/public/stock-export'
+  const VENDAS_TOKEN = Deno.env.get('VENDAS_ECOFERRO_TOKEN')
 
-  if (!sourceUrl || !token) {
-    return new Response(
-      JSON.stringify({ error: 'Missing VENDAS_ECOFERRO_URL or VENDAS_ECOFERRO_TOKEN' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
-  }
-
-  // 4. Create log entry
-  const { data: logEntry, error: logError } = await supabase
+  // Create log entry
+  const { data: logEntry, error: logError } = await supabaseAdmin
     .from('stock_sync_logs')
-    .insert({ source_url: sourceUrl, status: 'running' })
+    .insert({
+      status: 'running',
+      source_url: VENDAS_URL
+    })
     .select()
     .single()
 
   if (logError) {
-    console.error('Error creating log:', logError)
+    console.error('Error creating log entry:', logError)
+    return new Response(JSON.stringify({ error: 'Failed to create log' }), { status: 500 })
   }
 
   try {
-    // 2 & 3. Fetch stock from external system
-    const response = await fetch(sourceUrl, {
+    if (!VENDAS_TOKEN) {
+      throw new Error('VENDAS_ECOFERRO_TOKEN not configured')
+    }
+
+    const response = await fetch(VENDAS_URL, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${VENDAS_TOKEN}`,
         'Content-Type': 'application/json'
       }
     })
 
     if (!response.ok) {
-      throw new Error(`External API returned ${response.status}: ${await response.text()}`)
+      throw new Error(`External API returned status ${response.status}: ${await response.text()}`)
     }
 
-    const stockData = await response.json() // Expected: [{ sku: string, stock: number }, ...]
+    const data = await response.json()
+    const items = data.items || []
     
-    let updatedCount = 0
-    let notFoundCount = 0
+    let totalUpdated = 0
+    let totalNotFound = 0
 
-    // 5. Update products
-    for (const item of stockData) {
-      const { data, error } = await supabase
+    for (const item of items) {
+      const { data: updateData, error: updateError } = await supabaseAdmin
         .from('products')
-        .update({ 
+        .update({
           available_stock: item.stock,
           last_stock_sync_at: new Date().toISOString()
         })
         .or(`sku.eq.${item.sku},internal_code.eq.${item.sku}`)
         .select('id')
 
-      if (error) {
-        console.error(`Error updating SKU ${item.sku}:`, error)
-        continue
-      }
-
-      if (data && data.length > 0) {
-        updatedCount++
+      if (updateError) {
+        console.error(`Error updating SKU ${item.sku}:`, updateError)
+      } else if (updateData && updateData.length > 0) {
+        totalUpdated += updateData.length
       } else {
-        notFoundCount++
+        totalNotFound++
       }
     }
 
-    // 6. Update log success
-    if (logEntry) {
-      await supabase
-        .from('stock_sync_logs')
-        .update({
-          status: 'success',
-          total_skus_received: stockData.length,
-          total_skus_updated: updatedCount,
-          total_skus_not_found: notFoundCount,
-          finished_at: new Date().toISOString()
-        })
-        .eq('id', logEntry.id)
-    }
+    // Update log entry with success
+    await supabaseAdmin
+      .from('stock_sync_logs')
+      .update({
+        status: 'success',
+        finished_at: new Date().toISOString(),
+        total_received: items.length,
+        total_updated: totalUpdated,
+        total_not_found: totalNotFound
+      })
+      .eq('id', logEntry.id)
 
-    return new Response(
-      JSON.stringify({ 
-        message: 'Sync completed', 
-        received: stockData.length, 
-        updated: updatedCount, 
-        notFound: notFoundCount 
-      }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
+    return new Response(JSON.stringify({ 
+      success: true, 
+      received: items.length, 
+      updated: totalUpdated, 
+      notFound: totalNotFound 
+    }), { 
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+    })
 
-  } catch (err) {
-    console.error('Sync failed:', err)
+  } catch (error) {
+    console.error('Sync failed:', error)
     
-    // 7. Update log failure
-    if (logEntry) {
-      await supabase
-        .from('stock_sync_logs')
-        .update({
-          status: 'failed',
-          error_message: err instanceof Error ? err.message : String(err),
-          finished_at: new Date().toISOString()
-        })
-        .eq('id', logEntry.id)
-    }
+    await supabaseAdmin
+      .from('stock_sync_logs')
+      .update({
+        status: 'failed',
+        finished_at: new Date().toISOString(),
+        error_message: error.message
+      })
+      .eq('id', logEntry.id)
 
-    return new Response(
-      JSON.stringify({ error: err instanceof Error ? err.message : String(err) }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
+    return new Response(JSON.stringify({ error: error.message }), { 
+      status: 500, 
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+    })
   }
 })
