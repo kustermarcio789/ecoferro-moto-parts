@@ -140,6 +140,7 @@ const AdminProducts = () => {
           ml_id: product.ml_id,
           ml_permalink: product.ml_permalink,
           is_active: true,
+          wholesale_only: false,
         })
         .select("id")
         .single();

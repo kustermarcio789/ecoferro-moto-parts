@@ -13,6 +13,8 @@ interface OrderItem {
   quantity: number;
   unit_price: number;
   total: number;
+  confirmed_quantity: number | null;
+  delivered_quantity: number;
 }
 
 interface StageProgress {
