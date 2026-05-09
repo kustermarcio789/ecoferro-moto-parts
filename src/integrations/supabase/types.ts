@@ -839,7 +839,9 @@ export type Database = {
       }
       order_items: {
         Row: {
+          confirmed_quantity: number | null
           created_at: string
+          delivered_quantity: number
           discount: number | null
           id: string
           order_id: string
@@ -853,7 +855,9 @@ export type Database = {
           variation_id: string | null
         }
         Insert: {
+          confirmed_quantity?: number | null
           created_at?: string
+          delivered_quantity?: number
           discount?: number | null
           id?: string
           order_id: string
@@ -867,7 +871,9 @@ export type Database = {
           variation_id?: string | null
         }
         Update: {
+          confirmed_quantity?: number | null
           created_at?: string
+          delivered_quantity?: number
           discount?: number | null
           id?: string
           order_id?: string
@@ -1008,6 +1014,7 @@ export type Database = {
           payment_id: string | null
           payment_method: string | null
           payment_status: Database["public"]["Enums"]["payment_status"] | null
+          priority: string
           production_started_at: string | null
           requested_delivery_date: string | null
           sales_channel: string | null
@@ -1045,6 +1052,7 @@ export type Database = {
           payment_id?: string | null
           payment_method?: string | null
           payment_status?: Database["public"]["Enums"]["payment_status"] | null
+          priority?: string
           production_started_at?: string | null
           requested_delivery_date?: string | null
           sales_channel?: string | null
@@ -1082,6 +1090,7 @@ export type Database = {
           payment_id?: string | null
           payment_method?: string | null
           payment_status?: Database["public"]["Enums"]["payment_status"] | null
+          priority?: string
           production_started_at?: string | null
           requested_delivery_date?: string | null
           sales_channel?: string | null

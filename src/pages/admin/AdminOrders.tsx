@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Search, Eye, X, Package, MapPin, CreditCard, Clock, User, Save, Truck, FileText } from "lucide-react";
+import { Search, Eye, X, Package, MapPin, CreditCard, Clock, User, Save, Truck, FileText, AlertTriangle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,7 @@ const paymentStatusLabels: Record<string, string> = {
 };
 
 const AdminOrders = () => {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("all");
@@ -47,7 +49,7 @@ const AdminOrders = () => {
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
-      let query = supabase.from("orders").select("*, customers(name, email, phone, cpf_cnpj)").order("created_at", { ascending: false }).limit(50);
+      let query = supabase.from("orders").select("*, customers(name, email, phone, cpf_cnpj)").order("priority", { ascending: false }).order("created_at", { ascending: false }).limit(50);
       if (statusFilter && statusFilter !== "all") query = query.eq("status", statusFilter as any);
       const { data } = await query;
       setOrders(data || []);
@@ -150,10 +152,10 @@ const AdminOrders = () => {
             <thead>
               <tr className="border-b border-border bg-muted/50">
                 <th className="text-left p-4 font-display uppercase tracking-wider text-xs text-muted-foreground">#</th>
+                <th className="text-left p-4 font-display uppercase tracking-wider text-xs text-muted-foreground">Prioridade</th>
                 <th className="text-left p-4 font-display uppercase tracking-wider text-xs text-muted-foreground">Cliente</th>
                 <th className="text-right p-4 font-display uppercase tracking-wider text-xs text-muted-foreground">Total</th>
                 <th className="text-center p-4 font-display uppercase tracking-wider text-xs text-muted-foreground">Status</th>
-                <th className="text-center p-4 font-display uppercase tracking-wider text-xs text-muted-foreground">Pagamento</th>
                 <th className="text-left p-4 font-display uppercase tracking-wider text-xs text-muted-foreground">Data</th>
                 <th className="text-right p-4 font-display uppercase tracking-wider text-xs text-muted-foreground">Ações</th>
               </tr>
@@ -170,20 +172,29 @@ const AdminOrders = () => {
                 return (
                   <tr key={o.id} className="border-b border-border hover:bg-muted/30 transition-colors">
                     <td className="p-4 font-display font-bold text-foreground">#{o.order_number}</td>
+                    <td className="p-4">
+                      <span className={`inline-block rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider border ${
+                        o.priority === 'critical' ? 'bg-red-100 text-red-800 border-red-300' :
+                        o.priority === 'urgent' ? 'bg-orange-100 text-orange-800 border-orange-300' :
+                        'bg-gray-100 text-gray-700 border-gray-200'
+                      }`}>
+                        {o.priority === 'critical' ? 'Crítica' : o.priority === 'urgent' ? 'Urgente' : 'Normal'}
+                      </span>
+                    </td>
                     <td className="p-4 font-body text-foreground">{o.customers?.name || "—"}<br /><span className="text-xs text-muted-foreground">{o.customers?.email}</span></td>
                     <td className="p-4 text-right font-body font-medium">{formatCurrency(Number(o.total))}</td>
                     <td className="p-4 text-center">
-                      <Select value={o.status} onValueChange={v => updateStatus(o.id, v)}>
-                        <SelectTrigger className={`w-32 text-xs font-body ${st.color} border-0`}><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          {Object.entries(statusLabels).map(([k, v]) => <SelectItem key={k} value={k}>{v.label}</SelectItem>)}
-                        </SelectContent>
-                      </Select>
+                      <div className={`inline-block rounded px-2 py-0.5 text-xs font-body font-medium ${st.color}`}>
+                        {st.label}
+                      </div>
                     </td>
-                    <td className="p-4 text-center text-xs font-body text-muted-foreground">{o.payment_method || "—"}</td>
                     <td className="p-4 font-body text-xs text-muted-foreground">{new Date(o.created_at).toLocaleDateString("pt-BR")}</td>
                     <td className="p-4 text-right">
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openDetail(o)}><Eye className="h-3.5 w-3.5" /></Button>
+                      <div className="flex items-center justify-end gap-1">
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate(`/admin/pedidos/${o.id}`)} title="Ver detalhes">
+                          <Eye className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 );
