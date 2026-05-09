@@ -2077,6 +2077,10 @@ export type Database = {
         Args: { p_order_id: string }
         Returns: number
       }
+      recalculate_order_totals: {
+        Args: { p_order_id: string }
+        Returns: undefined
+      }
       seed_order_production_progress: {
         Args: { p_order_id: string; p_start_at?: string }
         Returns: number
