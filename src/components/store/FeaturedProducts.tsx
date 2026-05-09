@@ -33,6 +33,7 @@ const FeaturedProducts = () => {
         .eq("is_active", true)
         .eq("is_featured", true)
         .eq("wholesale_only", false)
+        .gt("available_stock", 0)
         .order("created_at", { ascending: false })
         .limit(6);
       setProducts((data as any) || []);
