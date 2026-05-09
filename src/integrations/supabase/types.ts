@@ -2053,14 +2053,24 @@ export type Database = {
         Args: { p_operator?: string; p_order_id: string; p_stage_code: string }
         Returns: boolean
       }
-      create_wholesale_order: {
-        Args: {
-          p_atacadista_notes?: string
-          p_items: Json
-          p_requested_delivery_date?: string
-        }
-        Returns: Json
-      }
+      create_wholesale_order:
+        | {
+            Args: {
+              p_atacadista_notes?: string
+              p_items: Json
+              p_requested_delivery_date?: string
+            }
+            Returns: Json
+          }
+        | {
+            Args: {
+              p_atacadista_notes?: string
+              p_items: Json
+              p_priority?: string
+              p_requested_delivery_date?: string
+            }
+            Returns: Json
+          }
       get_wholesale_email_by_cnpj: { Args: { p_cnpj: string }; Returns: string }
       has_role: {
         Args: {

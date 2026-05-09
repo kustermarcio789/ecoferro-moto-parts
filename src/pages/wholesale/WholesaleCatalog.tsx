@@ -34,6 +34,7 @@ const WholesaleCatalog = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [requestedDate, setRequestedDate] = useState<string>("");
+  const [priority, setPriority] = useState<"normal" | "urgent" | "critical">("normal");
   const [notes, setNotes] = useState("");
 
   useEffect(() => {
@@ -121,6 +122,7 @@ const WholesaleCatalog = () => {
         p_items: items,
         p_requested_delivery_date: requestedDate || null,
         p_atacadista_notes: notes || null,
+        p_priority: priority,
       });
       if (error) throw error;
       const orderId = (data as any)?.order_id;
@@ -298,6 +300,48 @@ const WholesaleCatalog = () => {
             )}
 
             <div className="space-y-3">
+              <div>
+                <label className="text-xs font-body text-foreground mb-1 block">Prioridade do pedido</label>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPriority("normal")}
+                    className={`text-[10px] font-display font-bold uppercase py-1.5 px-2 rounded-lg border transition-colors ${
+                      priority === "normal"
+                        ? "bg-muted text-foreground border-border"
+                        : "bg-background text-muted-foreground border-border hover:bg-muted/50"
+                    }`}
+                  >
+                    Normal
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPriority("urgent")}
+                    className={`text-[10px] font-display font-bold uppercase py-1.5 px-2 rounded-lg border transition-colors ${
+                      priority === "urgent"
+                        ? "bg-orange-500 text-white border-orange-600"
+                        : "bg-background text-orange-500 border-orange-500 hover:bg-orange-50"
+                    }`}
+                  >
+                    Urgente
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPriority("critical")}
+                    className={`text-[10px] font-display font-bold uppercase py-1.5 px-2 rounded-lg border transition-colors ${
+                      priority === "critical"
+                        ? "bg-red-600 text-white border-red-700"
+                        : "bg-background text-red-600 border-red-600 hover:bg-red-50"
+                    }`}
+                  >
+                    Crítica
+                  </button>
+                </div>
+                <p className="text-[10px] text-muted-foreground mt-1 font-body">
+                  A equipe pode revisar a prioridade conforme disponibilidade.
+                </p>
+              </div>
+
               <div>
                 <label className="text-xs font-body text-foreground mb-1 block">Prazo desejado</label>
                 <input
