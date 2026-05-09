@@ -1,11 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Loader2, Minus, Plus, Search, ShoppingCart, Trash2 } from "lucide-react";
+import { Loader2, Minus, Plus, Search, ShoppingCart, Trash2, Clock } from "lucide-react";
 import WholesalePortalLayout from "@/components/wholesale/WholesalePortalLayout";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useWholesaleCart } from "@/contexts/WholesaleCartContext";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ProductRow {
   id: string;
@@ -299,47 +307,40 @@ const WholesaleCatalog = () => {
               </>
             )}
 
-            <div className="space-y-3">
-              <div>
-                <label className="text-xs font-body text-foreground mb-1 block">Prioridade do pedido</label>
-                <div className="grid grid-cols-3 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setPriority("normal")}
-                    className={`text-[10px] font-display font-bold uppercase py-1.5 px-2 rounded-lg border transition-colors ${
-                      priority === "normal"
-                        ? "bg-muted text-foreground border-border"
-                        : "bg-background text-muted-foreground border-border hover:bg-muted/50"
-                    }`}
-                  >
-                    Normal
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPriority("urgent")}
-                    className={`text-[10px] font-display font-bold uppercase py-1.5 px-2 rounded-lg border transition-colors ${
-                      priority === "urgent"
-                        ? "bg-orange-500 text-white border-orange-600"
-                        : "bg-background text-orange-500 border-orange-500 hover:bg-orange-50"
-                    }`}
-                  >
-                    Urgente
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPriority("critical")}
-                    className={`text-[10px] font-display font-bold uppercase py-1.5 px-2 rounded-lg border transition-colors ${
-                      priority === "critical"
-                        ? "bg-red-600 text-white border-red-700"
-                        : "bg-background text-red-600 border-red-600 hover:bg-red-50"
-                    }`}
-                  >
-                    Crítica
-                  </button>
+            <div className="space-y-4">
+              <div className="border border-border rounded-lg overflow-hidden">
+                <div className="bg-muted/50 px-3 py-2 border-b border-border flex items-center gap-2">
+                  <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+                  <span className="text-[10px] font-display font-bold uppercase tracking-wider text-foreground">
+                    Status e Prioridade
+                  </span>
                 </div>
-                <p className="text-[10px] text-muted-foreground mt-1 font-body">
-                  A equipe pode revisar a prioridade conforme disponibilidade.
-                </p>
+                <div className="p-3 space-y-3">
+                  <div>
+                    <label className="text-xs font-body text-foreground mb-1 block">Prioridade do Pedido</label>
+                    <Select value={priority} onValueChange={(val: any) => setPriority(val)}>
+                      <SelectTrigger 
+                        className={`w-full h-9 text-xs font-body ${
+                          priority === 'urgent' 
+                            ? 'bg-orange-100 text-orange-800 border-orange-200 focus:ring-orange-500' 
+                            : priority === 'critical'
+                            ? 'bg-red-100 text-red-800 border-red-200 focus:ring-red-500'
+                            : 'bg-background'
+                        }`}
+                      >
+                        <SelectValue placeholder="Selecione a prioridade" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="normal" className="text-xs font-body">Normal</SelectItem>
+                        <SelectItem value="urgent" className="text-xs font-body text-orange-800 focus:bg-orange-50 focus:text-orange-900">Urgente</SelectItem>
+                        <SelectItem value="critical" className="text-xs font-body text-red-800 focus:bg-red-50 focus:text-red-900">Crítica</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-[10px] text-muted-foreground mt-1.5 font-body leading-tight">
+                      A equipe pode revisar a prioridade conforme disponibilidade.
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <div>
