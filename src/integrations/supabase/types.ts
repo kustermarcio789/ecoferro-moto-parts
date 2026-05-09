@@ -1535,6 +1535,7 @@ export type Database = {
       }
       products: {
         Row: {
+          available_stock: number
           brand_id: string | null
           category_id: string | null
           cfop: string | null
@@ -1550,6 +1551,7 @@ export type Database = {
           is_active: boolean | null
           is_featured: boolean | null
           is_new: boolean | null
+          last_stock_sync_at: string | null
           length: number | null
           meta_description: string | null
           meta_title: string | null
@@ -1574,6 +1576,7 @@ export type Database = {
           width: number | null
         }
         Insert: {
+          available_stock?: number
           brand_id?: string | null
           category_id?: string | null
           cfop?: string | null
@@ -1589,6 +1592,7 @@ export type Database = {
           is_active?: boolean | null
           is_featured?: boolean | null
           is_new?: boolean | null
+          last_stock_sync_at?: string | null
           length?: number | null
           meta_description?: string | null
           meta_title?: string | null
@@ -1613,6 +1617,7 @@ export type Database = {
           width?: number | null
         }
         Update: {
+          available_stock?: number
           brand_id?: string | null
           category_id?: string | null
           cfop?: string | null
@@ -1628,6 +1633,7 @@ export type Database = {
           is_active?: boolean | null
           is_featured?: boolean | null
           is_new?: boolean | null
+          last_stock_sync_at?: string | null
           length?: number | null
           meta_description?: string | null
           meta_title?: string | null
@@ -1839,6 +1845,42 @@ export type Database = {
           key?: string
           updated_at?: string
           value?: Json
+        }
+        Relationships: []
+      }
+      stock_sync_logs: {
+        Row: {
+          error_message: string | null
+          finished_at: string | null
+          id: string
+          source_url: string | null
+          started_at: string
+          status: string
+          total_skus_not_found: number | null
+          total_skus_received: number | null
+          total_skus_updated: number | null
+        }
+        Insert: {
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          source_url?: string | null
+          started_at?: string
+          status?: string
+          total_skus_not_found?: number | null
+          total_skus_received?: number | null
+          total_skus_updated?: number | null
+        }
+        Update: {
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          source_url?: string | null
+          started_at?: string
+          status?: string
+          total_skus_not_found?: number | null
+          total_skus_received?: number | null
+          total_skus_updated?: number | null
         }
         Relationships: []
       }
