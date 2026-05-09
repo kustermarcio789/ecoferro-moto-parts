@@ -87,6 +87,7 @@ const AdminOrders = () => {
 
   const openDetail = async (order: any) => {
     setSelectedOrder(order);
+    setIsEditing(false);
     setDetailLoading(true);
     const [items, payments] = await Promise.all([
       supabase.from("order_items").select("*").eq("order_id", order.id).order("created_at"),
@@ -94,31 +95,116 @@ const AdminOrders = () => {
     ]);
     setOrderItems(items.data || []);
     setOrderPayments(payments.data || []);
+    
+    // Set edit fields
     setEditTracking(order.tracking_code || "");
     setEditInvoice(order.invoice_number || "");
     setEditInvoiceKey(order.invoice_key || "");
     setEditInternalNotes(order.internal_notes || "");
+    setEditAtacadistaNotes(order.atacadista_notes || "");
+    setEditPriority(order.priority || "normal");
+    setEditRequestedDate(order.requested_delivery_date ? new Date(order.requested_delivery_date).toISOString().split('T')[0] : "");
+    
     setDetailLoading(false);
+  };
+
+  const removeItem = async (itemId: string, productName: string) => {
+    if (!selectedOrder || !window.confirm(`Remover "${productName}" do pedido?`)) return;
+    
+    const { error } = await supabase.from("order_items").delete().eq("id", itemId);
+    if (error) {
+      toast({ title: "Erro ao remover", description: error.message, variant: "destructive" });
+    } else {
+      await supabase.rpc("recalculate_order_totals", { p_order_id: selectedOrder.id });
+      await supabase.from("admin_logs").insert({
+        action: "order.item_removed",
+        entity_type: "order",
+        entity_id: selectedOrder.id,
+        details: { product_name: productName }
+      });
+      toast({ title: "Item removido" });
+      openDetail(selectedOrder);
+    }
+  };
+
+  const updateItemQty = (itemId: string, field: string, value: number) => {
+    setOrderItems(prev => prev.map(item => {
+      if (item.id === itemId) {
+        const newItem = { ...item, [field]: value };
+        if (field === 'quantity') {
+          newItem.total = newItem.unit_price * value;
+        }
+        return newItem;
+      }
+      return item;
+    }));
   };
 
   const saveOrderFields = async () => {
     if (!selectedOrder) return;
     setSaving(true);
-    const updates: any = {
-      tracking_code: editTracking || null,
-      invoice_number: editInvoice || null,
-      invoice_key: editInvoiceKey || null,
-      internal_notes: editInternalNotes || null,
-    };
-    const { error } = await supabase.from("orders").update(updates).eq("id", selectedOrder.id);
-    if (error) {
+    try {
+      // 1. Update Order Items if in editing mode
+      if (isEditing) {
+        for (const item of orderItems) {
+          const original = (await supabase.from("order_items").select("quantity").eq("id", item.id).single()).data;
+          if (original && original.quantity !== item.quantity) {
+             await supabase.from("admin_logs").insert({
+               action: "order.item_updated",
+               entity_type: "order",
+               entity_id: selectedOrder.id,
+               details: { product_name: item.product_name, before: { quantity: original.quantity }, after: { quantity: item.quantity } }
+             });
+          }
+          await supabase.from("order_items").update({
+            quantity: item.quantity,
+            confirmed_quantity: item.confirmed_quantity,
+            delivered_quantity: item.delivered_quantity,
+            total: item.total
+          }).eq("id", item.id);
+        }
+        await supabase.rpc("recalculate_order_totals", { p_order_id: selectedOrder.id });
+      }
+
+      // 2. Update Order Main Fields
+      const updates: any = {
+        tracking_code: editTracking || null,
+        invoice_number: editInvoice || null,
+        invoice_key: editInvoiceKey || null,
+        internal_notes: editInternalNotes || null,
+        atacadista_notes: editAtacadistaNotes || null,
+        priority: editPriority,
+        requested_delivery_date: editRequestedDate || null,
+      };
+
+      // Log priority change
+      if (selectedOrder.priority !== editPriority) {
+        await supabase.from("admin_logs").insert({
+          action: "order.priority_changed",
+          entity_type: "order",
+          entity_id: selectedOrder.id,
+          details: { before: selectedOrder.priority, after: editPriority }
+        });
+      }
+
+      const { error } = await supabase.from("orders").update(updates).eq("id", selectedOrder.id);
+      if (error) throw error;
+
+      toast({ title: "Pedido atualizado com sucesso" });
+      
+      // Refresh order list and selected order
+      const { data: updatedOrder } = await supabase.from("orders").select("*, customers(name, email, phone, cpf_cnpj)").eq("id", selectedOrder.id).single();
+      if (updatedOrder) {
+        setSelectedOrder(updatedOrder);
+        setOrders(prev => prev.map(o => o.id === updatedOrder.id ? updatedOrder : o));
+        setIsEditing(false);
+        openDetail(updatedOrder);
+      }
+    } catch (error: any) {
       toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Salvo com sucesso" });
-      setSelectedOrder((prev: any) => prev ? { ...prev, ...updates } : prev);
-      setOrders(prev => prev.map(o => o.id === selectedOrder.id ? { ...o, ...updates } : o));
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
   const formatDate = (d: string | null) => d ? new Date(d).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit" }) : "—";
