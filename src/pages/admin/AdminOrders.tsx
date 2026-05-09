@@ -42,10 +42,16 @@ const AdminOrders = () => {
   const [orderItems, setOrderItems] = useState<any[]>([]);
   const [orderPayments, setOrderPayments] = useState<any[]>([]);
   const [detailLoading, setDetailLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  
+  // Fields for editing
   const [editTracking, setEditTracking] = useState("");
   const [editInvoice, setEditInvoice] = useState("");
   const [editInvoiceKey, setEditInvoiceKey] = useState("");
   const [editInternalNotes, setEditInternalNotes] = useState("");
+  const [editAtacadistaNotes, setEditAtacadistaNotes] = useState("");
+  const [editPriority, setEditPriority] = useState("");
+  const [editRequestedDate, setEditRequestedDate] = useState("");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
