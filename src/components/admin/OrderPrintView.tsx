@@ -160,7 +160,7 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
                     DATA: {new Date(order.created_at).toLocaleDateString("pt-BR")} | HORA: {new Date(order.created_at).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}
                   </p>
                   <div className="mt-3">
-                    <p className="text-[11px] font-extrabold uppercase leading-tight">CLIENTE: {order.customers?.name || order.wholesale_customer?.name || "NÃO IDENTIFICADO"}</p>
+                    <p className="text-[11px] font-extrabold uppercase leading-tight">CLIENTE: {order.customers?.name || order.wholesale_customer?.razao_social || "NÃO IDENTIFICADO"}</p>
                     <p className="text-[10px] font-bold leading-tight">CNPJ/CPF: {order.customers?.cpf_cnpj || order.wholesale_customer?.cnpj || "—"}</p>
                     {order.customers?.email && <p className="text-[10px] leading-tight">EMAIL: {order.customers.email}</p>}
                   </div>
