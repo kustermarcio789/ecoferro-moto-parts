@@ -71,28 +71,30 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
             className={`mx-auto bg-white shadow-lg w-[210mm] min-h-[297mm] p-[15mm] mb-8 print:shadow-none print:m-0 print:mb-0 ${pageIndex < pages - 1 ? 'page-break' : ''}`}
           >
             {/* Header */}
-            <div className="border-b-2 border-primary pb-4 mb-6 flex justify-between items-start">
+            <div className="border-b-2 border-primary pb-2 mb-4 flex justify-between items-start">
               <div>
-                <h1 className="text-2xl font-bold text-primary">Pedido #{order.order_number}</h1>
-                <p className="text-sm text-muted-foreground">
+                <h1 className="text-xl font-bold text-primary leading-tight">Pedido #{order.order_number}</h1>
+                <p className="text-[10px] text-muted-foreground">
                   Data: {new Date(order.created_at).toLocaleDateString("pt-BR")}
                 </p>
-                <div className="mt-2 space-y-1">
-                  <p className="text-sm font-bold">{order.customers?.name || order.wholesale_customer?.name}</p>
-                  <p className="text-xs text-muted-foreground">CNPJ/CPF: {order.customers?.cpf_cnpj || order.wholesale_customer?.cnpj || "—"}</p>
+                <div className="mt-1 space-y-0.5">
+                  <p className="text-xs font-bold leading-tight">{order.customers?.name || order.wholesale_customer?.name}</p>
+                  <p className="text-[10px] text-muted-foreground">CNPJ/CPF: {order.customers?.cpf_cnpj || order.wholesale_customer?.cnpj || "—"}</p>
                 </div>
               </div>
-              <div className="text-right space-y-1">
-                <div className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase bg-muted border">
+              <div className="text-right space-y-0.5">
+                <div className="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-muted border">
                   Status: {order.status}
                 </div>
                 <div className="block">
-                  <span className="text-xs font-bold uppercase mr-1">Prioridade:</span>
-                  <span className={`text-xs font-bold uppercase ${order.priority === 'critical' ? 'text-red-600' : order.priority === 'urgent' ? 'text-orange-600' : 'text-gray-600'}`}>
+                  <span className="text-[9px] font-bold uppercase mr-1">Prioridade:</span>
+                  <span className={`text-[9px] font-bold uppercase ${order.priority === 'critical' ? 'text-red-600' : order.priority === 'urgent' ? 'text-orange-600' : 'text-gray-600'}`}>
                     {order.priority || 'Normal'}
                   </span>
                 </div>
-                <p className="text-lg font-bold text-primary mt-2">Total: {formatCurrency(Number(order.total))}</p>
+                {showPrices && (
+                  <p className="text-base font-bold text-primary mt-1">Total: {formatCurrency(Number(order.total))}</p>
+                )}
               </div>
             </div>
 
