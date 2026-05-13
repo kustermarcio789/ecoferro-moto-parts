@@ -155,24 +155,32 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
               {/* Header */}
               <div className="border-b-2 border-black pb-2 mb-4 flex justify-between items-start">
                 <div className="flex-1 grid grid-cols-2 gap-4">
-                  <div>
+                  <div className="space-y-1">
                     <h1 className="text-lg font-black text-black leading-none mb-1 uppercase">PEDIDO DE VENDA #{order.order_number}</h1>
                     <p className="text-[10px] font-bold text-gray-700">
                       DATA: {new Date(order.created_at).toLocaleDateString("pt-BR")} | HORA: {new Date(order.created_at).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}
                     </p>
                     <div className="mt-2 space-y-0.5">
                       <p className="text-[11px] font-black uppercase leading-tight text-black">
-                        ATACADISTA: {order.wholesale_customer?.razao_social || order.wholesale_customer?.nome_fantasia || order.customers?.name || "CLIENTE NÃO IDENTIFICADO"}
+                        ATACADISTA: {order.wholesale_customer?.razao_social || order.wholesale_customer?.nome_fantasia || order.customers?.company_name || order.customers?.name || "CLIENTE NÃO IDENTIFICADO"}
                       </p>
-                      {order.wholesale_customer?.contact_name && (
-                        <p className="text-[10px] font-bold leading-tight uppercase">RESPONSÁVEL: {order.wholesale_customer.contact_name}</p>
+                      {(order.wholesale_customer?.contact_name || order.customers?.name) && (
+                        <p className="text-[10px] font-bold leading-tight uppercase">
+                          RESPONSÁVEL: {order.wholesale_customer?.contact_name || order.customers?.name}
+                        </p>
                       )}
-                      <p className="text-[10px] font-bold leading-tight uppercase">CNPJ/CPF: {order.wholesale_customer?.cnpj || order.customers?.cpf_cnpj || "NÃO INFORMADO"}</p>
+                      <p className="text-[10px] font-bold leading-tight uppercase">
+                        CNPJ/CPF: {order.wholesale_customer?.cnpj || order.customers?.cpf_cnpj || "NÃO INFORMADO"}
+                      </p>
                     </div>
                   </div>
                   <div className="mt-auto pb-0.5 space-y-0.5">
-                    <p className="text-[10px] font-bold leading-tight uppercase">E-MAIL: {order.wholesale_customer?.email || order.customers?.email || "NÃO INFORMADO"}</p>
-                    <p className="text-[10px] font-bold leading-tight uppercase">TELEFONE: {order.wholesale_customer?.phone || order.customers?.phone || "NÃO INFORMADO"}</p>
+                    <p className="text-[10px] font-bold leading-tight uppercase">
+                      E-MAIL: {order.wholesale_customer?.email || order.customers?.email || "NÃO INFORMADO"}
+                    </p>
+                    <p className="text-[10px] font-bold leading-tight uppercase">
+                      TELEFONE: {order.wholesale_customer?.phone || order.customers?.phone || "NÃO INFORMADO"}
+                    </p>
                   </div>
                 </div>
                 <div className="text-right flex flex-col items-end gap-1 ml-4">
