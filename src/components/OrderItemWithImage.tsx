@@ -53,7 +53,7 @@ const OrderItemsTableWithImages = ({
             <th className="text-center p-2 sm:p-4">Confirmada</th>
             {showDelivered && <th className="text-center p-2 sm:p-4">Entregue</th>}
             {showUnitPrice && <th className="text-right p-2 sm:p-4">Unitário</th>}
-            <th className="text-right p-2 sm:p-4">Total</th>
+            <th className="text-right p-2 sm:p-4">Subtotal</th>
           </tr>
         </thead>
         <tbody>
