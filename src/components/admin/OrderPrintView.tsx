@@ -29,7 +29,17 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
     <div className="fixed inset-0 z-50 bg-background flex flex-col overflow-hidden print:static print:bg-white print:block">
       <div className="p-4 border-b flex justify-between items-center print:hidden">
         <h2 className="text-lg font-bold">Visualização de Impressão</h2>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 mr-2">
+            <input 
+              type="checkbox" 
+              id="show-prices" 
+              checked={showPrices} 
+              onChange={(e) => setShowPrices(e.target.checked)}
+              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+            />
+            <label htmlFor="show-prices" className="text-sm font-medium">Mostrar Preços</label>
+          </div>
           <Button onClick={handlePrint}>
             <Printer className="mr-2 h-4 w-4" /> Imprimir
           </Button>
