@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Save, Loader2, Package, User, Clock, CheckCircle2, AlertCircle } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Package, User, Clock, CheckCircle2, AlertCircle, Printer } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { formatCurrency } from "@/lib/tracking";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import OrderItemsTableWithImages from "@/components/OrderItemWithImage";
+import OrderPrintView from "@/components/admin/OrderPrintView";
 
 const priorityConfig: Record<string, { label: string; color: string; border: string }> = {
   normal: { label: "Normal", color: "bg-gray-100 text-gray-700", border: "border-gray-200" },
@@ -24,6 +26,7 @@ const AdminOrderDetail = () => {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showPrintView, setShowPrintView] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -43,7 +46,7 @@ const AdminOrderDetail = () => {
 
       const { data: itemsData, error: itemsError } = await supabase
         .from("order_items")
-        .select("*")
+        .select("*, product:product_id(product_images(url, is_primary))")
         .eq("order_id", id)
         .order("created_at");
 
@@ -129,10 +132,15 @@ const AdminOrderDetail = () => {
         <Link to="/admin/pedidos" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Voltar para Pedidos
         </Link>
-        <Button onClick={handleSave} disabled={saving}>
-          {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-          Salvar Alterações
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => setShowPrintView(true)}>
+            <Printer className="mr-2 h-4 w-4" /> Imprimir
+          </Button>
+          <Button onClick={handleSave} disabled={saving}>
+            {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+            Salvar Alterações
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -189,49 +197,12 @@ const AdminOrderDetail = () => {
                 <Package className="h-4 w-4 text-muted-foreground" /> Itens do Pedido
               </h3>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border bg-muted/10">
-                    <th className="text-left p-4 text-xs font-display uppercase tracking-wider text-muted-foreground">Produto</th>
-                    <th className="text-center p-4 text-xs font-display uppercase tracking-wider text-muted-foreground">Solicitada</th>
-                    <th className="text-center p-4 text-xs font-display uppercase tracking-wider text-muted-foreground">Confirmada</th>
-                    <th className="text-center p-4 text-xs font-display uppercase tracking-wider text-muted-foreground">Entregue</th>
-                    <th className="text-right p-4 text-xs font-display uppercase tracking-wider text-muted-foreground">Subtotal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map(item => (
-                    <tr key={item.id} className="border-b border-border last:border-0 hover:bg-muted/10">
-                      <td className="p-4 font-body">
-                        <div className="font-medium">{item.product_name}</div>
-                        {item.sku && <div className="text-xs text-muted-foreground">SKU: {item.sku}</div>}
-                      </td>
-                      <td className="p-4 text-center font-body">{item.quantity}</td>
-                      <td className="p-4 text-center">
-                        <Input 
-                          type="number" 
-                          className="w-20 mx-auto text-center h-8" 
-                          value={item.confirmed_quantity ?? ""} 
-                          onChange={(e) => updateItem(item.id, 'confirmed_quantity', e.target.value === "" ? null : parseInt(e.target.value))}
-                        />
-                      </td>
-                      <td className="p-4 text-center">
-                        <Input 
-                          type="number" 
-                          className="w-20 mx-auto text-center h-8" 
-                          value={item.delivered_quantity} 
-                          onChange={(e) => updateItem(item.id, 'delivered_quantity', parseInt(e.target.value) || 0)}
-                        />
-                      </td>
-                      <td className="p-4 text-right font-body font-medium">
-                        {formatCurrency((item.confirmed_quantity ?? item.quantity) * Number(item.unit_price))}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <OrderItemsTableWithImages 
+              items={items} 
+              isAdmin={true} 
+              onUpdateQuantity={updateItem}
+              showDelivered={true}
+            />
           </div>
         </div>
 
@@ -282,6 +253,14 @@ const AdminOrderDetail = () => {
           </div>
         </div>
       </div>
+      
+      {showPrintView && (
+        <OrderPrintView 
+          order={order} 
+          items={items} 
+          onClose={() => setShowPrintView(false)} 
+        />
+      )}
     </AdminLayout>
   );
 };

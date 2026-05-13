@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, Calendar, CheckCircle2, Clock, Loader2, Package, Truck } from "lucide-react";
+import { ArrowLeft, Calendar, CheckCircle2, Clock, Loader2, Package, Truck, Printer } from "lucide-react";
 import WholesalePortalLayout from "@/components/wholesale/WholesalePortalLayout";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { useWholesaleCustomer } from "@/hooks/useWholesaleCustomer";
+import OrderItemsTableWithImages from "@/components/OrderItemWithImage";
+import OrderPrintView from "@/components/admin/OrderPrintView";
+import { Button } from "@/components/ui/button";
 
 interface OrderItem {
   id: string;
@@ -75,6 +78,7 @@ const WholesaleOrderDetail = () => {
   const { wholesaleCustomer } = useWholesaleCustomer();
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showPrintView, setShowPrintView] = useState(false);
 
   useEffect(() => {
     if (!id || !wholesaleCustomer) return;
@@ -93,7 +97,7 @@ const WholesaleOrderDetail = () => {
         .maybeSingle(),
       supabase
         .from("order_items")
-        .select("id, product_name, sku, quantity, unit_price, total, confirmed_quantity, delivered_quantity")
+        .select("id, product_name, sku, quantity, unit_price, total, confirmed_quantity, delivered_quantity, product:product_id(product_images(url, is_primary))")
         .eq("order_id", id)
         .order("created_at"),
       supabase
@@ -148,9 +152,14 @@ const WholesaleOrderDetail = () => {
 
   return (
     <WholesalePortalLayout>
-      <Link to="/atacado/pedidos" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4">
-        <ArrowLeft className="h-4 w-4" /> Voltar para meus pedidos
-      </Link>
+      <div className="flex items-center justify-between mb-4">
+        <Link to="/atacado/pedidos" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="h-4 w-4" /> Voltar para meus pedidos
+        </Link>
+        <Button variant="outline" size="sm" onClick={() => setShowPrintView(true)}>
+          <Printer className="mr-2 h-4 w-4" /> Imprimir Pedido
+        </Button>
+      </div>
 
       <div className="bg-card border border-border rounded-2xl p-6 mb-6">
         <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
@@ -284,59 +293,19 @@ const WholesaleOrderDetail = () => {
         <h2 className="font-display uppercase tracking-wider font-bold text-foreground mb-4 flex items-center gap-2">
           <Package className="h-4 w-4 text-primary" /> Itens do Pedido
         </h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-xs font-display uppercase tracking-wider text-muted-foreground">
-                <th className="text-left p-2">Produto</th>
-                <th className="text-center p-2">Solicitada</th>
-                <th className="text-center p-2">Confirmada</th>
-                <th className="text-right p-2">Unitário</th>
-                <th className="text-right p-2">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.items.map((it) => (
-                <tr key={it.id} className="border-b border-border last:border-0">
-                  <td className="p-2 font-body">
-                    <div className="font-medium text-foreground">{it.product_name}</div>
-                    {it.sku && <div className="text-xs text-muted-foreground">SKU: {it.sku}</div>}
-                  </td>
-                  <td className="p-2 text-center font-body">{it.quantity}</td>
-                  <td className="p-2 text-center font-body">
-                    {it.confirmed_quantity !== null ? (
-                      <span className={it.confirmed_quantity < it.quantity ? "text-amber-600 font-bold" : ""}>
-                        {it.confirmed_quantity}
-                        {it.confirmed_quantity < it.quantity && (
-                          <span className="block text-[10px] font-normal">Reduzido pelo admin</span>
-                        )}
-                      </span>
-                    ) : (
-                      <span className="text-muted-foreground">—</span>
-                    )}
-                  </td>
-                  <td className="p-2 text-right font-body">{formatBRL(Number(it.unit_price))}</td>
-                  <td className="p-2 text-right font-body">{formatBRL((it.confirmed_quantity ?? it.quantity) * Number(it.unit_price))}</td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colSpan={3} className="p-2 text-right font-display uppercase text-xs">
-                  Subtotal
-                </td>
-                <td className="p-2 text-right font-body">{formatBRL(Number(order.subtotal))}</td>
-              </tr>
-              <tr>
-                <td colSpan={3} className="p-2 text-right font-display uppercase text-xs font-bold">
-                  Total
-                </td>
-                <td className="p-2 text-right font-display font-bold text-primary">
-                  {formatBRL(Number(order.total))}
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+        <OrderItemsTableWithImages 
+          items={order.items as any[]} 
+          isAdmin={false} 
+        />
+        <div className="mt-4 border-t border-border pt-4">
+          <div className="flex justify-end gap-8 mb-2">
+            <span className="text-right font-display uppercase text-xs">Subtotal</span>
+            <span className="text-right font-body w-32">{formatBRL(Number(order.subtotal))}</span>
+          </div>
+          <div className="flex justify-end gap-8">
+            <span className="text-right font-display uppercase text-xs font-bold">Total</span>
+            <span className="text-right font-display font-bold text-primary w-32">{formatBRL(Number(order.total))}</span>
+          </div>
         </div>
       </section>
 
@@ -367,6 +336,14 @@ const WholesaleOrderDetail = () => {
             </div>
           )}
         </section>
+      )}
+
+      {showPrintView && (
+        <OrderPrintView 
+          order={order} 
+          items={order.items as any[]} 
+          onClose={() => setShowPrintView(false)} 
+        />
       )}
     </WholesalePortalLayout>
   );
