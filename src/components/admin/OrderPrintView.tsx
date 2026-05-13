@@ -191,7 +191,7 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
                     <th className="text-left py-1 px-1 text-[10px] font-black uppercase border-r border-black">DESCRIÇÃO DO PRODUTO</th>
                     <th className="text-center py-1 px-1 text-[10px] font-black uppercase border-r border-black w-14">SOLIC.</th>
                     <th className="text-center py-1 px-1 text-[10px] font-black uppercase border-r border-black w-14">CONF.</th>
-                    {order.delivered_quantity !== undefined && (
+                    {items[0]?.delivered_quantity !== undefined && (
                       <th className="text-center py-1 px-1 text-[10px] font-black uppercase border-r border-black w-14">ENTR.</th>
                     )}
                     {showPrices && <th className="text-right py-1 px-1 text-[10px] font-black uppercase w-24">TOTAL</th>}
