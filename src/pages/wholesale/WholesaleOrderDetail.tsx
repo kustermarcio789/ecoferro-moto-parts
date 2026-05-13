@@ -97,7 +97,7 @@ const WholesaleOrderDetail = () => {
         .maybeSingle(),
       supabase
         .from("order_items")
-        .select("id, product_name, sku, quantity, unit_price, total, confirmed_quantity, delivered_quantity")
+        .select("id, product_name, sku, quantity, unit_price, total, confirmed_quantity, delivered_quantity, product:product_id(product_images(url, is_primary))")
         .eq("order_id", id)
         .order("created_at"),
       supabase
@@ -336,6 +336,14 @@ const WholesaleOrderDetail = () => {
             </div>
           )}
         </section>
+      )}
+
+      {showPrintView && (
+        <OrderPrintView 
+          order={order} 
+          items={order.items as any[]} 
+          onClose={() => setShowPrintView(false)} 
+        />
       )}
     </WholesalePortalLayout>
   );
