@@ -10,6 +10,7 @@ interface OrderPrintViewProps {
 }
 
 const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
+  const [showPrices, setShowPrices] = React.useState(true);
   const itemsPerPage = 15;
   const pages = Math.ceil(items.length / itemsPerPage);
 
