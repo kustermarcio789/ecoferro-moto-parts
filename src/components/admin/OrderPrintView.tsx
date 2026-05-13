@@ -77,7 +77,7 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
         {Array.from({ length: pages || 1 }).map((_, pageIndex) => (
           <div 
             key={pageIndex} 
-            className={`mx-auto bg-white shadow-lg w-[210mm] min-h-[297mm] p-[15mm] mb-8 print:shadow-none print:m-0 print:mb-0 ${pageIndex < pages - 1 ? 'page-break' : ''}`}
+            className={`mx-auto bg-white shadow-lg w-[210mm] min-h-[297mm] p-[10mm] mb-8 print:shadow-none print:m-0 print:mb-0 ${pageIndex < pages - 1 ? 'page-break' : ''}`}
           >
             {/* Header */}
             <div className="border-b border-primary pb-0.5 mb-2 flex justify-between items-start">
