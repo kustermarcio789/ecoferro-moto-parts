@@ -211,24 +211,38 @@ const AdminOrderDetail = () => {
             {/* Customer Info */}
             <div className="bg-card border border-border rounded-xl p-6">
               <h3 className="font-display text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
-                <User className="h-4 w-4 text-muted-foreground" /> Cliente
+                <User className="h-4 w-4 text-muted-foreground" /> {order.wholesale_customer ? "Atacadista" : "Cliente"}
               </h3>
               <div className="space-y-3 text-sm font-body">
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-tight mb-0.5">Nome / Razão Social</p>
-                  <p className="font-medium">{order.customers?.name || "—"}</p>
+                  <p className="font-medium">
+                    {order.wholesale_customer?.razao_social || order.customers?.name || "—"}
+                  </p>
                 </div>
+                {order.wholesale_customer?.contact_name && (
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-tight mb-0.5">Responsável</p>
+                    <p className="font-medium">{order.wholesale_customer.contact_name}</p>
+                  </div>
+                )}
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-tight mb-0.5">CPF / CNPJ</p>
-                  <p className="font-medium">{order.customers?.cpf_cnpj || "—"}</p>
+                  <p className="font-medium">
+                    {order.wholesale_customer?.cnpj || order.customers?.cpf_cnpj || "—"}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-tight mb-0.5">E-mail</p>
-                  <p className="font-medium">{order.customers?.email || "—"}</p>
+                  <p className="font-medium">
+                    {order.wholesale_customer?.email || order.customers?.email || "—"}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-tight mb-0.5">Telefone</p>
-                  <p className="font-medium">{order.customers?.phone || "—"}</p>
+                  <p className="font-medium">
+                    {order.wholesale_customer?.phone || order.customers?.phone || "—"}
+                  </p>
                 </div>
               </div>
             </div>
