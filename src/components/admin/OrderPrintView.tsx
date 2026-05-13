@@ -71,29 +71,31 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
             className={`mx-auto bg-white shadow-lg w-[210mm] min-h-[297mm] p-[15mm] mb-8 print:shadow-none print:m-0 print:mb-0 ${pageIndex < pages - 1 ? 'page-break' : ''}`}
           >
             {/* Header */}
-            <div className="border-b-2 border-primary pb-2 mb-4 flex justify-between items-start">
+            <div className="border-b border-primary pb-1 mb-2 flex justify-between items-start">
               <div>
-                <h1 className="text-xl font-bold text-primary leading-tight">Pedido #{order.order_number}</h1>
-                <p className="text-[10px] text-muted-foreground">
+                <h1 className="text-lg font-bold text-primary leading-tight">Pedido #{order.order_number}</h1>
+                <p className="text-[9px] text-muted-foreground">
                   Data: {new Date(order.created_at).toLocaleDateString("pt-BR")}
                 </p>
-                <div className="mt-1 space-y-0.5">
-                  <p className="text-xs font-bold leading-tight">{order.customers?.name || order.wholesale_customer?.name}</p>
-                  <p className="text-[10px] text-muted-foreground">CNPJ/CPF: {order.customers?.cpf_cnpj || order.wholesale_customer?.cnpj || "—"}</p>
+                <div className="mt-0.5 space-y-0">
+                  <p className="text-[10px] font-bold leading-tight">{order.customers?.name || order.wholesale_customer?.name}</p>
+                  <p className="text-[9px] text-muted-foreground">CNPJ/CPF: {order.customers?.cpf_cnpj || order.wholesale_customer?.cnpj || "—"}</p>
                 </div>
               </div>
               <div className="text-right space-y-0.5">
-                <div className="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-muted border">
-                  Status: {order.status}
-                </div>
-                <div className="block">
-                  <span className="text-[9px] font-bold uppercase mr-1">Prioridade:</span>
-                  <span className={`text-[9px] font-bold uppercase ${order.priority === 'critical' ? 'text-red-600' : order.priority === 'urgent' ? 'text-orange-600' : 'text-gray-600'}`}>
-                    {order.priority || 'Normal'}
-                  </span>
+                <div className="flex flex-col items-end gap-0.5">
+                  <div className="inline-block px-1.5 py-0 rounded text-[8px] font-bold uppercase bg-muted border leading-tight">
+                    Status: {order.status}
+                  </div>
+                  <div className="text-[8px] font-bold uppercase leading-tight">
+                    <span className="mr-1">Prioridade:</span>
+                    <span className={`${order.priority === 'critical' ? 'text-red-600' : order.priority === 'urgent' ? 'text-orange-600' : 'text-gray-600'}`}>
+                      {order.priority || 'Normal'}
+                    </span>
+                  </div>
                 </div>
                 {showPrices && (
-                  <p className="text-base font-bold text-primary mt-1">Total: {formatCurrency(Number(order.total))}</p>
+                  <p className="text-sm font-bold text-primary mt-0.5">Total: {formatCurrency(Number(order.total))}</p>
                 )}
               </div>
             </div>
