@@ -55,10 +55,18 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
           @media print {
             @page {
               size: A4;
-              margin: 15mm;
+              margin: 10mm;
             }
-            body {
-              background: white;
+            body > *:not(.no-print-everything-else) {
+              display: none !important;
+            }
+            .no-print-everything-else {
+              position: static !important;
+              display: block !important;
+              width: 100% !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              background: white !important;
             }
             .page-break {
               page-break-after: always;
