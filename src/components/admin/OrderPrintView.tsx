@@ -27,9 +27,9 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-background flex flex-col overflow-hidden print:static print:bg-white print:block">
-      <div className="p-4 border-b flex justify-between items-center print:hidden">
-        <h2 className="text-lg font-bold">Visualização de Impressão</h2>
+    <div className="fixed inset-0 z-50 bg-background flex flex-col overflow-hidden print:static print:bg-white print:block no-print-everything-else">
+      <div className="p-2 border-b flex justify-between items-center print:hidden bg-muted/20">
+        <h2 className="text-sm font-bold">Configuração de Impressão</h2>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 mr-2">
             <input 
