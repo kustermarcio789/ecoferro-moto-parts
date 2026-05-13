@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Save, Loader2, Package, User, Clock, CheckCircle2, AlertCircle } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Package, User, Clock, CheckCircle2, AlertCircle, Printer } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { formatCurrency } from "@/lib/tracking";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import OrderItemsTableWithImages from "@/components/OrderItemWithImage";
+import OrderPrintView from "@/components/admin/OrderPrintView";
 
 const priorityConfig: Record<string, { label: string; color: string; border: string }> = {
   normal: { label: "Normal", color: "bg-gray-100 text-gray-700", border: "border-gray-200" },
@@ -24,6 +26,7 @@ const AdminOrderDetail = () => {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showPrintView, setShowPrintView] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -43,7 +46,7 @@ const AdminOrderDetail = () => {
 
       const { data: itemsData, error: itemsError } = await supabase
         .from("order_items")
-        .select("*")
+        .select("*, product:product_id(product_images(url, is_primary))")
         .eq("order_id", id)
         .order("created_at");
 
