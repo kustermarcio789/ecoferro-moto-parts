@@ -338,6 +338,7 @@ const WholesaleOrderDetail = () => {
           )}
         </section>
       )}
+      </div>
 
       {showPrintView && (
         <OrderPrintView 
