@@ -38,7 +38,7 @@ const AdminOrderDetail = () => {
     try {
       const { data: orderData, error: orderError } = await supabase
         .from("orders")
-        .select("*, customers(name, email, phone, cpf_cnpj)")
+        .select("*, customers(name, email, phone, cpf_cnpj), wholesale_customer:wholesale_customer_id(razao_social, cnpj, email)")
         .eq("id", id)
         .single();
 
