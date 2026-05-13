@@ -10,14 +10,14 @@ interface OrderPrintViewProps {
 }
 
 const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
-  const [showPrices, setShowPrices] = React.useState(false); // Default to false as requested previously for clean separation
+  const [showPrices, setShowPrices] = React.useState(false);
+  const [isPreparingPrint, setIsPreparingPrint] = React.useState(false);
 
   const itemsPerPage = 15;
-  const pages = Math.ceil(items.length / itemsPerPage);
-
-  const handlePrint = () => {
-    window.print();
-  };
+  const pages = [];
+  for (let i = 0; i < items.length; i += itemsPerPage) {
+    pages.push(items.slice(i, i + itemsPerPage));
+  }
 
   const getProductImage = (item: any) => {
     const images = item.product?.product_images;
@@ -26,10 +26,43 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
     return primary ? primary.url : images[0].url;
   };
 
+  const waitForImages = async (rootElement: HTMLElement) => {
+    const images = Array.from(rootElement.querySelectorAll("img"));
+    await Promise.all(
+      images.map((img) => {
+        if (img.complete) return Promise.resolve();
+        return new Promise((resolve) => {
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      })
+    );
+  };
+
+  const handlePrint = async () => {
+    setIsPreparingPrint(true);
+    
+    // Give time for UI to reflect "preparing" if needed, 
+    // and ensure the print root is fully rendered
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    const printRoot = document.getElementById("order-print-root");
+    if (printRoot) {
+      await waitForImages(printRoot);
+      window.print();
+    } else {
+      console.error("Print root not found");
+      window.print(); // Fallback
+    }
+    
+    setIsPreparingPrint(false);
+  };
+
   return (
-    <div className="fixed inset-0 z-50 bg-background flex flex-col overflow-hidden print:static print:bg-white print:block no-print-everything-else">
+    <div className="fixed inset-0 z-[100] bg-background flex flex-col overflow-hidden print:static print:bg-white print:block">
       <div className="p-2 border-b flex justify-between items-center print:hidden bg-muted/20">
-        <h2 className="text-sm font-bold">Configuração de Impressão</h2>
+        <h2 className="text-sm font-bold uppercase tracking-wider">Configuração de Impressão</h2>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 mr-2">
             <input 
@@ -39,162 +72,215 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
               onChange={(e) => setShowPrices(e.target.checked)}
               className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
             />
-            <label htmlFor="show-prices" className="text-sm font-medium">Mostrar Preços</label>
+            <label htmlFor="show-prices" className="text-xs font-bold uppercase cursor-pointer">Mostrar Preços</label>
           </div>
-          <Button onClick={handlePrint}>
-            <Printer className="mr-2 h-4 w-4" /> Imprimir
+          <Button onClick={handlePrint} disabled={isPreparingPrint} size="sm">
+            {isPreparingPrint ? (
+              <span className="flex items-center gap-2">Carregando...</span>
+            ) : (
+              <><Printer className="mr-2 h-4 w-4" /> Imprimir</>
+            )}
           </Button>
-          <Button variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={onClose} size="sm">
             <X className="mr-2 h-4 w-4" /> Fechar
           </Button>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-8 print:p-0 print:overflow-visible">
+      <div className="flex-1 overflow-y-auto p-8 bg-muted/10 print:p-0 print:overflow-visible print:bg-white">
         <style dangerouslySetInnerHTML={{ __html: `
+          @page {
+            size: A4 portrait;
+            margin: 6mm;
+          }
+
           @media print {
-            @page {
-              size: A4;
-              margin: 10mm;
-            }
-            body > *:not(.no-print-everything-else) {
-              display: none !important;
-            }
-            .no-print-everything-else {
-              position: static !important;
-              display: block !important;
-              width: 100% !important;
+            html, body {
+              width: 210mm;
+              height: auto;
+              min-height: 297mm;
               margin: 0 !important;
               padding: 0 !important;
-              background: white !important;
+              background: #ffffff !important;
+              overflow: visible !important;
             }
-            .page-break {
+
+            /* Esconder TUDO exceto o root de impressão */
+            body > * {
+              display: none !important;
+            }
+
+            #order-print-root {
+              display: block !important;
+              visibility: visible !important;
+              position: static !important;
+              width: 100% !important;
+              height: auto !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              overflow: visible !important;
+              background: #ffffff !important;
+              color: #000000 !important;
+            }
+
+            #order-print-root * {
+              visibility: visible !important;
+              color: #000000 !important;
+              box-sizing: border-box !important;
+            }
+
+            .print-page {
+              width: 100% !important;
+              min-height: 285mm;
               page-break-after: always;
+              break-after: page;
+              overflow: visible !important;
+              background: #ffffff !important;
+              padding: 5mm !important;
+              position: relative;
+            }
+
+            .print-page:last-child {
+              page-break-after: auto;
+              break-after: auto;
+            }
+
+            .print-item-row {
+              page-break-inside: avoid;
+              break-inside: avoid;
+            }
+            
+            .no-print {
+              display: none !important;
             }
           }
         ` }} />
 
-        {Array.from({ length: pages || 1 }).map((_, pageIndex) => (
-          <div 
-            key={pageIndex} 
-            className={`mx-auto bg-white shadow-lg w-[210mm] min-h-[297mm] p-[10mm] mb-8 print:shadow-none print:m-0 print:mb-0 ${pageIndex < pages - 1 ? 'page-break' : ''}`}
-          >
-            {/* Header */}
-            <div className="border-b border-primary pb-0.5 mb-2 flex justify-between items-start">
-              <div>
-                <h1 className="text-base font-bold text-primary leading-none">Pedido #{order.order_number}</h1>
-                <p className="text-[8px] text-muted-foreground">
-                  Data: {new Date(order.created_at).toLocaleDateString("pt-BR")}
-                </p>
-                <div className="mt-0.5">
-                  <p className="text-[9px] font-bold leading-tight">{order.customers?.name || order.wholesale_customer?.name}</p>
-                  <p className="text-[8px] text-muted-foreground leading-tight">CNPJ/CPF: {order.customers?.cpf_cnpj || order.wholesale_customer?.cnpj || "—"}</p>
-                </div>
-              </div>
-              <div className="text-right space-y-0.5">
-                <div className="flex flex-col items-end gap-0.5">
-                  <div className="inline-block px-1.5 py-0 rounded text-[8px] font-bold uppercase bg-muted border leading-tight">
-                    Status: {order.status}
-                  </div>
-                  <div className="text-[8px] font-bold uppercase leading-tight">
-                    <span className="mr-1">Prioridade:</span>
-                    <span className={`${order.priority === 'critical' ? 'text-red-600' : order.priority === 'urgent' ? 'text-orange-600' : 'text-gray-600'}`}>
-                      {order.priority || 'Normal'}
-                    </span>
+        <div id="order-print-root" className="print:block">
+          {pages.length > 0 ? pages.map((pageItems, pageIndex) => (
+            <div 
+              key={pageIndex} 
+              className="print-page mx-auto bg-white shadow-lg w-[210mm] min-h-[297mm] p-[10mm] mb-8 print:shadow-none print:m-0 print:mb-0"
+            >
+              {/* Header */}
+              <div className="border-b-2 border-black pb-2 mb-4 flex justify-between items-start">
+                <div>
+                  <h1 className="text-xl font-bold text-black leading-none mb-1">PEDIDO DE VENDA #{order.order_number}</h1>
+                  <p className="text-[10px] font-bold">
+                    DATA: {new Date(order.created_at).toLocaleDateString("pt-BR")} | HORA: {new Date(order.created_at).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                  <div className="mt-3">
+                    <p className="text-[11px] font-extrabold uppercase leading-tight">CLIENTE: {order.customers?.name || order.wholesale_customer?.name || "NÃO IDENTIFICADO"}</p>
+                    <p className="text-[10px] font-bold leading-tight">CNPJ/CPF: {order.customers?.cpf_cnpj || order.wholesale_customer?.cnpj || "—"}</p>
+                    {order.customers?.email && <p className="text-[10px] leading-tight">EMAIL: {order.customers.email}</p>}
                   </div>
                 </div>
-                {showPrices && (
-                  <p className="text-sm font-bold text-primary mt-0.5">Total: {formatCurrency(Number(order.total))}</p>
-                )}
-              </div>
-            </div>
-
-            {/* Table */}
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="border-b-2 border-muted bg-muted/20">
-                  <th className="text-left py-1 px-1 text-[9px] font-bold uppercase w-[50px]">Imagem</th>
-                  <th className="text-left py-1 px-1 text-[9px] font-bold uppercase w-20">SKU</th>
-                  <th className="text-left py-1 px-1 text-[9px] font-bold uppercase">Produto</th>
-                  <th className="text-center py-1 px-1 text-[9px] font-bold uppercase w-10">Solic.</th>
-                  <th className="text-center py-1 px-1 text-[9px] font-bold uppercase w-10">Conf.</th>
-                  {order.delivered_quantity !== undefined && (
-                    <th className="text-center py-2 px-1 text-[10px] font-bold uppercase w-12">Entr.</th>
+                <div className="text-right flex flex-col items-end gap-1">
+                  <div className="border-2 border-black px-2 py-1 text-[10px] font-black uppercase">
+                    STATUS: {order.status || 'PENDENTE'}
+                  </div>
+                  <div className={`border-2 px-2 py-1 text-[10px] font-black uppercase ${
+                    order.priority === 'critical' ? 'border-red-600 text-red-600 bg-red-50' : 
+                    order.priority === 'urgent' ? 'border-orange-600 text-orange-600 bg-orange-50' : 
+                    'border-gray-600 text-gray-600'
+                  }`}>
+                    PRIORIDADE: {order.priority === 'critical' ? 'CRÍTICA' : order.priority === 'urgent' ? 'URGENTE' : 'NORMAL'}
+                  </div>
+                  {showPrices && (
+                    <p className="text-lg font-black text-black mt-1">TOTAL: {formatCurrency(Number(order.total))}</p>
                   )}
-                  {showPrices && <th className="text-right py-2 px-1 text-[10px] font-bold uppercase w-20">Unit.</th>}
-                  {showPrices && <th className="text-right py-2 px-1 text-[10px] font-bold uppercase w-20">Subtotal</th>}
-                </tr>
-              </thead>
-              <tbody>
-                {items.slice(pageIndex * itemsPerPage, (pageIndex + 1) * itemsPerPage).map((item) => {
-                  const imageUrl = getProductImage(item);
-                  return (
-                    <tr key={item.id} className="border-b border-muted/50">
-                      <td className="py-0.5 px-1">
-                        <div className="w-[40px] h-[40px] bg-muted rounded overflow-hidden flex items-center justify-center border">
-                          {imageUrl ? (
-                            <img src={imageUrl} alt="" className="w-full h-full object-contain" />
-                          ) : (
-                            <span className="text-[7px] text-muted-foreground">Sem foto</span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="py-1 px-1 text-[10px] font-mono">{item.sku || "—"}</td>
-                      <td className="py-1 px-1 text-[10px] leading-tight font-medium">{item.product_name}</td>
-                      <td className="py-1 px-1 text-center text-[10px]">{item.quantity}</td>
-                      <td className="py-1 px-1 text-center text-[10px] font-bold">{item.confirmed_quantity ?? "—"}</td>
-                      {order.delivered_quantity !== undefined && (
-                        <td className="py-1 px-1 text-center text-[10px]">{item.delivered_quantity || 0}</td>
-                      )}
-                      {showPrices && <td className="py-2 px-1 text-right text-[11px]">{formatCurrency(Number(item.unit_price))}</td>}
-                      {showPrices && (
-                        <td className="py-2 px-1 text-right text-[11px] font-bold">
-                          {formatCurrency((item.confirmed_quantity ?? item.quantity) * Number(item.unit_price))}
-                        </td>
-                      )}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                </div>
+              </div>
 
-            {/* Footer on last page */}
-            {pageIndex === pages - 1 && (
-              <div className="mt-8 grid grid-cols-2 gap-8">
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-[10px] font-bold uppercase text-muted-foreground mb-1">Observações</h3>
-                    <div className="border rounded p-2 min-h-[60px] text-xs italic text-muted-foreground">
-                      {order.customer_notes || order.atacadista_notes || "Nenhuma observação."}
+              {/* Table */}
+              <table className="w-full border-collapse border border-black">
+                <thead>
+                  <tr className="bg-gray-100 border-b border-black">
+                    <th className="text-center py-1 px-1 text-[10px] font-black uppercase border-r border-black w-[60px]">FOTO</th>
+                    <th className="text-left py-1 px-1 text-[10px] font-black uppercase border-r border-black w-24">SKU / CÓDIGO</th>
+                    <th className="text-left py-1 px-1 text-[10px] font-black uppercase border-r border-black">DESCRIÇÃO DO PRODUTO</th>
+                    <th className="text-center py-1 px-1 text-[10px] font-black uppercase border-r border-black w-14">SOLIC.</th>
+                    <th className="text-center py-1 px-1 text-[10px] font-black uppercase border-r border-black w-14">CONF.</th>
+                    {order.delivered_quantity !== undefined && (
+                      <th className="text-center py-1 px-1 text-[10px] font-black uppercase border-r border-black w-14">ENTR.</th>
+                    )}
+                    {showPrices && <th className="text-right py-1 px-1 text-[10px] font-black uppercase w-24">TOTAL</th>}
+                  </tr>
+                </thead>
+                <tbody>
+                  {pageItems.map((item: any) => {
+                    const imageUrl = getProductImage(item);
+                    return (
+                      <tr key={item.id} className="border-b border-black print-item-row">
+                        <td className="py-1 px-1 border-r border-black text-center">
+                          <div className="w-[50px] h-[50px] mx-auto bg-white flex items-center justify-center">
+                            {imageUrl ? (
+                              <img src={imageUrl} alt="" className="max-w-full max-h-full object-contain" />
+                            ) : (
+                              <div className="text-[8px] text-gray-400 font-bold leading-tight">SEM<br/>FOTO</div>
+                            )}
+                          </div>
+                        </td>
+                        <td className="py-1 px-1 border-r border-black text-[10px] font-bold font-mono">{item.sku || "—"}</td>
+                        <td className="py-1 px-1 border-r border-black text-[10px] leading-tight font-bold">{item.product_name}</td>
+                        <td className="py-1 px-1 border-r border-black text-center text-[11px] font-bold">{item.quantity}</td>
+                        <td className="py-1 px-1 border-r border-black text-center text-[11px] font-black bg-gray-50">{item.confirmed_quantity ?? "—"}</td>
+                        {order.delivered_quantity !== undefined && (
+                          <td className="py-1 px-1 border-r border-black text-center text-[11px] font-bold">{item.delivered_quantity || 0}</td>
+                        )}
+                        {showPrices && (
+                          <td className="py-1 px-1 text-right text-[10px] font-bold">
+                            {formatCurrency((item.confirmed_quantity ?? item.quantity) * Number(item.unit_price))}
+                          </td>
+                        )}
+                      </tr>
+                    );
+                  })}
+                  {/* Fill empty rows to maintain layout if needed, or just let it be */}
+                </tbody>
+              </table>
+
+              {/* Footer on last page */}
+              {pageIndex === pages.length - 1 && (
+                <div className="mt-6">
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="border-2 border-black p-2">
+                      <h3 className="text-[10px] font-black uppercase mb-1">OBSERVAÇÕES DO PEDIDO:</h3>
+                      <div className="text-[10px] font-medium min-h-[40px]">
+                        {order.customer_notes || order.atacadista_notes || order.internal_notes || "NENHUMA OBSERVAÇÃO REGISTRADA."}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="space-y-4">
-                  {showPrices && (
-                    <>
-                      <div className="flex justify-between border-b pb-1">
-                        <span className="text-xs font-bold uppercase">Subtotal:</span>
-                        <span className="text-xs">{formatCurrency(Number(order.subtotal))}</span>
+                  
+                  <div className="mt-8 flex justify-between items-end gap-10">
+                    <div className="flex-1 border-t-2 border-black pt-1 text-center">
+                      <p className="text-[10px] font-black uppercase tracking-tighter">ASSINATURA / CONFERÊNCIA DO OPERADOR</p>
+                    </div>
+                    {showPrices && (
+                      <div className="w-64 space-y-1">
+                        <div className="flex justify-between border-b border-black pb-0.5">
+                          <span className="text-[10px] font-bold uppercase">SUBTOTAL:</span>
+                          <span className="text-[10px] font-bold">{formatCurrency(Number(order.subtotal || 0))}</span>
+                        </div>
+                        <div className="flex justify-between bg-black text-white px-2 py-1">
+                          <span className="text-[11px] font-black uppercase">TOTAL GERAL:</span>
+                          <span className="text-[11px] font-black">{formatCurrency(Number(order.total || 0))}</span>
+                        </div>
                       </div>
-                      <div className="flex justify-between border-b pb-1 text-primary">
-                        <span className="text-sm font-bold uppercase">Total do Pedido:</span>
-                        <span className="text-sm font-bold">{formatCurrency(Number(order.total))}</span>
-                      </div>
-                    </>
-                  )}
-                  <div className={`${showPrices ? 'mt-8' : 'mt-4'} pt-4 border-t border-black text-center`}>
-                    <p className="text-[10px] font-bold uppercase">Assinatura / Conferência do Operador</p>
+                    )}
                   </div>
                 </div>
+              )}
+              
+              {/* Page number */}
+              <div className="absolute bottom-4 right-8 text-[10px] font-bold text-black">
+                PÁGINA {pageIndex + 1} DE {pages.length}
               </div>
-            )}
-            
-            {/* Page number */}
-            <div className="absolute bottom-8 right-8 text-[10px] text-muted-foreground print:bottom-4 print:right-4">
-              Página {pageIndex + 1} de {pages}
             </div>
-          </div>
-        ))}
+          )) : (
+            <div className="p-20 text-center font-bold">Nenhum item para exibir.</div>
+          )}
+        </div>
       </div>
     </div>
   );
