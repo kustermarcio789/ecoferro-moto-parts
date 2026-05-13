@@ -60,8 +60,8 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
     setIsPreparingPrint(false);
   };
 
-  return (
-    <div className="fixed inset-0 z-[100] bg-background flex flex-col overflow-hidden print:static print:bg-white print:block">
+  const content = (
+    <div className="fixed inset-0 z-[9999] bg-background flex flex-col overflow-hidden print:static print:bg-white print:block">
       <div className="p-2 border-b flex justify-between items-center print:hidden bg-muted/20">
         <h2 className="text-sm font-bold uppercase tracking-wider">Configuração de Impressão</h2>
         <div className="flex items-center gap-4">
@@ -77,13 +77,13 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
           </div>
           <Button onClick={handlePrint} disabled={isPreparingPrint} size="sm">
             {isPreparingPrint ? (
-              <span className="flex items-center gap-2">Carregando...</span>
+              <span className="flex items-center gap-2 text-xs font-bold">CARREGANDO...</span>
             ) : (
-              <><Printer className="mr-2 h-4 w-4" /> Imprimir</>
+              <><Printer className="mr-2 h-4 w-4" /> IMPRIMIR PEDIDO</>
             )}
           </Button>
           <Button variant="outline" onClick={onClose} size="sm">
-            <X className="mr-2 h-4 w-4" /> Fechar
+            <X className="mr-2 h-4 w-4" /> FECHAR
           </Button>
         </div>
       </div>
@@ -92,22 +92,21 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
         <style dangerouslySetInnerHTML={{ __html: `
           @page {
             size: A4 portrait;
-            margin: 6mm;
+            margin: 0;
           }
 
           @media print {
             html, body {
               width: 210mm;
               height: auto;
-              min-height: 297mm;
               margin: 0 !important;
               padding: 0 !important;
               background: #ffffff !important;
               overflow: visible !important;
             }
 
-            /* Esconder TUDO exceto o root de impressão */
-            body > * {
+            /* Esconder TUDO que não é o portal de impressão */
+            #root, .admin-sidebar, .admin-header, header, nav, aside, button, .no-print, .lovable-badge {
               display: none !important;
             }
 
@@ -119,43 +118,33 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
               height: auto !important;
               margin: 0 !important;
               padding: 0 !important;
-              overflow: visible !important;
               background: #ffffff !important;
-              color: #000000 !important;
-            }
-
-            #order-print-root * {
-              visibility: visible !important;
-              color: #000000 !important;
-              box-sizing: border-box !important;
             }
 
             .print-page {
-              width: 100% !important;
-              min-height: 285mm;
-              page-break-after: always;
-              break-after: page;
-              overflow: visible !important;
+              width: 210mm !important;
+              height: 297mm !important;
+              page-break-after: always !important;
+              break-after: page !important;
+              overflow: hidden !important;
               background: #ffffff !important;
-              padding: 5mm !important;
-              position: relative;
+              padding: 10mm !important;
+              position: relative !important;
+              box-sizing: border-box !important;
             }
 
             .print-page:last-child {
-              page-break-after: auto;
-              break-after: auto;
+              page-break-after: auto !important;
+              break-after: auto !important;
             }
 
             .print-item-row {
-              page-break-inside: avoid;
-              break-inside: avoid;
-            }
-            
-            .no-print {
-              display: none !important;
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
             }
           }
         ` }} />
+
 
         <div id="order-print-root" className="print:block">
           {pages.length > 0 ? pages.map((pageItems, pageIndex) => (
