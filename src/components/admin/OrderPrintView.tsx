@@ -154,30 +154,43 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
             >
               {/* Header */}
               <div className="border-b-2 border-black pb-2 mb-4 flex justify-between items-start">
-                <div>
-                  <h1 className="text-xl font-bold text-black leading-none mb-1">PEDIDO DE VENDA #{order.order_number}</h1>
-                  <p className="text-[10px] font-bold">
-                    DATA: {new Date(order.created_at).toLocaleDateString("pt-BR")} | HORA: {new Date(order.created_at).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}
-                  </p>
-                  <div className="mt-3">
-                    <p className="text-[11px] font-extrabold uppercase leading-tight">CLIENTE: {order.customers?.name || order.wholesale_customer?.razao_social || "NÃO IDENTIFICADO"}</p>
-                    <p className="text-[10px] font-bold leading-tight">CNPJ/CPF: {order.customers?.cpf_cnpj || order.wholesale_customer?.cnpj || "—"}</p>
-                    {order.customers?.email && <p className="text-[10px] leading-tight">EMAIL: {order.customers.email}</p>}
+                <div className="flex-1 grid grid-cols-2 gap-4">
+                  <div>
+                    <h1 className="text-lg font-black text-black leading-none mb-1 uppercase">PEDIDO DE VENDA #{order.order_number}</h1>
+                    <p className="text-[10px] font-bold text-gray-700">
+                      DATA: {new Date(order.created_at).toLocaleDateString("pt-BR")} | HORA: {new Date(order.created_at).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                    <div className="mt-2 space-y-0.5">
+                      <p className="text-[11px] font-black uppercase leading-tight text-black">
+                        ATACADISTA: {order.wholesale_customer?.razao_social || order.wholesale_customer?.nome_fantasia || order.customers?.name || "CLIENTE NÃO IDENTIFICADO"}
+                      </p>
+                      {order.wholesale_customer?.contact_name && (
+                        <p className="text-[10px] font-bold leading-tight uppercase">RESPONSÁVEL: {order.wholesale_customer.contact_name}</p>
+                      )}
+                      <p className="text-[10px] font-bold leading-tight uppercase">CNPJ/CPF: {order.wholesale_customer?.cnpj || order.customers?.cpf_cnpj || "NÃO INFORMADO"}</p>
+                    </div>
+                  </div>
+                  <div className="mt-auto pb-0.5 space-y-0.5">
+                    <p className="text-[10px] font-bold leading-tight uppercase">E-MAIL: {order.wholesale_customer?.email || order.customers?.email || "NÃO INFORMADO"}</p>
+                    <p className="text-[10px] font-bold leading-tight uppercase">TELEFONE: {order.wholesale_customer?.phone || order.customers?.phone || "NÃO INFORMADO"}</p>
                   </div>
                 </div>
-                <div className="text-right flex flex-col items-end gap-1">
-                  <div className="border-2 border-black px-2 py-1 text-[10px] font-black uppercase">
+                <div className="text-right flex flex-col items-end gap-1 ml-4">
+                  <div className="border-2 border-black px-2 py-1 text-[10px] font-black uppercase whitespace-nowrap">
                     STATUS: {order.status || 'PENDENTE'}
                   </div>
-                  <div className={`border-2 px-2 py-1 text-[10px] font-black uppercase ${
+                  <div className={`border-2 px-2 py-1 text-[10px] font-black uppercase whitespace-nowrap ${
                     order.priority === 'critical' ? 'border-red-600 text-red-600 bg-red-50' : 
                     order.priority === 'urgent' ? 'border-orange-600 text-orange-600 bg-orange-50' : 
                     'border-gray-600 text-gray-600'
                   }`}>
                     PRIORIDADE: {order.priority === 'critical' ? 'CRÍTICA' : order.priority === 'urgent' ? 'URGENTE' : 'NORMAL'}
                   </div>
+                  <div className="text-[10px] font-black border-2 border-black px-2 py-1 uppercase whitespace-nowrap">
+                    ITENS: {items.length}
+                  </div>
                   {showPrices && (
-                    <p className="text-lg font-black text-black mt-1">TOTAL: {formatCurrency(Number(order.total))}</p>
+                    <p className="text-base font-black text-black mt-1">TOTAL: {formatCurrency(Number(order.total))}</p>
                   )}
                 </div>
               </div>
