@@ -128,6 +128,7 @@ const AdminOrderDetail = () => {
 
   return (
     <AdminLayout title={`Pedido #${order.order_number}`}>
+      <div className="print:hidden">
       <div className="mb-6 flex items-center justify-between">
         <Link to="/admin/pedidos" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Voltar para Pedidos
