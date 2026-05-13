@@ -152,6 +152,7 @@ const WholesaleOrderDetail = () => {
 
   return (
     <WholesalePortalLayout>
+      <div className="print:hidden">
       <div className="flex items-center justify-between mb-4">
         <Link to="/atacado/pedidos" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Voltar para meus pedidos
