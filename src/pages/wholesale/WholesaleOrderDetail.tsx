@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, Calendar, CheckCircle2, Clock, Loader2, Package, Truck } from "lucide-react";
+import { ArrowLeft, Calendar, CheckCircle2, Clock, Loader2, Package, Truck, Printer } from "lucide-react";
 import WholesalePortalLayout from "@/components/wholesale/WholesalePortalLayout";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { useWholesaleCustomer } from "@/hooks/useWholesaleCustomer";
+import OrderItemsTableWithImages from "@/components/OrderItemWithImage";
+import OrderPrintView from "@/components/admin/OrderPrintView";
+import { Button } from "@/components/ui/button";
 
 interface OrderItem {
   id: string;
@@ -75,6 +78,7 @@ const WholesaleOrderDetail = () => {
   const { wholesaleCustomer } = useWholesaleCustomer();
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showPrintView, setShowPrintView] = useState(false);
 
   useEffect(() => {
     if (!id || !wholesaleCustomer) return;
@@ -148,9 +152,14 @@ const WholesaleOrderDetail = () => {
 
   return (
     <WholesalePortalLayout>
-      <Link to="/atacado/pedidos" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4">
-        <ArrowLeft className="h-4 w-4" /> Voltar para meus pedidos
-      </Link>
+      <div className="flex items-center justify-between mb-4">
+        <Link to="/atacado/pedidos" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="h-4 w-4" /> Voltar para meus pedidos
+        </Link>
+        <Button variant="outline" size="sm" onClick={() => setShowPrintView(true)}>
+          <Printer className="mr-2 h-4 w-4" /> Imprimir Pedido
+        </Button>
+      </div>
 
       <div className="bg-card border border-border rounded-2xl p-6 mb-6">
         <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
