@@ -80,15 +80,15 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
             className={`mx-auto bg-white shadow-lg w-[210mm] min-h-[297mm] p-[15mm] mb-8 print:shadow-none print:m-0 print:mb-0 ${pageIndex < pages - 1 ? 'page-break' : ''}`}
           >
             {/* Header */}
-            <div className="border-b border-primary pb-1 mb-2 flex justify-between items-start">
+            <div className="border-b border-primary pb-0.5 mb-2 flex justify-between items-start">
               <div>
-                <h1 className="text-lg font-bold text-primary leading-tight">Pedido #{order.order_number}</h1>
-                <p className="text-[9px] text-muted-foreground">
+                <h1 className="text-base font-bold text-primary leading-none">Pedido #{order.order_number}</h1>
+                <p className="text-[8px] text-muted-foreground">
                   Data: {new Date(order.created_at).toLocaleDateString("pt-BR")}
                 </p>
-                <div className="mt-0.5 space-y-0">
-                  <p className="text-[10px] font-bold leading-tight">{order.customers?.name || order.wholesale_customer?.name}</p>
-                  <p className="text-[9px] text-muted-foreground">CNPJ/CPF: {order.customers?.cpf_cnpj || order.wholesale_customer?.cnpj || "—"}</p>
+                <div className="mt-0.5">
+                  <p className="text-[9px] font-bold leading-tight">{order.customers?.name || order.wholesale_customer?.name}</p>
+                  <p className="text-[8px] text-muted-foreground leading-tight">CNPJ/CPF: {order.customers?.cpf_cnpj || order.wholesale_customer?.cnpj || "—"}</p>
                 </div>
               </div>
               <div className="text-right space-y-0.5">
