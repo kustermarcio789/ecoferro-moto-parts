@@ -274,6 +274,7 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
       </div>
     </div>
   );
+  return createPortal(content, document.body);
 };
 
 export default OrderPrintView;
