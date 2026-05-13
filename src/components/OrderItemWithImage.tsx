@@ -53,7 +53,7 @@ const OrderItemsTableWithImages = ({
             <th className="text-center p-2 sm:p-4">Confirmada</th>
             {showDelivered && <th className="text-center p-2 sm:p-4">Entregue</th>}
             {showUnitPrice && <th className="text-right p-2 sm:p-4">Unitário</th>}
-            <th className="text-right p-2 sm:p-4">Subtotal</th>
+            {showUnitPrice && <th className="text-right p-2 sm:p-4">Subtotal</th>}
           </tr>
         </thead>
         <tbody>
@@ -122,9 +122,11 @@ const OrderItemsTableWithImages = ({
                     {formatCurrency(Number(item.unit_price))}
                   </td>
                 )}
-                <td className="p-2 sm:p-4 text-right font-body font-medium">
-                  {formatCurrency((item.confirmed_quantity ?? item.quantity) * Number(item.unit_price))}
-                </td>
+                {showUnitPrice && (
+                  <td className="p-2 sm:p-4 text-right font-body font-medium">
+                    {formatCurrency((item.confirmed_quantity ?? item.quantity) * Number(item.unit_price))}
+                  </td>
+                )}
               </tr>
             );
           })}

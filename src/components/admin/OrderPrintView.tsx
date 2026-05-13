@@ -10,7 +10,8 @@ interface OrderPrintViewProps {
 }
 
 const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
-  const [showPrices, setShowPrices] = React.useState(true);
+  const [showPrices, setShowPrices] = React.useState(false); // Default to false as requested previously for clean separation
+
   const itemsPerPage = 15;
   const pages = Math.ceil(items.length / itemsPerPage);
 
@@ -26,9 +27,9 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-background flex flex-col overflow-hidden print:static print:bg-white print:block">
-      <div className="p-4 border-b flex justify-between items-center print:hidden">
-        <h2 className="text-lg font-bold">Visualização de Impressão</h2>
+    <div className="fixed inset-0 z-50 bg-background flex flex-col overflow-hidden print:static print:bg-white print:block no-print-everything-else">
+      <div className="p-2 border-b flex justify-between items-center print:hidden bg-muted/20">
+        <h2 className="text-sm font-bold">Configuração de Impressão</h2>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 mr-2">
             <input 
@@ -54,10 +55,18 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
           @media print {
             @page {
               size: A4;
-              margin: 15mm;
+              margin: 10mm;
             }
-            body {
-              background: white;
+            body > *:not(.no-print-everything-else) {
+              display: none !important;
+            }
+            .no-print-everything-else {
+              position: static !important;
+              display: block !important;
+              width: 100% !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              background: white !important;
             }
             .page-break {
               page-break-after: always;
@@ -68,32 +77,34 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
         {Array.from({ length: pages || 1 }).map((_, pageIndex) => (
           <div 
             key={pageIndex} 
-            className={`mx-auto bg-white shadow-lg w-[210mm] min-h-[297mm] p-[15mm] mb-8 print:shadow-none print:m-0 print:mb-0 ${pageIndex < pages - 1 ? 'page-break' : ''}`}
+            className={`mx-auto bg-white shadow-lg w-[210mm] min-h-[297mm] p-[10mm] mb-8 print:shadow-none print:m-0 print:mb-0 ${pageIndex < pages - 1 ? 'page-break' : ''}`}
           >
             {/* Header */}
-            <div className="border-b-2 border-primary pb-2 mb-4 flex justify-between items-start">
+            <div className="border-b border-primary pb-0.5 mb-2 flex justify-between items-start">
               <div>
-                <h1 className="text-xl font-bold text-primary leading-tight">Pedido #{order.order_number}</h1>
-                <p className="text-[10px] text-muted-foreground">
+                <h1 className="text-base font-bold text-primary leading-none">Pedido #{order.order_number}</h1>
+                <p className="text-[8px] text-muted-foreground">
                   Data: {new Date(order.created_at).toLocaleDateString("pt-BR")}
                 </p>
-                <div className="mt-1 space-y-0.5">
-                  <p className="text-xs font-bold leading-tight">{order.customers?.name || order.wholesale_customer?.name}</p>
-                  <p className="text-[10px] text-muted-foreground">CNPJ/CPF: {order.customers?.cpf_cnpj || order.wholesale_customer?.cnpj || "—"}</p>
+                <div className="mt-0.5">
+                  <p className="text-[9px] font-bold leading-tight">{order.customers?.name || order.wholesale_customer?.name}</p>
+                  <p className="text-[8px] text-muted-foreground leading-tight">CNPJ/CPF: {order.customers?.cpf_cnpj || order.wholesale_customer?.cnpj || "—"}</p>
                 </div>
               </div>
               <div className="text-right space-y-0.5">
-                <div className="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-muted border">
-                  Status: {order.status}
-                </div>
-                <div className="block">
-                  <span className="text-[9px] font-bold uppercase mr-1">Prioridade:</span>
-                  <span className={`text-[9px] font-bold uppercase ${order.priority === 'critical' ? 'text-red-600' : order.priority === 'urgent' ? 'text-orange-600' : 'text-gray-600'}`}>
-                    {order.priority || 'Normal'}
-                  </span>
+                <div className="flex flex-col items-end gap-0.5">
+                  <div className="inline-block px-1.5 py-0 rounded text-[8px] font-bold uppercase bg-muted border leading-tight">
+                    Status: {order.status}
+                  </div>
+                  <div className="text-[8px] font-bold uppercase leading-tight">
+                    <span className="mr-1">Prioridade:</span>
+                    <span className={`${order.priority === 'critical' ? 'text-red-600' : order.priority === 'urgent' ? 'text-orange-600' : 'text-gray-600'}`}>
+                      {order.priority || 'Normal'}
+                    </span>
+                  </div>
                 </div>
                 {showPrices && (
-                  <p className="text-base font-bold text-primary mt-1">Total: {formatCurrency(Number(order.total))}</p>
+                  <p className="text-sm font-bold text-primary mt-0.5">Total: {formatCurrency(Number(order.total))}</p>
                 )}
               </div>
             </div>
@@ -102,11 +113,11 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="border-b-2 border-muted bg-muted/20">
-                  <th className="text-left py-2 px-1 text-[10px] font-bold uppercase w-[60px]">Imagem</th>
-                  <th className="text-left py-2 px-1 text-[10px] font-bold uppercase w-24">SKU</th>
-                  <th className="text-left py-2 px-1 text-[10px] font-bold uppercase">Produto</th>
-                  <th className="text-center py-2 px-1 text-[10px] font-bold uppercase w-12">Solic.</th>
-                  <th className="text-center py-2 px-1 text-[10px] font-bold uppercase w-12">Conf.</th>
+                  <th className="text-left py-1 px-1 text-[9px] font-bold uppercase w-[50px]">Imagem</th>
+                  <th className="text-left py-1 px-1 text-[9px] font-bold uppercase w-20">SKU</th>
+                  <th className="text-left py-1 px-1 text-[9px] font-bold uppercase">Produto</th>
+                  <th className="text-center py-1 px-1 text-[9px] font-bold uppercase w-10">Solic.</th>
+                  <th className="text-center py-1 px-1 text-[9px] font-bold uppercase w-10">Conf.</th>
                   {order.delivered_quantity !== undefined && (
                     <th className="text-center py-2 px-1 text-[10px] font-bold uppercase w-12">Entr.</th>
                   )}
@@ -119,21 +130,21 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
                   const imageUrl = getProductImage(item);
                   return (
                     <tr key={item.id} className="border-b border-muted/50">
-                      <td className="py-1 px-1">
-                        <div className="w-[50px] h-[50px] bg-muted rounded overflow-hidden flex items-center justify-center border">
+                      <td className="py-0.5 px-1">
+                        <div className="w-[40px] h-[40px] bg-muted rounded overflow-hidden flex items-center justify-center border">
                           {imageUrl ? (
                             <img src={imageUrl} alt="" className="w-full h-full object-contain" />
                           ) : (
-                            <span className="text-[8px] text-muted-foreground">Sem foto</span>
+                            <span className="text-[7px] text-muted-foreground">Sem foto</span>
                           )}
                         </div>
                       </td>
-                      <td className="py-2 px-1 text-[11px] font-mono">{item.sku || "—"}</td>
-                      <td className="py-2 px-1 text-[11px] leading-tight font-medium">{item.product_name}</td>
-                      <td className="py-2 px-1 text-center text-[11px]">{item.quantity}</td>
-                      <td className="py-2 px-1 text-center text-[11px] font-bold">{item.confirmed_quantity ?? "—"}</td>
+                      <td className="py-1 px-1 text-[10px] font-mono">{item.sku || "—"}</td>
+                      <td className="py-1 px-1 text-[10px] leading-tight font-medium">{item.product_name}</td>
+                      <td className="py-1 px-1 text-center text-[10px]">{item.quantity}</td>
+                      <td className="py-1 px-1 text-center text-[10px] font-bold">{item.confirmed_quantity ?? "—"}</td>
                       {order.delivered_quantity !== undefined && (
-                        <td className="py-2 px-1 text-center text-[11px]">{item.delivered_quantity || 0}</td>
+                        <td className="py-1 px-1 text-center text-[10px]">{item.delivered_quantity || 0}</td>
                       )}
                       {showPrices && <td className="py-2 px-1 text-right text-[11px]">{formatCurrency(Number(item.unit_price))}</td>}
                       {showPrices && (
