@@ -260,7 +260,7 @@ const AdminOrderDetail = () => {
           order={order} 
           items={items} 
           onClose={() => setShowPrintView(false)} 
-        </div>
+        />
       )}
     </AdminLayout>
   );
