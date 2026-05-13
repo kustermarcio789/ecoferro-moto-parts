@@ -102,7 +102,7 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="border-b-2 border-muted bg-muted/20">
-                  <th className="text-left py-2 px-1 text-[10px] font-bold uppercase w-16">Imagem</th>
+                  <th className="text-left py-2 px-1 text-[10px] font-bold uppercase w-[60px]">Imagem</th>
                   <th className="text-left py-2 px-1 text-[10px] font-bold uppercase w-24">SKU</th>
                   <th className="text-left py-2 px-1 text-[10px] font-bold uppercase">Produto</th>
                   <th className="text-center py-2 px-1 text-[10px] font-bold uppercase w-12">Solic.</th>
@@ -110,8 +110,8 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
                   {order.delivered_quantity !== undefined && (
                     <th className="text-center py-2 px-1 text-[10px] font-bold uppercase w-12">Entr.</th>
                   )}
-                  <th className="text-right py-2 px-1 text-[10px] font-bold uppercase w-20">Unit.</th>
-                  <th className="text-right py-2 px-1 text-[10px] font-bold uppercase w-20">Total</th>
+                  {showPrices && <th className="text-right py-2 px-1 text-[10px] font-bold uppercase w-20">Unit.</th>}
+                  {showPrices && <th className="text-right py-2 px-1 text-[10px] font-bold uppercase w-20">Subtotal</th>}
                 </tr>
               </thead>
               <tbody>
@@ -119,10 +119,10 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
                   const imageUrl = getProductImage(item);
                   return (
                     <tr key={item.id} className="border-b border-muted/50">
-                      <td className="py-2 px-1">
-                        <div className="w-12 h-12 bg-muted rounded overflow-hidden flex items-center justify-center border">
+                      <td className="py-1 px-1">
+                        <div className="w-[50px] h-[50px] bg-muted rounded overflow-hidden flex items-center justify-center border">
                           {imageUrl ? (
-                            <img src={imageUrl} alt="" className="w-full h-full object-cover" />
+                            <img src={imageUrl} alt="" className="w-full h-full object-contain" />
                           ) : (
                             <span className="text-[8px] text-muted-foreground">Sem foto</span>
                           )}
@@ -135,10 +135,12 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
                       {order.delivered_quantity !== undefined && (
                         <td className="py-2 px-1 text-center text-[11px]">{item.delivered_quantity || 0}</td>
                       )}
-                      <td className="py-2 px-1 text-right text-[11px]">{formatCurrency(Number(item.unit_price))}</td>
-                      <td className="py-2 px-1 text-right text-[11px] font-bold">
-                        {formatCurrency((item.confirmed_quantity ?? item.quantity) * Number(item.unit_price))}
-                      </td>
+                      {showPrices && <td className="py-2 px-1 text-right text-[11px]">{formatCurrency(Number(item.unit_price))}</td>}
+                      {showPrices && (
+                        <td className="py-2 px-1 text-right text-[11px] font-bold">
+                          {formatCurrency((item.confirmed_quantity ?? item.quantity) * Number(item.unit_price))}
+                        </td>
+                      )}
                     </tr>
                   );
                 })}
