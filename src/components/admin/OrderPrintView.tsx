@@ -159,15 +159,19 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <div className="flex justify-between border-b pb-1">
-                    <span className="text-xs font-bold uppercase">Subtotal:</span>
-                    <span className="text-xs">{formatCurrency(Number(order.subtotal))}</span>
-                  </div>
-                  <div className="flex justify-between border-b pb-1 text-primary">
-                    <span className="text-sm font-bold uppercase">Total do Pedido:</span>
-                    <span className="text-sm font-bold">{formatCurrency(Number(order.total))}</span>
-                  </div>
-                  <div className="mt-8 pt-4 border-t border-black text-center">
+                  {showPrices && (
+                    <>
+                      <div className="flex justify-between border-b pb-1">
+                        <span className="text-xs font-bold uppercase">Subtotal:</span>
+                        <span className="text-xs">{formatCurrency(Number(order.subtotal))}</span>
+                      </div>
+                      <div className="flex justify-between border-b pb-1 text-primary">
+                        <span className="text-sm font-bold uppercase">Total do Pedido:</span>
+                        <span className="text-sm font-bold">{formatCurrency(Number(order.total))}</span>
+                      </div>
+                    </>
+                  )}
+                  <div className={`${showPrices ? 'mt-8' : 'mt-4'} pt-4 border-t border-black text-center`}>
                     <p className="text-[10px] font-bold uppercase">Assinatura / Conferência do Operador</p>
                   </div>
                 </div>
