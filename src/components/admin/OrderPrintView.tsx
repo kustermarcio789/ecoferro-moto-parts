@@ -215,7 +215,7 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
                         <td className="py-1 px-1 border-r border-black text-[10px] leading-tight font-bold">{item.product_name}</td>
                         <td className="py-1 px-1 border-r border-black text-center text-[11px] font-bold">{item.quantity}</td>
                         <td className="py-1 px-1 border-r border-black text-center text-[11px] font-black bg-gray-50">{item.confirmed_quantity ?? "—"}</td>
-                        {order.delivered_quantity !== undefined && (
+                        {items[0]?.delivered_quantity !== undefined && (
                           <td className="py-1 px-1 border-r border-black text-center text-[11px] font-bold">{item.delivered_quantity || 0}</td>
                         )}
                         {showPrices && (
