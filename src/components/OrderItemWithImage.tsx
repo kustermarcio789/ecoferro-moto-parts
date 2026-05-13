@@ -122,9 +122,11 @@ const OrderItemsTableWithImages = ({
                     {formatCurrency(Number(item.unit_price))}
                   </td>
                 )}
-                <td className="p-2 sm:p-4 text-right font-body font-medium">
-                  {formatCurrency((item.confirmed_quantity ?? item.quantity) * Number(item.unit_price))}
-                </td>
+                {showUnitPrice && (
+                  <td className="p-2 sm:p-4 text-right font-body font-medium">
+                    {formatCurrency((item.confirmed_quantity ?? item.quantity) * Number(item.unit_price))}
+                  </td>
+                )}
               </tr>
             );
           })}
