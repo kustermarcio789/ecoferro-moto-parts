@@ -113,11 +113,11 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="border-b-2 border-muted bg-muted/20">
-                  <th className="text-left py-2 px-1 text-[10px] font-bold uppercase w-[60px]">Imagem</th>
-                  <th className="text-left py-2 px-1 text-[10px] font-bold uppercase w-24">SKU</th>
-                  <th className="text-left py-2 px-1 text-[10px] font-bold uppercase">Produto</th>
-                  <th className="text-center py-2 px-1 text-[10px] font-bold uppercase w-12">Solic.</th>
-                  <th className="text-center py-2 px-1 text-[10px] font-bold uppercase w-12">Conf.</th>
+                  <th className="text-left py-1 px-1 text-[9px] font-bold uppercase w-[50px]">Imagem</th>
+                  <th className="text-left py-1 px-1 text-[9px] font-bold uppercase w-20">SKU</th>
+                  <th className="text-left py-1 px-1 text-[9px] font-bold uppercase">Produto</th>
+                  <th className="text-center py-1 px-1 text-[9px] font-bold uppercase w-10">Solic.</th>
+                  <th className="text-center py-1 px-1 text-[9px] font-bold uppercase w-10">Conf.</th>
                   {order.delivered_quantity !== undefined && (
                     <th className="text-center py-2 px-1 text-[10px] font-bold uppercase w-12">Entr.</th>
                   )}
