@@ -130,21 +130,21 @@ const OrderPrintView = ({ order, items, onClose }: OrderPrintViewProps) => {
                   const imageUrl = getProductImage(item);
                   return (
                     <tr key={item.id} className="border-b border-muted/50">
-                      <td className="py-1 px-1">
-                        <div className="w-[50px] h-[50px] bg-muted rounded overflow-hidden flex items-center justify-center border">
+                      <td className="py-0.5 px-1">
+                        <div className="w-[40px] h-[40px] bg-muted rounded overflow-hidden flex items-center justify-center border">
                           {imageUrl ? (
                             <img src={imageUrl} alt="" className="w-full h-full object-contain" />
                           ) : (
-                            <span className="text-[8px] text-muted-foreground">Sem foto</span>
+                            <span className="text-[7px] text-muted-foreground">Sem foto</span>
                           )}
                         </div>
                       </td>
-                      <td className="py-2 px-1 text-[11px] font-mono">{item.sku || "—"}</td>
-                      <td className="py-2 px-1 text-[11px] leading-tight font-medium">{item.product_name}</td>
-                      <td className="py-2 px-1 text-center text-[11px]">{item.quantity}</td>
-                      <td className="py-2 px-1 text-center text-[11px] font-bold">{item.confirmed_quantity ?? "—"}</td>
+                      <td className="py-1 px-1 text-[10px] font-mono">{item.sku || "—"}</td>
+                      <td className="py-1 px-1 text-[10px] leading-tight font-medium">{item.product_name}</td>
+                      <td className="py-1 px-1 text-center text-[10px]">{item.quantity}</td>
+                      <td className="py-1 px-1 text-center text-[10px] font-bold">{item.confirmed_quantity ?? "—"}</td>
                       {order.delivered_quantity !== undefined && (
-                        <td className="py-2 px-1 text-center text-[11px]">{item.delivered_quantity || 0}</td>
+                        <td className="py-1 px-1 text-center text-[10px]">{item.delivered_quantity || 0}</td>
                       )}
                       {showPrices && <td className="py-2 px-1 text-right text-[11px]">{formatCurrency(Number(item.unit_price))}</td>}
                       {showPrices && (
