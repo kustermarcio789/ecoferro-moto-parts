@@ -1,5 +1,9 @@
-import { useEffect, useState } from "react";
-import { Search, Eye, X, Package, MapPin, CreditCard, Clock, User, Save, Truck, FileText, AlertTriangle, Trash2, Calendar } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
+import { 
+  Search, Eye, X, Package, MapPin, CreditCard, Clock, User, 
+  Save, Truck, FileText, AlertTriangle, Trash2, Calendar,
+  MoreVertical, Edit, Copy, Trash
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
@@ -7,6 +11,28 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { formatCurrency } from "@/lib/tracking";
@@ -43,6 +69,9 @@ const AdminOrders = () => {
   const [orderPayments, setOrderPayments] = useState<any[]>([]);
   const [detailLoading, setDetailLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState<string | null>(null);
+  const [isDuplicating, setIsDuplicating] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   
   // Fields for editing
   const [editTracking, setEditTracking] = useState("");
@@ -54,17 +83,18 @@ const AdminOrders = () => {
   const [editRequestedDate, setEditRequestedDate] = useState("");
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    const fetch = async () => {
-      setLoading(true);
-      let query = supabase.from("orders").select("*, customers(name, email, phone, cpf_cnpj)").order("priority", { ascending: false }).order("created_at", { ascending: false }).limit(50);
-      if (statusFilter && statusFilter !== "all") query = query.eq("status", statusFilter as any);
-      const { data } = await query;
-      setOrders(data || []);
-      setLoading(false);
-    };
-    fetch();
+  const fetchOrders = useCallback(async () => {
+    setLoading(true);
+    let query = supabase.from("orders").select("*, customers(name, email, phone, cpf_cnpj)").order("priority", { ascending: false }).order("created_at", { ascending: false }).limit(50);
+    if (statusFilter && statusFilter !== "all") query = query.eq("status", statusFilter as any);
+    const { data } = await query;
+    setOrders(data || []);
+    setLoading(false);
   }, [statusFilter]);
+
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
 
   const updateStatus = async (id: string, status: string) => {
     try {
@@ -85,9 +115,9 @@ const AdminOrders = () => {
     }
   };
 
-  const openDetail = async (order: any) => {
+  const openDetail = async (order: any, edit: boolean = false) => {
     setSelectedOrder(order);
-    setIsEditing(false);
+    setIsEditing(edit);
     setDetailLoading(true);
     const [items, payments] = await Promise.all([
       supabase.from("order_items").select("*").eq("order_id", order.id).order("created_at"),
@@ -207,6 +237,100 @@ const AdminOrders = () => {
     }
   };
 
+
+  const handleDuplicateOrder = async (order: any) => {
+    if (isDuplicating) return;
+    setIsDuplicating(order.id);
+    try {
+      // 1. Fetch order items
+      const { data: items, error: itemsError } = await supabase
+        .from("order_items")
+        .select("*")
+        .eq("order_id", order.id);
+      
+      if (itemsError) throw itemsError;
+
+      // 2. Create new order
+      const { data: newOrder, error: orderError } = await supabase
+        .from("orders")
+        .insert({
+          customer_id: order.customer_id,
+          wholesale_customer_id: order.wholesale_customer_id,
+          subtotal: order.subtotal,
+          total: order.total,
+          discount: order.discount,
+          shipping_cost: order.shipping_cost,
+          shipping_carrier: order.shipping_carrier,
+          shipping_address: order.shipping_address,
+          billing_address: order.billing_address,
+          atacadista_notes: order.atacadista_notes,
+          internal_notes: `Duplicado do pedido #${order.order_number}. ${order.internal_notes || ""}`,
+          priority: order.priority || "normal",
+          status: "pending",
+          sales_channel: order.sales_channel
+        })
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      // 3. Duplicate items
+      if (items && items.length > 0) {
+        const newItems = items.map(item => ({
+          order_id: newOrder.id,
+          product_id: item.product_id,
+          variation_id: item.variation_id,
+          product_name: item.product_name,
+          sku: item.sku,
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          total: item.total
+        }));
+
+        const { error: insertItemsError } = await supabase
+          .from("order_items")
+          .insert(newItems);
+        
+        if (insertItemsError) throw insertItemsError;
+      }
+
+      // 4. Log duplication
+      await supabase.from("admin_logs").insert({
+        action: "order.duplicated",
+        entity_type: "order",
+        entity_id: newOrder.id,
+        details: { original_order_id: order.id, original_order_number: order.order_number }
+      });
+
+      toast({ title: "Pedido duplicado com sucesso" });
+      fetchOrders();
+    } catch (error: any) {
+      toast({ title: "Erro ao duplicar pedido", description: error.message, variant: "destructive" });
+    } finally {
+      setIsDuplicating(null);
+    }
+  };
+
+  const handleDeleteOrder = async () => {
+    if (!orderToDelete) return;
+    setIsDeleting(true);
+    try {
+      // Delete order items first (or rely on cascade if configured, but explicit is safer)
+      await supabase.from("order_items").delete().eq("order_id", orderToDelete);
+      
+      const { error } = await supabase.from("orders").delete().eq("id", orderToDelete);
+      if (error) throw error;
+
+      toast({ title: "Pedido excluído com sucesso" });
+      setOrderToDelete(null);
+      fetchOrders();
+    } catch (error: any) {
+      toast({ title: "Erro ao excluir pedido", description: error.message, variant: "destructive" });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const formatDate = (d: string | null) => d ? new Date(d).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit" }) : "—";
 
   const formatAddress = (addr: any) => {
@@ -285,9 +409,77 @@ const AdminOrders = () => {
                     <td className="p-4 font-body text-xs text-muted-foreground">{new Date(o.created_at).toLocaleDateString("pt-BR")}</td>
                     <td className="p-4 text-right">
                       <div className="flex items-center justify-end gap-1">
-                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate(`/admin/pedidos/${o.id}`)} title="Ver detalhes">
-                          <Eye className="h-3.5 w-3.5" />
-                        </Button>
+                        {/* Desktop View */}
+                        <div className="hidden md:flex items-center gap-1">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate(`/admin/pedidos/${o.id}`)}>
+                                  <Eye className="h-4 w-4" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>Ver pedido</TooltipContent>
+                            </Tooltip>
+
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openDetail(o, true)}>
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>Editar pedido</TooltipContent>
+                            </Tooltip>
+
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button 
+                                  variant="ghost" 
+                                  size="icon" 
+                                  className="h-8 w-8" 
+                                  onClick={() => handleDuplicateOrder(o)}
+                                  disabled={isDuplicating === o.id}
+                                >
+                                  <Copy className={`h-4 w-4 ${isDuplicating === o.id ? 'animate-pulse' : ''}`} />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>Duplicar pedido</TooltipContent>
+                            </Tooltip>
+
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => setOrderToDelete(o.id)}>
+                                  <Trash className="h-4 w-4" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>Excluir pedido</TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+
+                        {/* Mobile View */}
+                        <div className="md:hidden">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => navigate(`/admin/pedidos/${o.id}`)}>
+                                <Eye className="h-4 w-4 mr-2" /> Ver pedido
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => openDetail(o, true)}>
+                                <Edit className="h-4 w-4 mr-2" /> Editar
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleDuplicateOrder(o)} disabled={isDuplicating === o.id}>
+                                <Copy className="h-4 w-4 mr-2" /> Duplicar
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="text-destructive" onClick={() => setOrderToDelete(o.id)}>
+                                <Trash className="h-4 w-4 mr-2" /> Excluir
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
                       </div>
                     </td>
                   </tr>
@@ -604,6 +796,32 @@ const AdminOrders = () => {
           )}
         </DialogContent>
       </Dialog>
+      <AlertDialog open={!!orderToDelete} onOpenChange={(open) => !open && setOrderToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-destructive" />
+              ATENÇÃO: Deseja realmente excluir este pedido?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Essa ação não poderá ser desfeita. Todos os itens relacionados a este pedido serão removidos permanentemente.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Cancelar</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteOrder();
+              }}
+              disabled={isDeleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {isDeleting ? "Excluindo..." : "Excluir pedido"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </AdminLayout>
   );
 };
