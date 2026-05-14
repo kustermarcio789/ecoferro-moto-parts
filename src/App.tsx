@@ -53,6 +53,7 @@ import AdminCategories from "./pages/admin/AdminCategories";
 import AdminMovements from "./pages/admin/AdminMovements";
 import AdminIntegrations from "./pages/admin/AdminIntegrations";
 import AdminProduction from "./pages/admin/AdminProduction";
+import AdminDebugSync from "./pages/admin/AdminDebugSync";
 
 const queryClient = new QueryClient();
 
@@ -110,6 +111,7 @@ const App = () => (
               <Route path="/admin/carrinhos-abandonados" element={<ProtectedRoute><AdminAbandonedCarts /></ProtectedRoute>} />
               <Route path="/admin/marcas" element={<ProtectedRoute><AdminBrands /></ProtectedRoute>} />
               <Route path="/admin/categorias" element={<ProtectedRoute><AdminCategories /></ProtectedRoute>} />
+              <Route path="/admin/debug-sync" element={<ProtectedRoute><AdminDebugSync /></ProtectedRoute>} />
 
               {/* Catch-all */}
               <Route path="*" element={<NotFound />} />
