@@ -506,36 +506,11 @@ const AdminProducts = () => {
               ) : products.map((product) => (
                 <tr key={product.id} className="border-b border-border transition-colors hover:bg-muted/30">
                   <td className="p-4">
-                    <TooltipProvider delayDuration={200}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div 
-                            className={`h-16 w-16 cursor-pointer rounded-lg overflow-hidden border-2 flex items-center justify-center transition-all hover:scale-105 active:scale-95 ${getImage(product) ? "border-border" : "border-destructive/30 bg-destructive/5"}`}
-                            onClick={() => {
-                              if (product.product_images && product.product_images.length > 0) {
-                                setLightbox({ open: true, images: product.product_images, index: 0 });
-                              }
-                            }}
-                          >
-                            {getImage(product) ? (
-                              <img src={getImage(product)} alt="" className="h-full w-full object-cover" />
-                            ) : (
-                              <div className="flex flex-col items-center gap-1">
-                                <ImageIcon className="h-6 w-6 text-destructive/40" />
-                                <span className="text-[8px] font-bold text-destructive uppercase">Sem foto</span>
-                              </div>
-                            )}
-                          </div>
-                        </TooltipTrigger>
-                        {getImage(product) && (
-                          <TooltipContent side="right" className="p-0 border-none bg-transparent shadow-2xl">
-                            <div className="w-[300px] h-[300px] rounded-xl overflow-hidden bg-white border border-border shadow-2xl animate-in zoom-in-95 duration-200">
-                              <img src={getImage(product)} alt="" className="w-full h-full object-contain p-2" />
-                            </div>
-                          </TooltipContent>
-                        )}
-                      </Tooltip>
-                    </TooltipProvider>
+                    <ProductImagePreview 
+                      images={product.product_images || []} 
+                      name={product.name} 
+                      className="h-16 w-16"
+                    />
                   </td>
                   <td className="p-4">
                     <div className="flex flex-col">
