@@ -156,8 +156,8 @@ const AdminProducts = () => {
     if (statusFilter === "inactive") query = query.eq("is_active", false);
     if (statusFilter === "lowstock") query = query.or("stock.lte.5,available_stock.lte.5");
     
-    if (typeFilter === "retail") query = query.eq("visible_site", true);
-    if (typeFilter === "wholesale") query = query.eq("visible_wholesale", true);
+    if (typeFilter === "retail") query = query.eq("source", "mercadolivre");
+    if (typeFilter === "wholesale") query = query.or("source.eq.wholesale,visible_wholesale.eq.true");
     if (typeFilter === "marketplace") query = query.eq("visible_marketplace", true);
     if (typeFilter === "both") query = query.eq("visible_site", true).eq("visible_wholesale", true);
     if (statusFilter === "nocategory") query = query.is("category_id", null);
