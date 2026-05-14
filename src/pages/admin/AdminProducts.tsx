@@ -433,6 +433,13 @@ const AdminProducts = () => {
             <RefreshCw className={`mr-2 h-4 w-4 ${syncingVps ? "animate-spin" : ""}`} />
             {syncingVps ? "Sync VPS" : "Sync VPS"}
           </Button>
+          <Button variant="outline" asChild className="text-xs font-display uppercase tracking-wider h-10 px-3">
+            <Link to="/admin/debug-sync">
+              <Settings className="mr-2 h-4 w-4" />
+              Debug
+            </Link>
+          </Button>
+
           <Button variant="outline" onClick={() => { setShowMlImport(true); fetchMlProducts(); }} className="text-xs font-display uppercase tracking-wider h-10 px-3"><ShoppingBag className="mr-2 h-4 w-4" />Importar</Button>
           <Button onClick={() => { setEditingProduct(null); setFormData(emptyForm); setShowForm(true); }} className="text-xs font-display uppercase tracking-wider h-10 px-3 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"><Plus className="mr-2 h-4 w-4" />Novo</Button>
         </div>
