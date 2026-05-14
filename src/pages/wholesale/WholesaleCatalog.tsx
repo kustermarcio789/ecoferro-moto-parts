@@ -81,6 +81,7 @@ const WholesaleCatalog = () => {
           brand_id: row.brand_id,
           brand_name: row.brands?.name ?? null,
           primary_image: imgs[0]?.url ?? null,
+          images: imgs.map((img: any) => ({ url: img.url, is_primary: !!img.is_primary })),
         };
       });
       setProducts(list);
