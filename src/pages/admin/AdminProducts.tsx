@@ -377,8 +377,8 @@ const AdminProducts = () => {
                 <tr key={product.id} className="border-b border-border transition-colors hover:bg-muted/30">
                   <td className="p-4">{getImage(product) && <img src={getImage(product)} alt="" className="mr-3 inline h-10 w-10 rounded object-cover" />}<span className="font-body font-medium text-foreground">{product.name}</span></td>
                   <td className="p-4 text-xs font-body">
-                    <span className={`rounded-full px-2 py-1 ${product.wholesale_only ? "bg-amber-100 text-amber-800" : "bg-blue-100 text-blue-800"}`}>
-                      {product.wholesale_only ? "Atacado" : "Varejo"}
+                    <span className={`rounded-full px-2 py-1 ${product.target_audience === "wholesale" ? "bg-amber-100 text-amber-800" : "bg-blue-100 text-blue-800"}`}>
+                      {product.target_audience === "wholesale" ? "Atacado" : product.target_audience === "retail" ? "Varejo" : "Ambos"}
                     </span>
                   </td>
                   <td className="p-4 text-xs font-body text-muted-foreground"><div>{product.internal_code || "-"}</div><div>{product.sku || "-"}</div></td>
