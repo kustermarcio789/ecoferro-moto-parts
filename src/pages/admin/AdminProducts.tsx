@@ -595,7 +595,40 @@ const AdminProducts = () => {
             </tbody>
           </table>
         </div>
-        {totalPages > 1 && <div className="flex items-center justify-between border-t border-border px-4 py-3"><span className="text-xs font-body text-muted-foreground">Pagina {page} de {totalPages}</span><div className="flex gap-1"><Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((current) => current - 1)}><ChevronLeft className="h-4 w-4" /></Button><Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((current) => current + 1)}><ChevronRight className="h-4 w-4" /></Button></div></div>}
+        {totalPages > 1 && (
+          <div className="flex flex-col items-center justify-center gap-6 border-t border-border px-4 py-10 pb-36">
+            <div className="flex items-center gap-4">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                disabled={page <= 1} 
+                onClick={() => setPage((current) => current - 1)}
+                className="h-12 w-12 rounded-full border-primary/20 hover:bg-primary hover:text-white transition-all shadow-sm"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+              
+              <div className="flex items-center gap-4 bg-card px-8 py-3 rounded-full border border-border shadow-sm">
+                <span className="text-lg font-display font-bold text-primary">{page}</span>
+                <span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">de</span>
+                <span className="text-lg font-display font-bold text-foreground">{totalPages}</span>
+              </div>
+
+              <Button 
+                variant="outline" 
+                size="sm" 
+                disabled={page >= totalPages} 
+                onClick={() => setPage((current) => current + 1)}
+                className="h-12 w-12 rounded-full border-primary/20 hover:bg-primary hover:text-white transition-all shadow-sm"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </Button>
+            </div>
+            <span className="text-[10px] font-display uppercase tracking-widest text-muted-foreground bg-muted/30 px-3 py-1 rounded-full font-bold">
+              Visualizando {(page - 1) * ITEMS_PER_PAGE + 1} - {Math.min(page * ITEMS_PER_PAGE, total)} de {total} produtos
+            </span>
+          </div>
+        )}
       </div>
 
       <Dialog open={showMlImport} onOpenChange={setShowMlImport}>
