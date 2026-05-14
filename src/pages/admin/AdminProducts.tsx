@@ -1,7 +1,8 @@
 import { useEffect, useState, useMemo } from "react";
-import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, ShoppingBag, Loader2, Check, Package, Image as ImageIcon, Settings, DollarSign, Barcode } from "lucide-react";
+import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, ShoppingBag, Loader2, Check, Package, Image as ImageIcon, Settings, DollarSign, Barcode, X, ChevronRight as ChevronRightIcon, ChevronLeft as ChevronLeftIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -58,8 +59,11 @@ const AdminProducts = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [brandFilter, setBrandFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [photoFilter, setPhotoFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
+  const [lightbox, setLightbox] = useState<{ open: boolean; images: any[]; index: number }>({ open: false, images: [], index: 0 });
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [showForm, setShowForm] = useState(false);
@@ -79,11 +83,12 @@ const AdminProducts = () => {
     setLoading(true);
     let query = supabaseAny
       .from("products")
-      .select("id, name, sku, internal_code, price, cost, stock, min_stock, is_active, wholesale_only, target_audience, categories(name), product_images(url, is_primary)", { count: "exact" })
+      .select("id, name, sku, internal_code, price, cost, stock, min_stock, is_active, wholesale_only, target_audience, categories(name), brands(name), product_images(url, is_primary)", { count: "exact" })
       .order("created_at", { ascending: false });
 
     if (search) query = query.ilike("name", `%${search}%`);
     if (categoryFilter !== "all") query = query.eq("category_id", categoryFilter);
+    if (brandFilter !== "all") query = query.eq("brand_id", brandFilter);
     if (statusFilter === "active") query = query.eq("is_active", true);
     if (statusFilter === "inactive") query = query.eq("is_active", false);
     if (statusFilter === "lowstock") query = query.lte("stock", 5);
@@ -99,7 +104,16 @@ const AdminProducts = () => {
       setProducts([]);
       setTotal(0);
     } else {
-      setProducts(data || []);
+      let filteredData = data || [];
+      
+      // Client-side filtering for photos since product_images is a relation
+      if (photoFilter === "with") {
+        filteredData = filteredData.filter((p: any) => p.product_images && p.product_images.length > 0);
+      } else if (photoFilter === "without") {
+        filteredData = filteredData.filter((p: any) => !p.product_images || p.product_images.length === 0);
+      }
+      
+      setProducts(filteredData);
       setTotal(count || 0);
     }
     setLoading(false);
@@ -125,7 +139,7 @@ const AdminProducts = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [search, categoryFilter, statusFilter, typeFilter, page]);
+  }, [search, categoryFilter, brandFilter, statusFilter, typeFilter, photoFilter, page]);
 
   const fetchMlProducts = async () => {
     setMlLoading(true);
@@ -315,23 +329,35 @@ const AdminProducts = () => {
         </div>
         <div className="flex flex-wrap gap-2">
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-            <SelectTrigger className="w-40 text-xs font-body"><SelectValue placeholder="Categoria" /></SelectTrigger>
-            <SelectContent><SelectItem value="all">Todas</SelectItem>{categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+            <SelectTrigger className="w-32 text-xs font-body"><SelectValue placeholder="Categoria" /></SelectTrigger>
+            <SelectContent><SelectItem value="all">Categorias</SelectItem>{categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+          </Select>
+          <Select value={brandFilter} onValueChange={setBrandFilter}>
+            <SelectTrigger className="w-32 text-xs font-body"><SelectValue placeholder="Marca" /></SelectTrigger>
+            <SelectContent><SelectItem value="all">Marcas</SelectItem>{brands.map((b) => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}</SelectContent>
           </Select>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-36 text-xs font-body"><SelectValue placeholder="Status" /></SelectTrigger>
-            <SelectContent><SelectItem value="all">Todos</SelectItem><SelectItem value="active">Ativos</SelectItem><SelectItem value="inactive">Inativos</SelectItem><SelectItem value="lowstock">Estoque Baixo</SelectItem></SelectContent>
+            <SelectTrigger className="w-32 text-xs font-body"><SelectValue placeholder="Status" /></SelectTrigger>
+            <SelectContent><SelectItem value="all">Status</SelectItem><SelectItem value="active">Ativos</SelectItem><SelectItem value="inactive">Inativos</SelectItem><SelectItem value="lowstock">Estoque Baixo</SelectItem></SelectContent>
           </Select>
           <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-36 text-xs font-body"><SelectValue placeholder="Tipo" /></SelectTrigger>
+            <SelectTrigger className="w-32 text-xs font-body"><SelectValue placeholder="Tipo" /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Todos (Tipos)</SelectItem>
-              <SelectItem value="retail">Somente varejo</SelectItem>
-              <SelectItem value="wholesale">Somente atacado</SelectItem>
+              <SelectItem value="all">Tipos</SelectItem>
+              <SelectItem value="retail">Varejo</SelectItem>
+              <SelectItem value="wholesale">Atacado</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" onClick={() => { setShowMlImport(true); fetchMlProducts(); }} className="text-xs font-display uppercase tracking-wider"><ShoppingBag className="mr-2 h-4 w-4" />Importar do ML</Button>
-          <Button onClick={() => { setEditingProduct(null); setFormData(emptyForm); setShowForm(true); }} className="text-xs font-display uppercase tracking-wider"><Plus className="mr-2 h-4 w-4" />Novo Produto</Button>
+          <Select value={photoFilter} onValueChange={setPhotoFilter}>
+            <SelectTrigger className="w-32 text-xs font-body"><SelectValue placeholder="Fotos" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Fotos: Todas</SelectItem>
+              <SelectItem value="with">Com foto</SelectItem>
+              <SelectItem value="without">Sem foto</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button variant="outline" onClick={() => { setShowMlImport(true); fetchMlProducts(); }} className="text-xs font-display uppercase tracking-wider h-10 px-3"><ShoppingBag className="mr-2 h-4 w-4" />Importar</Button>
+          <Button onClick={() => { setEditingProduct(null); setFormData(emptyForm); setShowForm(true); }} className="text-xs font-display uppercase tracking-wider h-10 px-3"><Plus className="mr-2 h-4 w-4" />Novo</Button>
         </div>
       </div>
 
@@ -466,13 +492,36 @@ const AdminProducts = () => {
               {loading ? Array.from({ length: 5 }).map((_, index) => <tr key={index}><td colSpan={9} className="p-4"><div className="h-12 animate-pulse rounded bg-muted" /></td></tr>) : products.map((product) => (
                 <tr key={product.id} className="border-b border-border transition-colors hover:bg-muted/30">
                   <td className="p-4">
-                    <div className="h-12 w-12 rounded-lg overflow-hidden border border-border bg-muted/30 flex items-center justify-center">
-                      {getImage(product) ? (
-                        <img src={getImage(product)} alt="" className="h-full w-full object-cover" />
-                      ) : (
-                        <ImageIcon className="h-5 w-5 text-muted-foreground/40" />
-                      )}
-                    </div>
+                    <TooltipProvider delayDuration={200}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div 
+                            className={`h-16 w-16 cursor-pointer rounded-lg overflow-hidden border-2 flex items-center justify-center transition-all hover:scale-105 active:scale-95 ${getImage(product) ? "border-border" : "border-destructive/30 bg-destructive/5"}`}
+                            onClick={() => {
+                              if (product.product_images && product.product_images.length > 0) {
+                                setLightbox({ open: true, images: product.product_images, index: 0 });
+                              }
+                            }}
+                          >
+                            {getImage(product) ? (
+                              <img src={getImage(product)} alt="" className="h-full w-full object-cover" />
+                            ) : (
+                              <div className="flex flex-col items-center gap-1">
+                                <ImageIcon className="h-6 w-6 text-destructive/40" />
+                                <span className="text-[8px] font-bold text-destructive uppercase">Sem foto</span>
+                              </div>
+                            )}
+                          </div>
+                        </TooltipTrigger>
+                        {getImage(product) && (
+                          <TooltipContent side="right" className="p-0 border-none bg-transparent shadow-2xl">
+                            <div className="w-[300px] h-[300px] rounded-xl overflow-hidden bg-white border border-border shadow-2xl animate-in zoom-in-95 duration-200">
+                              <img src={getImage(product)} alt="" className="w-full h-full object-contain p-2" />
+                            </div>
+                          </TooltipContent>
+                        )}
+                      </Tooltip>
+                    </TooltipProvider>
                   </td>
                   <td className="p-4">
                     <div className="flex flex-col">
@@ -487,7 +536,8 @@ const AdminProducts = () => {
                   </td>
                   <td className="p-4 text-xs font-body text-muted-foreground">
                     <div className="font-bold text-foreground/80">{product.sku || product.internal_code || "-"}</div>
-                    <div className="text-[10px] uppercase truncate max-w-[100px]">{product.categories?.name || "Sem categoria"}</div>
+                    <div className="text-[10px] uppercase truncate max-w-[120px]">{product.categories?.name || "Sem categoria"}</div>
+                    <div className="text-[10px] uppercase truncate max-w-[120px] font-medium text-primary/70">{product.brands?.name || "Sem marca"}</div>
                   </td>
                   <td className="p-4 text-right font-body font-medium">{formatCurrency(Number(product.price))}</td>
                   <td className="p-4 text-right text-xs font-body font-bold text-green-600">{margin(product)}%</td>
@@ -518,6 +568,58 @@ const AdminProducts = () => {
               <div className="grid max-h-[60vh] gap-3 overflow-y-auto">{mlProducts.map((product) => <div key={product.ml_id} onClick={() => setMlSelected((current) => { const next = new Set(current); if (next.has(product.ml_id)) next.delete(product.ml_id); else next.add(product.ml_id); return next; })} className={`flex cursor-pointer items-center gap-4 rounded-lg border p-3 ${mlSelected.has(product.ml_id) ? "border-primary bg-primary/5" : "border-border"}`}><div className={`flex h-5 w-5 items-center justify-center rounded border-2 ${mlSelected.has(product.ml_id) ? "border-primary bg-primary" : "border-muted-foreground/30"}`}>{mlSelected.has(product.ml_id) && <Check className="h-3 w-3 text-primary-foreground" />}</div><div className="min-w-0 flex-1"><p className="line-clamp-1 font-display text-sm font-semibold text-foreground">{product.name}</p><p className="mt-0.5 text-xs font-body text-muted-foreground">ML ID: {product.ml_id} • Estoque no ML: {product.stock}</p></div></div>)}</div>
             </>
           )}
+        </DialogContent>
+      </Dialog>
+      <Dialog open={lightbox.open} onOpenChange={(open) => setLightbox(prev => ({ ...prev, open }))}>
+        <DialogContent className="max-w-[95vw] sm:max-w-[80vw] h-[80vh] p-0 border-none bg-black/90 flex flex-col items-center justify-center">
+          <button 
+            className="absolute top-4 right-4 z-50 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+            onClick={() => setLightbox(prev => ({ ...prev, open: false }))}
+          >
+            <X className="h-6 w-6" />
+          </button>
+          
+          <div className="relative w-full h-full flex items-center justify-center p-8">
+            {lightbox.images.length > 1 && (
+              <>
+                <button 
+                  className="absolute left-4 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightbox(prev => ({ ...prev, index: (prev.index - 1 + prev.images.length) % prev.images.length }));
+                  }}
+                >
+                  <ChevronLeftIcon className="h-8 w-8" />
+                </button>
+                <button 
+                  className="absolute right-4 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightbox(prev => ({ ...prev, index: (prev.index + 1) % prev.images.length }));
+                  }}
+                >
+                  <ChevronRightIcon className="h-8 w-8" />
+                </button>
+              </>
+            )}
+            
+            <img 
+              src={lightbox.images[lightbox.index]?.url} 
+              alt="" 
+              className="max-w-full max-h-full object-contain animate-in fade-in zoom-in-95 duration-300" 
+            />
+            
+            {lightbox.images.length > 1 && (
+              <div className="absolute bottom-4 flex gap-2">
+                {lightbox.images.map((_, i) => (
+                  <div 
+                    key={i} 
+                    className={`h-1.5 w-1.5 rounded-full transition-all ${lightbox.index === i ? "bg-white w-4" : "bg-white/40"}`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </AdminLayout>
