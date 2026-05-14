@@ -372,7 +372,7 @@ const AdminProducts = () => {
         <div className="flex flex-wrap gap-2">
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
             <SelectTrigger className="w-32 text-xs font-body"><SelectValue placeholder="Categoria" /></SelectTrigger>
-            <SelectContent><SelectItem value="all">Categorias</SelectItem>{categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+            <SelectContent><SelectItem value="all">Categorias</SelectItem><SelectItem value="none">Sem Categoria</SelectItem>{categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
           </Select>
           <Select value={brandFilter} onValueChange={setBrandFilter}>
             <SelectTrigger className="w-32 text-xs font-body"><SelectValue placeholder="Marca" /></SelectTrigger>
