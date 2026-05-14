@@ -477,8 +477,15 @@ const AdminProducts = () => {
                     <div className="text-[10px] uppercase truncate max-w-[100px]">{product.categories?.name || "Sem categoria"}</div>
                   </td>
                   <td className="p-4 text-right font-body font-medium">{formatCurrency(Number(product.price))}</td>
-                  <td className="p-4 text-right text-xs font-body">{margin(product)}%</td>
-                  <td className="p-4 text-center"><span className={`inline-block rounded px-2 py-0.5 text-xs font-body font-medium ${product.stock <= (product.min_stock || 5) ? "bg-destructive/10 text-destructive" : "bg-primary/10 text-primary"}`}>{product.stock}</span></td>
+                  <td className="p-4 text-right text-xs font-body font-bold text-green-600">{margin(product)}%</td>
+                  <td className="p-4 text-center">
+                    <div className="flex flex-col items-center">
+                      <span className={`inline-block rounded px-2 py-0.5 text-[10px] font-bold uppercase ${product.stock <= (product.min_stock || 5) ? "bg-destructive/10 text-destructive" : "bg-primary/10 text-primary"}`}>
+                        {product.stock} {product.unit || "un"}
+                      </span>
+                      {product.stock <= (product.min_stock || 5) && <span className="text-[9px] text-destructive font-bold uppercase mt-0.5">Baixo</span>}
+                    </div>
+                  </td>
                   <td className="p-4 text-center"><button onClick={() => supabase.from("products").update({ is_active: !product.is_active }).eq("id", product.id).then(fetchProducts)} className={`inline-block rounded px-2 py-0.5 text-xs font-body font-medium ${product.is_active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>{product.is_active ? "Ativo" : "Inativo"}</button></td>
                   <td className="p-4 text-right"><div className="flex items-center justify-end gap-1"><Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => startEdit(product)}><Edit className="h-3.5 w-3.5" /></Button><Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => supabase.from("products").delete().eq("id", product.id).then(fetchProducts)}><Trash2 className="h-3.5 w-3.5" /></Button></div></td>
                 </tr>
