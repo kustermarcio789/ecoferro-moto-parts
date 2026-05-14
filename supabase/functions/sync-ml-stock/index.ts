@@ -6,6 +6,10 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+function slugify(text: string): string {
+  return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -19,59 +23,121 @@ serve(async (req) => {
   const VENDAS_URL = Deno.env.get('VENDAS_ECOFERRO_URL') || 'https://vendas.ecoferro.com.br/api/public/stock-export'
   const VENDAS_TOKEN = Deno.env.get('VENDAS_ECOFERRO_TOKEN')
 
-  // Create log entry
-  const { data: logEntry, error: logError } = await supabaseAdmin
-    .from('stock_sync_logs')
-    .insert({
-      status: 'running',
-      source_url: VENDAS_URL
-    })
-    .select()
-    .single()
-
-  if (logError) {
-    console.error('Error creating log entry:', logError)
-    return new Response(JSON.stringify({ error: 'Failed to create log' }), { status: 500 })
-  }
-
   try {
-    if (!VENDAS_TOKEN) {
-      throw new Error('VENDAS_ECOFERRO_TOKEN not configured')
-    }
+    let items = []
+    let source = 'pull'
 
-    const response = await fetch(VENDAS_URL, {
-      headers: {
-        'Authorization': `Bearer ${VENDAS_TOKEN}`,
-        'Content-Type': 'application/json'
+    // Check if this is a PUSH (data in body) or a PULL (fetch from VENDAS_URL)
+    const body = await req.json().catch(() => null)
+    if (body && (body.items || body.products)) {
+      items = body.items || body.products
+      source = 'push'
+    } else {
+      if (!VENDAS_TOKEN) {
+        throw new Error('VENDAS_ECOFERRO_TOKEN not configured')
       }
-    })
 
-    if (!response.ok) {
-      throw new Error(`External API returned status ${response.status}: ${await response.text()}`)
+      console.log(`[sync] Pulling data from ${VENDAS_URL}...`)
+      const response = await fetch(VENDAS_URL, {
+        headers: {
+          'Authorization': `Bearer ${VENDAS_TOKEN}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error(`External API returned status ${response.status}: ${await response.text()}`)
+      }
+
+      const data = await response.json()
+      items = data.items || data.products || []
     }
 
-    const data = await response.json()
-    const items = data.items || []
-    
+    // Create log entry
+    const { data: logEntry } = await supabaseAdmin
+      .from('stock_sync_logs')
+      .insert({
+        status: 'running',
+        source_url: source === 'pull' ? VENDAS_URL : 'push-from-vps'
+      })
+      .select()
+      .single()
+
     let totalUpdated = 0
-    let totalNotFound = 0
+    let totalCreated = 0
+    let totalErrors = 0
 
     for (const item of items) {
-      const { data: updateData, error: updateError } = await supabaseAdmin
-        .from('products')
-        .update({
-          available_stock: item.stock,
-          last_stock_sync_at: new Date().toISOString()
-        })
-        .or(`sku.eq.${item.sku},internal_code.eq.${item.sku}`)
-        .select('id')
+      try {
+        const sku = item.sku || item.internal_code || item.SKU
+        if (!sku) continue
 
-      if (updateError) {
-        console.error(`Error updating SKU ${item.sku}:`, updateError)
-      } else if (updateData && updateData.length > 0) {
-        totalUpdated += updateData.length
-      } else {
-        totalNotFound++
+        // Prepare product data from VPS format
+        const productData = {
+          name: item.name || item.title || item.título,
+          price: item.price || item.preço || 0,
+          original_price: item.original_price || null,
+          stock: item.stock || item.estoque || 0,
+          available_stock: item.stock || item.estoque || 0,
+          sku: sku,
+          internal_code: sku,
+          external_id: item.id || item.external_id || null,
+          ml_permalink: item.permalink || null,
+          is_active: true, // If it comes from ml_stock, we assume it's active
+          last_sync_at: new Date().toISOString(),
+          sync_source: 'vendas-vps',
+          raw_data: item
+        }
+
+        // Check if product exists by SKU
+        const { data: existing } = await supabaseAdmin
+          .from('products')
+          .select('id, slug')
+          .or(`sku.eq.${sku},internal_code.eq.${sku}`)
+          .maybeSingle()
+
+        if (existing) {
+          // UPDATE
+          const { error: updateError } = await supabaseAdmin
+            .from('products')
+            .update(productData)
+            .eq('id', existing.id)
+
+          if (updateError) throw updateError
+          totalUpdated++
+        } else {
+          // INSERT
+          const slug = slugify(productData.name || 'product') + '-' + Math.random().toString(36).substring(2, 7)
+          const { error: insertError } = await supabaseAdmin
+            .from('products')
+            .insert({ ...productData, slug })
+
+          if (insertError) throw insertError
+          totalCreated++
+        }
+
+        // Handle images if provided
+        if (item.images || item.imagens) {
+          const images = Array.isArray(item.images || item.imagens) 
+            ? (item.images || item.imagens) 
+            : [(item.images || item.imagens)]
+          
+          // Clear old images or just add new ones? 
+          // For simplicity, we'll just add the first one as primary if none exists
+          const productId = existing?.id || (await supabaseAdmin.from('products').select('id').eq('sku', sku).single()).data?.id
+          
+          if (productId && images.length > 0) {
+            const primaryImage = images[0]
+            await supabaseAdmin.from('product_images').upsert({
+              product_id: productId,
+              url: primaryImage,
+              is_primary: true
+            }, { onConflict: 'product_id,url' })
+          }
+        }
+      } catch (err) {
+        console.error(`Error processing SKU ${item.sku}:`, err)
+        totalErrors++
       }
     }
 
@@ -81,17 +147,18 @@ serve(async (req) => {
       .update({
         status: 'success',
         finished_at: new Date().toISOString(),
-        total_received: items.length,
-        total_updated: totalUpdated,
-        total_not_found: totalNotFound
+        total_skus_received: items.length,
+        total_skus_updated: totalUpdated,
+        total_skus_not_found: totalErrors // Using this as error count for now
       })
       .eq('id', logEntry.id)
 
     return new Response(JSON.stringify({ 
       success: true, 
       received: items.length, 
+      created: totalCreated,
       updated: totalUpdated, 
-      notFound: totalNotFound 
+      errors: totalErrors 
     }), { 
       headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
     })
@@ -99,15 +166,6 @@ serve(async (req) => {
   } catch (error) {
     console.error('Sync failed:', error)
     
-    await supabaseAdmin
-      .from('stock_sync_logs')
-      .update({
-        status: 'failed',
-        finished_at: new Date().toISOString(),
-        error_message: error.message
-      })
-      .eq('id', logEntry.id)
-
     return new Response(JSON.stringify({ error: error.message }), { 
       status: 500, 
       headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
