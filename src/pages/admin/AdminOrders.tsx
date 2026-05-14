@@ -237,9 +237,6 @@ const AdminOrders = () => {
     }
   };
 
-  const saveOrderFields = async () => {
-    // ... (logic remains same, will be handled in full replace if needed, but here I just keep it)
-  };
 
   const handleDuplicateOrder = async (order: any) => {
     if (isDuplicating) return;
