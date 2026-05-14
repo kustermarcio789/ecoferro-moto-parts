@@ -202,13 +202,11 @@ const WholesaleCatalog = () => {
                     key={p.id}
                     className="bg-card border border-border rounded-xl p-3 flex flex-col"
                   >
-                    <div className="aspect-square bg-muted rounded-lg overflow-hidden mb-3 flex items-center justify-center">
-                      {p.primary_image ? (
-                        <img src={p.primary_image} alt={p.name} className="w-full h-full object-contain" />
-                      ) : (
-                        <div className="text-xs text-muted-foreground font-body">Sem imagem</div>
-                      )}
-                    </div>
+                    <ProductImagePreview 
+                      images={p.images} 
+                      name={p.name} 
+                      className="mb-3"
+                    />
                     <div className="flex-1">
                       <div className="text-[10px] uppercase tracking-wider font-display text-muted-foreground">
                         {p.internal_code} {p.brand_name ? `· ${p.brand_name}` : ""}
