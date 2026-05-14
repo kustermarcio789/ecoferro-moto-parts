@@ -17,9 +17,9 @@ export const ProductImagePreview = ({
   className,
   aspectRatio = "square"
 }: ProductImagePreviewProps) => {
-  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  
-  const primaryImage = images.find(img => img.is_primary)?.url || images[0]?.url;
+  const primaryImageIndex = images.findIndex(img => img.is_primary);
+  const initialIndex = primaryImageIndex >= 0 ? primaryImageIndex : 0;
+  const primaryImage = images[initialIndex]?.url;
 
   if (!primaryImage) {
     return (
