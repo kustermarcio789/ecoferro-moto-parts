@@ -618,58 +618,6 @@ const AdminProducts = () => {
           )}
         </DialogContent>
       </Dialog>
-      <Dialog open={lightbox.open} onOpenChange={(open) => setLightbox(prev => ({ ...prev, open }))}>
-        <DialogContent className="max-w-[95vw] sm:max-w-[80vw] h-[80vh] p-0 border-none bg-black/90 flex flex-col items-center justify-center">
-          <button 
-            className="absolute top-4 right-4 z-50 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
-            onClick={() => setLightbox(prev => ({ ...prev, open: false }))}
-          >
-            <X className="h-6 w-6" />
-          </button>
-          
-          <div className="relative w-full h-full flex items-center justify-center p-8">
-            {lightbox.images.length > 1 && (
-              <>
-                <button 
-                  className="absolute left-4 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLightbox(prev => ({ ...prev, index: (prev.index - 1 + prev.images.length) % prev.images.length }));
-                  }}
-                >
-                  <ChevronLeftIcon className="h-8 w-8" />
-                </button>
-                <button 
-                  className="absolute right-4 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLightbox(prev => ({ ...prev, index: (prev.index + 1) % prev.images.length }));
-                  }}
-                >
-                  <ChevronRightIcon className="h-8 w-8" />
-                </button>
-              </>
-            )}
-            
-            <img 
-              src={lightbox.images[lightbox.index]?.url} 
-              alt="" 
-              className="max-w-full max-h-full object-contain animate-in fade-in zoom-in-95 duration-300" 
-            />
-            
-            {lightbox.images.length > 1 && (
-              <div className="absolute bottom-4 flex gap-2">
-                {lightbox.images.map((_, i) => (
-                  <div 
-                    key={i} 
-                    className={`h-1.5 w-1.5 rounded-full transition-all ${lightbox.index === i ? "bg-white w-4" : "bg-white/40"}`}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </AdminLayout>
   );
 };
