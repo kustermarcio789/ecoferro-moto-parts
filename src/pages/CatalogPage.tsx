@@ -298,7 +298,7 @@ const CatalogPage = () => {
                     <div key={product.id} className="group bg-card rounded-xl border border-border shadow-eco hover:shadow-eco-hover transition-all overflow-hidden">
                       <div className="relative aspect-square bg-white overflow-hidden block">
                         <Link to={`/produto/${product.slug}`} className="block w-full h-full">
-                          <img src={getImage(product)} alt={product.name} className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                          <img src={getImage(product)} alt={product.name} className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
                         </Link>
                         <button
                           onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLightboxImage(getImage(product)); }}
