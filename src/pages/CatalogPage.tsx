@@ -119,7 +119,7 @@ const CatalogPage = () => {
         console.error("Error fetching products:", error);
       }
 
-      console.log(`Fetched ${data?.length || 0} products from ${source || 'Supabase'}. Total count: ${count}`);
+      console.log(`Fetched ${data?.length || 0} products. Total count: ${count}`);
       
       setProducts((data as any) || []);
       setTotal(count || 0);
