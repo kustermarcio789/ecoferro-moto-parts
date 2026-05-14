@@ -1,5 +1,5 @@
-import { useEffect, useState, useMemo } from "react";
-import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, ShoppingBag, Loader2, Check, Package, Image as ImageIcon, Settings, DollarSign, Barcode, X, ChevronRight as ChevronRightIcon, ChevronLeft as ChevronLeftIcon } from "lucide-react";
+import { useEffect, useState, useMemo, useCallback } from "react";
+import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, ShoppingBag, Loader2, Check, Package, Image as ImageIcon, Settings, DollarSign, Barcode, X, ChevronRight as ChevronRightIcon, ChevronLeft as ChevronLeftIcon, FilterX, Eye, ImagePlus, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -79,14 +79,14 @@ const AdminProducts = () => {
   const generateSlug = (name: string) =>
     name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setLoading(true);
     let query = supabaseAny
       .from("products")
       .select("id, name, sku, internal_code, price, cost, stock, min_stock, is_active, wholesale_only, target_audience, categories(name), brands(name), product_images(url, is_primary)", { count: "exact" })
       .order("created_at", { ascending: false });
 
-    if (search) query = query.ilike("name", `%${search}%`);
+    if (search) query = query.or(`name.ilike.%${search}%,sku.ilike.%${search}%,internal_code.ilike.%${search}%`);
     if (categoryFilter !== "all") query = query.eq("category_id", categoryFilter);
     if (brandFilter !== "all") query = query.eq("brand_id", brandFilter);
     if (statusFilter === "active") query = query.eq("is_active", true);
@@ -106,7 +106,6 @@ const AdminProducts = () => {
     } else {
       let filteredData = data || [];
       
-      // Client-side filtering for photos since product_images is a relation
       if (photoFilter === "with") {
         filteredData = filteredData.filter((p: any) => p.product_images && p.product_images.length > 0);
       } else if (photoFilter === "without") {
@@ -117,7 +116,7 @@ const AdminProducts = () => {
       setTotal(count || 0);
     }
     setLoading(false);
-  };
+  }, [search, categoryFilter, brandFilter, statusFilter, typeFilter, photoFilter, page, toast]);
 
   const checkSkuExists = async (sku: string, productId?: string) => {
     if (!sku) return false;
@@ -139,7 +138,17 @@ const AdminProducts = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [search, categoryFilter, brandFilter, statusFilter, typeFilter, photoFilter, page]);
+  }, [fetchProducts]);
+
+  const clearFilters = () => {
+    setSearch("");
+    setCategoryFilter("all");
+    setBrandFilter("all");
+    setStatusFilter("all");
+    setTypeFilter("all");
+    setPhotoFilter("all");
+    setPage(1);
+  };
 
   const fetchMlProducts = async () => {
     setMlLoading(true);
@@ -356,8 +365,12 @@ const AdminProducts = () => {
               <SelectItem value="without">Sem foto</SelectItem>
             </SelectContent>
           </Select>
+          <Button variant="ghost" size="icon" onClick={clearFilters} title="Limpar Filtros" className="h-10 w-10 text-muted-foreground hover:text-foreground">
+            <FilterX className="h-4 w-4" />
+          </Button>
           <Button variant="outline" onClick={() => { setShowMlImport(true); fetchMlProducts(); }} className="text-xs font-display uppercase tracking-wider h-10 px-3"><ShoppingBag className="mr-2 h-4 w-4" />Importar</Button>
-          <Button onClick={() => { setEditingProduct(null); setFormData(emptyForm); setShowForm(true); }} className="text-xs font-display uppercase tracking-wider h-10 px-3"><Plus className="mr-2 h-4 w-4" />Novo</Button>
+          <Button onClick={() => { setEditingProduct(null); setFormData(emptyForm); setShowForm(true); }} className="text-xs font-display uppercase tracking-wider h-10 px-3 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"><Plus className="mr-2 h-4 w-4" />Novo</Button>
+        </div>
         </div>
       </div>
 
@@ -489,7 +502,9 @@ const AdminProducts = () => {
           <table className="w-full text-sm">
             <thead><tr className="border-b border-border bg-muted/50"><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">IMAGEM</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">Produto</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">TIPO</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">SKU / CAT</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Preco</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Margem</th><th className="p-4 text-center text-xs font-display uppercase tracking-wider text-muted-foreground">Disponivel</th><th className="p-4 text-center text-xs font-display uppercase tracking-wider text-muted-foreground">Status</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Acoes</th></tr></thead>
             <tbody>
-              {loading ? Array.from({ length: 5 }).map((_, index) => <tr key={index}><td colSpan={9} className="p-4"><div className="h-12 animate-pulse rounded bg-muted" /></td></tr>) : products.map((product) => (
+              {loading ? Array.from({ length: 5 }).map((_, index) => <tr key={index}><td colSpan={9} className="p-4"><div className="h-20 animate-pulse rounded-lg bg-muted/50" /></td></tr>) : products.length === 0 ? (
+                <tr><td colSpan={9} className="p-12 text-center text-muted-foreground"><div className="flex flex-col items-center gap-2"><Package className="h-10 w-10 opacity-20" /><p className="font-body text-sm">Nenhum produto encontrado com os filtros selecionados.</p><Button variant="link" onClick={clearFilters} className="text-primary font-bold">Limpar filtros</Button></div></td></tr>
+              ) : products.map((product) => (
                 <tr key={product.id} className="border-b border-border transition-colors hover:bg-muted/30">
                   <td className="p-4">
                     <TooltipProvider delayDuration={200}>
@@ -525,7 +540,19 @@ const AdminProducts = () => {
                   </td>
                   <td className="p-4">
                     <div className="flex flex-col">
-                      <span className="font-body font-bold text-foreground line-clamp-1">{product.name}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-body font-bold text-foreground line-clamp-1">{product.name}</span>
+                        {!getImage(product) && (
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <AlertCircle className="h-3.5 w-3.5 text-destructive animate-pulse cursor-help" />
+                              </TooltipTrigger>
+                              <TooltipContent>Produto sem fotos cadastradas</TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        )}
+                      </div>
                       <span className="text-[10px] font-body text-muted-foreground uppercase tracking-tighter">ID: {product.id.slice(0,8)}</span>
                     </div>
                   </td>
@@ -550,7 +577,20 @@ const AdminProducts = () => {
                     </div>
                   </td>
                   <td className="p-4 text-center"><button onClick={() => supabase.from("products").update({ is_active: !product.is_active }).eq("id", product.id).then(fetchProducts)} className={`inline-block rounded px-2 py-0.5 text-xs font-body font-medium ${product.is_active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>{product.is_active ? "Ativo" : "Inativo"}</button></td>
-                  <td className="p-4 text-right"><div className="flex items-center justify-end gap-1"><Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => startEdit(product)}><Edit className="h-3.5 w-3.5" /></Button><Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => supabase.from("products").delete().eq("id", product.id).then(fetchProducts)}><Trash2 className="h-3.5 w-3.5" /></Button></div></td>
+                  <td className="p-4 text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary/10 hover:text-primary transition-colors" onClick={() => startEdit(product)} title="Editar">
+                        <Edit className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:bg-destructive/10 transition-colors" onClick={() => {
+                        if (confirm("Tem certeza que deseja excluir este produto?")) {
+                          supabase.from("products").delete().eq("id", product.id).then(fetchProducts);
+                        }
+                      }} title="Excluir">
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
