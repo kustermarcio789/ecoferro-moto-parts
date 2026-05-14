@@ -80,8 +80,13 @@ const AdminProducts = () => {
   const [lastSyncInfo, setLastSyncInfo] = useState<any>(null);
 
   const fetchSyncStatus = async () => {
-    const { data } = await supabase.from("site_settings").select("value").eq("key", "ml_auto_sync_last_run").maybeSingle();
-    if (data?.value) setLastSyncInfo(data.value);
+    const { data: mlRun } = await supabase.from("site_settings").select("value").eq("key", "ml_auto_sync_last_run").maybeSingle();
+    const { data: vpsRun } = await supabase.from("stock_sync_logs").select("*").order("started_at", { ascending: false }).limit(1).maybeSingle();
+    
+    setLastSyncInfo({
+      ml: mlRun?.value,
+      vps: vpsRun
+    });
   };
 
   useEffect(() => {
