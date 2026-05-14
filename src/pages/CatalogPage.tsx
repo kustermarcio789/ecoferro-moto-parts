@@ -13,7 +13,7 @@ import { useCart } from "@/contexts/CartContext";
 
 interface Product {
   id: string; name: string; slug: string; price: number; original_price: number | null;
-  stock: number; is_new: boolean; sku: string | null; brand_id: string | null;
+  stock: number; available_stock?: number; is_new: boolean; sku: string | null; brand_id: string | null;
   product_images: { url: string; is_primary: boolean }[];
   categories: { id: string; name: string; slug: string; parent_id: string | null } | null;
   brands: { name: string; slug: string } | null;
@@ -63,23 +63,28 @@ const CatalogPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
+      console.log("Fetching products with filters:", { q, marca, classe, subclasse, disponivel, precoMin, precoMax });
+      
       let query = supabase
         .from("products")
-        .select("id, name, slug, price, original_price, stock, is_new, sku, brand_id, product_images(url, is_primary), categories(id, name, slug, parent_id), brands(name, slug)", { count: "exact" })
+        .select("id, name, slug, price, original_price, stock, available_stock, is_new, sku, brand_id, product_images(url, is_primary), categories(id, name, slug, parent_id), brands(name, slug)", { count: "exact" })
         .eq("is_active", true)
-        .eq("wholesale_only", false)
-        .gt("available_stock", 0);
+        .eq("wholesale_only", false);
+
+      // Relaxed stock check: if sync hasn't populated available_stock yet, allow products with legacy 'stock' > 0
+      // or simply show all active products if the user explicitly didn't filter by availability
+      if (disponivel === "sim") {
+        query = query.or("available_stock.gt.0,stock.gt.0");
+      }
 
       if (q) query = query.ilike("name", `%${q}%`);
       if (marca) {
         const brandObj = brands.find(b => b.slug === marca);
         if (brandObj) query = query.eq("brand_id", brandObj.id);
       }
-      if (disponivel === "sim") query = query.gt("stock", 0);
       if (precoMin) query = query.gte("price", Number(precoMin));
       if (precoMax) query = query.lte("price", Number(precoMax));
 
-      // Filter by class or subclass
       if (subclasse) {
         const subCat = allCategories.find(c => c.slug === subclasse);
         if (subCat) query = query.eq("category_id", subCat.id);
@@ -100,7 +105,14 @@ const CatalogPage = () => {
       const from = (page - 1) * ITEMS_PER_PAGE;
       query = query.range(from, from + ITEMS_PER_PAGE - 1);
 
-      const { data, count } = await query;
+      const { data, count, error } = await query;
+      
+      if (error) {
+        console.error("Error fetching products:", error);
+      }
+
+      console.log(`Fetched ${data?.length || 0} products. Total count: ${count}`);
+      
       setProducts((data as any) || []);
       setTotal(count || 0);
       setLoading(false);
@@ -315,7 +327,7 @@ const CatalogPage = () => {
                             -{Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
                           </span>
                         )}
-                        {product.stock === 0 && (
+                        {(product.stock === 0 && (product.available_stock === undefined || product.available_stock === 0)) && (
                           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                             <span className="bg-destructive text-destructive-foreground px-4 py-2 rounded font-display uppercase text-sm">Esgotado</span>
                           </div>
