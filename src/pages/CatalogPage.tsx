@@ -128,7 +128,13 @@ const CatalogPage = () => {
     if ((allCategories.length > 0 && brands.length > 0) || (!classe && !subclasse && !marca)) fetchProducts();
   }, [q, marca, classe, subclasse, disponivel, precoMin, precoMax, sort, page, allCategories, brands]);
 
-  const getImage = (p: Product) => p.product_images?.find(i => i.is_primary)?.url || p.product_images?.[0]?.url || "/placeholder.svg";
+  const getImage = (p: Product) => {
+    if (p.product_images && p.product_images.length > 0) {
+      const primary = p.product_images.find(i => i.is_primary);
+      return primary?.url || p.product_images[0].url;
+    }
+    return "/placeholder.svg";
+  };
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
 
   const updateParam = (key: string, value: string) => {
