@@ -24,12 +24,14 @@ export const ProductImagePreview = ({
   if (!primaryImage) {
     return (
       <div className={cn(
-        "bg-muted rounded-lg flex flex-col items-center justify-center text-muted-foreground",
-        aspectRatio === "square" ? "aspect-square" : "",
+        "cursor-default rounded-lg overflow-hidden border-2 border-destructive/30 bg-destructive/5 flex items-center justify-center transition-all",
+        aspectRatio === "square" ? "aspect-square" : "h-16 w-16",
         className
       )}>
-        <ImageIcon className="h-8 w-8 opacity-20 mb-1" />
-        <span className="text-[10px] font-body uppercase tracking-wider">Sem imagem</span>
+        <div className="flex flex-col items-center gap-1">
+          <ImageIcon className="h-6 w-6 text-destructive/40" />
+          <span className="text-[8px] font-bold text-destructive uppercase tracking-tighter">Sem foto</span>
+        </div>
       </div>
     );
   }
