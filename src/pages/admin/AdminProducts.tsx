@@ -78,6 +78,7 @@ const AdminProducts = () => {
   const [saving, setSaving] = useState(false);
   const [syncingMl, setSyncingMl] = useState(false);
   const [lastSyncInfo, setLastSyncInfo] = useState<any>(null);
+  const [syncingVps, setSyncingVps] = useState(false);
 
   const fetchSyncStatus = async () => {
     const { data: mlRun } = await supabase.from("site_settings").select("value").eq("key", "ml_auto_sync_last_run").maybeSingle();
