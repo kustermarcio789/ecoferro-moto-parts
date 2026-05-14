@@ -407,7 +407,7 @@ const AdminOrders = () => {
                       </div>
                     </td>
                     <td className="p-4 font-body text-xs text-muted-foreground">{new Date(o.created_at).toLocaleDateString("pt-BR")}</td>
-                    <td className="p-4 text-right">
+                    <td className="p-4 text-right pb-10 md:pb-4">
                       <div className="flex items-center justify-end gap-1">
                         {/* Desktop View */}
                         <div className="hidden md:flex items-center gap-1">

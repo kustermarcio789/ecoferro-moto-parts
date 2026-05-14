@@ -572,7 +572,7 @@ const AdminProducts = () => {
           </table>
         </div>
         {totalPages > 1 && (
-          <div className="flex flex-col items-center justify-center gap-6 border-t border-border px-4 py-10 pb-36">
+          <div className="flex flex-col items-center justify-center gap-6 border-t border-border px-4 py-10 pb-28 md:pb-10">
             <div className="flex items-center gap-4">
               <Button 
                 variant="outline" 
