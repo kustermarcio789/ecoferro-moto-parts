@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useWholesaleCart } from "@/contexts/WholesaleCartContext";
+import { ProductImagePreview } from "@/components/shared/ProductImagePreview";
 
 import {
   Select,
@@ -26,6 +27,7 @@ interface ProductRow {
   brand_id: string | null;
   brand_name: string | null;
   primary_image: string | null;
+  images: { url: string; is_primary: boolean }[];
 }
 
 const formatBRL = (n: number) =>
