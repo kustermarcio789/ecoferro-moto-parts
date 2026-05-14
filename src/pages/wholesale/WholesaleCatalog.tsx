@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useWholesaleCart } from "@/contexts/WholesaleCartContext";
+import { ProductImagePreview } from "@/components/shared/ProductImagePreview";
 
 import {
   Select,
@@ -26,6 +27,7 @@ interface ProductRow {
   brand_id: string | null;
   brand_name: string | null;
   primary_image: string | null;
+  images: { url: string; is_primary: boolean }[];
 }
 
 const formatBRL = (n: number) =>
@@ -79,6 +81,7 @@ const WholesaleCatalog = () => {
           brand_id: row.brand_id,
           brand_name: row.brands?.name ?? null,
           primary_image: imgs[0]?.url ?? null,
+          images: imgs.map((img: any) => ({ url: img.url, is_primary: !!img.is_primary })),
         };
       });
       setProducts(list);
@@ -199,13 +202,11 @@ const WholesaleCatalog = () => {
                     key={p.id}
                     className="bg-card border border-border rounded-xl p-3 flex flex-col"
                   >
-                    <div className="aspect-square bg-muted rounded-lg overflow-hidden mb-3 flex items-center justify-center">
-                      {p.primary_image ? (
-                        <img src={p.primary_image} alt={p.name} className="w-full h-full object-contain" />
-                      ) : (
-                        <div className="text-xs text-muted-foreground font-body">Sem imagem</div>
-                      )}
-                    </div>
+                    <ProductImagePreview 
+                      images={p.images} 
+                      name={p.name} 
+                      className="mb-3"
+                    />
                     <div className="flex-1">
                       <div className="text-[10px] uppercase tracking-wider font-display text-muted-foreground">
                         {p.internal_code} {p.brand_name ? `· ${p.brand_name}` : ""}

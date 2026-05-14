@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatCurrency } from "@/lib/tracking";
 import ProductImageUpload from "@/components/admin/ProductImageUpload";
 import { getProductionMapping, PRODUCTION_SOURCE_SYSTEM, upsertProductionMapping } from "@/services/inventoryService";
+import { ProductImagePreview } from "@/components/shared/ProductImagePreview";
 
 const ITEMS_PER_PAGE = 20;
 const supabaseAny = supabase as any;
@@ -63,7 +64,7 @@ const AdminProducts = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [photoFilter, setPhotoFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
-  const [lightbox, setLightbox] = useState<{ open: boolean; images: any[]; index: number }>({ open: false, images: [], index: 0 });
+  
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [showForm, setShowForm] = useState(false);
@@ -506,36 +507,11 @@ const AdminProducts = () => {
               ) : products.map((product) => (
                 <tr key={product.id} className="border-b border-border transition-colors hover:bg-muted/30">
                   <td className="p-4">
-                    <TooltipProvider delayDuration={200}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div 
-                            className={`h-16 w-16 cursor-pointer rounded-lg overflow-hidden border-2 flex items-center justify-center transition-all hover:scale-105 active:scale-95 ${getImage(product) ? "border-border" : "border-destructive/30 bg-destructive/5"}`}
-                            onClick={() => {
-                              if (product.product_images && product.product_images.length > 0) {
-                                setLightbox({ open: true, images: product.product_images, index: 0 });
-                              }
-                            }}
-                          >
-                            {getImage(product) ? (
-                              <img src={getImage(product)} alt="" className="h-full w-full object-cover" />
-                            ) : (
-                              <div className="flex flex-col items-center gap-1">
-                                <ImageIcon className="h-6 w-6 text-destructive/40" />
-                                <span className="text-[8px] font-bold text-destructive uppercase">Sem foto</span>
-                              </div>
-                            )}
-                          </div>
-                        </TooltipTrigger>
-                        {getImage(product) && (
-                          <TooltipContent side="right" className="p-0 border-none bg-transparent shadow-2xl">
-                            <div className="w-[300px] h-[300px] rounded-xl overflow-hidden bg-white border border-border shadow-2xl animate-in zoom-in-95 duration-200">
-                              <img src={getImage(product)} alt="" className="w-full h-full object-contain p-2" />
-                            </div>
-                          </TooltipContent>
-                        )}
-                      </Tooltip>
-                    </TooltipProvider>
+                    <ProductImagePreview 
+                      images={product.product_images || []} 
+                      name={product.name} 
+                      className="h-16 w-16"
+                    />
                   </td>
                   <td className="p-4">
                     <div className="flex flex-col">
@@ -640,58 +616,6 @@ const AdminProducts = () => {
               <div className="grid max-h-[60vh] gap-3 overflow-y-auto">{mlProducts.map((product) => <div key={product.ml_id} onClick={() => setMlSelected((current) => { const next = new Set(current); if (next.has(product.ml_id)) next.delete(product.ml_id); else next.add(product.ml_id); return next; })} className={`flex cursor-pointer items-center gap-4 rounded-lg border p-3 ${mlSelected.has(product.ml_id) ? "border-primary bg-primary/5" : "border-border"}`}><div className={`flex h-5 w-5 items-center justify-center rounded border-2 ${mlSelected.has(product.ml_id) ? "border-primary bg-primary" : "border-muted-foreground/30"}`}>{mlSelected.has(product.ml_id) && <Check className="h-3 w-3 text-primary-foreground" />}</div><div className="min-w-0 flex-1"><p className="line-clamp-1 font-display text-sm font-semibold text-foreground">{product.name}</p><p className="mt-0.5 text-xs font-body text-muted-foreground">ML ID: {product.ml_id} • Estoque no ML: {product.stock}</p></div></div>)}</div>
             </>
           )}
-        </DialogContent>
-      </Dialog>
-      <Dialog open={lightbox.open} onOpenChange={(open) => setLightbox(prev => ({ ...prev, open }))}>
-        <DialogContent className="max-w-[95vw] sm:max-w-[80vw] h-[80vh] p-0 border-none bg-black/90 flex flex-col items-center justify-center">
-          <button 
-            className="absolute top-4 right-4 z-50 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
-            onClick={() => setLightbox(prev => ({ ...prev, open: false }))}
-          >
-            <X className="h-6 w-6" />
-          </button>
-          
-          <div className="relative w-full h-full flex items-center justify-center p-8">
-            {lightbox.images.length > 1 && (
-              <>
-                <button 
-                  className="absolute left-4 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLightbox(prev => ({ ...prev, index: (prev.index - 1 + prev.images.length) % prev.images.length }));
-                  }}
-                >
-                  <ChevronLeftIcon className="h-8 w-8" />
-                </button>
-                <button 
-                  className="absolute right-4 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setLightbox(prev => ({ ...prev, index: (prev.index + 1) % prev.images.length }));
-                  }}
-                >
-                  <ChevronRightIcon className="h-8 w-8" />
-                </button>
-              </>
-            )}
-            
-            <img 
-              src={lightbox.images[lightbox.index]?.url} 
-              alt="" 
-              className="max-w-full max-h-full object-contain animate-in fade-in zoom-in-95 duration-300" 
-            />
-            
-            {lightbox.images.length > 1 && (
-              <div className="absolute bottom-4 flex gap-2">
-                {lightbox.images.map((_, i) => (
-                  <div 
-                    key={i} 
-                    className={`h-1.5 w-1.5 rounded-full transition-all ${lightbox.index === i ? "bg-white w-4" : "bg-white/40"}`}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
         </DialogContent>
       </Dialog>
     </AdminLayout>
