@@ -88,8 +88,8 @@ const AdminProducts = () => {
     if (statusFilter === "inactive") query = query.eq("is_active", false);
     if (statusFilter === "lowstock") query = query.lte("stock", 5);
     
-    if (typeFilter === "retail") query = query.or("wholesale_only.eq.false,wholesale_only.is.null");
-    if (typeFilter === "wholesale") query = query.eq("wholesale_only", true);
+    if (typeFilter === "retail") query = query.or("target_audience.eq.retail,target_audience.eq.both");
+    if (typeFilter === "wholesale") query = query.or("target_audience.eq.wholesale,target_audience.eq.both");
 
     const from = (page - 1) * ITEMS_PER_PAGE;
     const { data, count, error } = await query.range(from, from + ITEMS_PER_PAGE - 1);
