@@ -79,7 +79,7 @@ const AdminProducts = () => {
     setLoading(true);
     let query = supabaseAny
       .from("products")
-      .select("id, name, sku, internal_code, price, cost, stock, min_stock, is_active, wholesale_only, categories(name), product_images(url, is_primary)", { count: "exact" })
+      .select("id, name, sku, internal_code, price, cost, stock, min_stock, is_active, wholesale_only, target_audience, categories(name), product_images(url, is_primary)", { count: "exact" })
       .order("created_at", { ascending: false });
 
     if (search) query = query.ilike("name", `%${search}%`);
