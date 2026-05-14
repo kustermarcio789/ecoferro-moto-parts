@@ -59,7 +59,7 @@ const WholesaleCatalog = () => {
            product_images(url, is_primary, sort_order)`,
         )
         .eq("is_active", true)
-        .eq("wholesale_only", true)
+        .eq("visible_wholesale", true)
         .order("internal_code", { ascending: true })
         .limit(2000),
     ]).then(([b, p]) => {
