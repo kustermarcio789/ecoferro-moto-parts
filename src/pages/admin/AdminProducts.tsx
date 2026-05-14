@@ -105,6 +105,14 @@ const AdminProducts = () => {
     setLoading(false);
   };
 
+  const checkSkuExists = async (sku: string, productId?: string) => {
+    if (!sku) return false;
+    let query = supabase.from("products").select("id").eq("sku", sku);
+    if (productId) query = query.neq("id", productId);
+    const { data } = await query.maybeSingle();
+    return !!data;
+  };
+
   useEffect(() => {
     Promise.all([
       supabase.from("categories").select("id, name, parent_id").eq("is_active", true).order("sort_order").order("name"),
