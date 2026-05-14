@@ -448,18 +448,34 @@ const AdminProducts = () => {
       <div className="overflow-hidden rounded-xl border border-border bg-card">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="border-b border-border bg-muted/50"><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">Produto</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">TIPO</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">Codigo / SKU</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">Categoria</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Preco</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Margem</th><th className="p-4 text-center text-xs font-display uppercase tracking-wider text-muted-foreground">Disponivel</th><th className="p-4 text-center text-xs font-display uppercase tracking-wider text-muted-foreground">Status</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Acoes</th></tr></thead>
+            <thead><tr className="border-b border-border bg-muted/50"><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">IMAGEM</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">Produto</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">TIPO</th><th className="p-4 text-left text-xs font-display uppercase tracking-wider text-muted-foreground">SKU / CAT</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Preco</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Margem</th><th className="p-4 text-center text-xs font-display uppercase tracking-wider text-muted-foreground">Disponivel</th><th className="p-4 text-center text-xs font-display uppercase tracking-wider text-muted-foreground">Status</th><th className="p-4 text-right text-xs font-display uppercase tracking-wider text-muted-foreground">Acoes</th></tr></thead>
             <tbody>
               {loading ? Array.from({ length: 5 }).map((_, index) => <tr key={index}><td colSpan={9} className="p-4"><div className="h-12 animate-pulse rounded bg-muted" /></td></tr>) : products.map((product) => (
                 <tr key={product.id} className="border-b border-border transition-colors hover:bg-muted/30">
-                  <td className="p-4">{getImage(product) && <img src={getImage(product)} alt="" className="mr-3 inline h-10 w-10 rounded object-cover" />}<span className="font-body font-medium text-foreground">{product.name}</span></td>
+                  <td className="p-4">
+                    <div className="h-12 w-12 rounded-lg overflow-hidden border border-border bg-muted/30 flex items-center justify-center">
+                      {getImage(product) ? (
+                        <img src={getImage(product)} alt="" className="h-full w-full object-cover" />
+                      ) : (
+                        <ImageIcon className="h-5 w-5 text-muted-foreground/40" />
+                      )}
+                    </div>
+                  </td>
+                  <td className="p-4">
+                    <div className="flex flex-col">
+                      <span className="font-body font-bold text-foreground line-clamp-1">{product.name}</span>
+                      <span className="text-[10px] font-body text-muted-foreground uppercase tracking-tighter">ID: {product.id.slice(0,8)}</span>
+                    </div>
+                  </td>
                   <td className="p-4 text-xs font-body">
-                    <span className={`rounded-full px-2 py-1 ${product.target_audience === "wholesale" ? "bg-amber-100 text-amber-800" : "bg-blue-100 text-blue-800"}`}>
+                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase ${product.target_audience === "wholesale" ? "bg-amber-100 text-amber-800" : product.target_audience === "retail" ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"}`}>
                       {product.target_audience === "wholesale" ? "Atacado" : product.target_audience === "retail" ? "Varejo" : "Ambos"}
                     </span>
                   </td>
-                  <td className="p-4 text-xs font-body text-muted-foreground"><div>{product.internal_code || "-"}</div><div>{product.sku || "-"}</div></td>
-                  <td className="p-4 text-xs font-body text-muted-foreground">{product.categories?.name || "-"}</td>
+                  <td className="p-4 text-xs font-body text-muted-foreground">
+                    <div className="font-bold text-foreground/80">{product.sku || product.internal_code || "-"}</div>
+                    <div className="text-[10px] uppercase truncate max-w-[100px]">{product.categories?.name || "Sem categoria"}</div>
+                  </td>
                   <td className="p-4 text-right font-body font-medium">{formatCurrency(Number(product.price))}</td>
                   <td className="p-4 text-right text-xs font-body">{margin(product)}%</td>
                   <td className="p-4 text-center"><span className={`inline-block rounded px-2 py-0.5 text-xs font-body font-medium ${product.stock <= (product.min_stock || 5) ? "bg-destructive/10 text-destructive" : "bg-primary/10 text-primary"}`}>{product.stock}</span></td>
