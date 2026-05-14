@@ -31,11 +31,22 @@ const emptyForm = {
   is_active: true,
   is_featured: false,
   is_new: false,
-  wholesale_only: false,
+  target_audience: "both",
   wholesale_price: "",
   production_external_code: "",
   production_external_sku: "",
   production_external_product_id: "",
+  unit: "un",
+  allow_negative_stock: false,
+  is_on_demand: false,
+  is_customized: false,
+  technical_specs: "",
+  dimensions_info: "",
+  color: "",
+  finish: "",
+  lead_time: "",
+  barcode: "",
+  product_class: "",
 };
 
 const AdminProducts = () => {
