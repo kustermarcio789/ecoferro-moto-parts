@@ -200,14 +200,32 @@ const AdminProducts = () => {
       is_active: current.is_active ?? true,
       is_featured: current.is_featured ?? false,
       is_new: current.is_new ?? false,
-      wholesale_only: current.wholesale_only ?? false,
+      target_audience: current.target_audience || (current.wholesale_only ? "wholesale" : "both"),
       wholesale_price: String(current.wholesale_price || ""),
       production_external_code: mapping?.external_code || "",
       production_external_sku: mapping?.external_sku || "",
       production_external_product_id: mapping?.external_product_id || "",
+      unit: current.unit || "un",
+      allow_negative_stock: current.allow_negative_stock ?? false,
+      is_on_demand: current.is_on_demand ?? false,
+      is_customized: current.is_customized ?? false,
+      technical_specs: current.technical_specs || "",
+      dimensions_info: current.dimensions_info || "",
+      color: current.color || "",
+      finish: current.finish || "",
+      lead_time: current.lead_time || "",
+      barcode: current.barcode || "",
+      product_class: current.product_class || "",
     });
     setShowForm(true);
   };
+
+  const marginPercentage = useMemo(() => {
+    const price = Number(formData.price) || 0;
+    const cost = Number(formData.cost) || 0;
+    if (cost === 0) return 0;
+    return ((price - cost) / cost) * 100;
+  }, [formData.price, formData.cost]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -229,8 +247,20 @@ const AdminProducts = () => {
         is_active: formData.is_active,
         is_featured: formData.is_featured,
         is_new: formData.is_new,
-        wholesale_only: formData.wholesale_only,
+        target_audience: formData.target_audience,
+        wholesale_only: formData.target_audience === "wholesale",
         wholesale_price: Number(formData.wholesale_price) || null,
+        unit: formData.unit,
+        allow_negative_stock: formData.allow_negative_stock,
+        is_on_demand: formData.is_on_demand,
+        is_customized: formData.is_customized,
+        technical_specs: formData.technical_specs || null,
+        dimensions_info: formData.dimensions_info || null,
+        color: formData.color || null,
+        finish: formData.finish || null,
+        lead_time: formData.lead_time || null,
+        barcode: formData.barcode || null,
+        product_class: formData.product_class || null,
       };
       if (!editingProduct) payload.stock = Number(formData.stock) || 0;
 
