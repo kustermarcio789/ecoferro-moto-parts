@@ -1535,23 +1535,31 @@ export type Database = {
       }
       products: {
         Row: {
+          allow_negative_stock: boolean | null
           available_stock: number
+          barcode: string | null
           brand_id: string | null
           category_id: string | null
           cfop: string | null
           cofins_rate: number | null
+          color: string | null
           cost: number | null
           created_at: string
           description: string | null
+          dimensions_info: string | null
+          finish: string | null
           height: number | null
           icms_rate: number | null
           id: string
           internal_code: string | null
           ipi_rate: number | null
           is_active: boolean | null
+          is_customized: boolean | null
           is_featured: boolean | null
           is_new: boolean | null
+          is_on_demand: boolean | null
           last_stock_sync_at: string | null
+          lead_time: string | null
           length: number | null
           meta_description: string | null
           meta_title: string | null
@@ -1565,10 +1573,14 @@ export type Database = {
           original_price: number | null
           pis_rate: number | null
           price: number
+          product_class: string | null
           short_description: string | null
           sku: string | null
           slug: string
           stock: number
+          target_audience: string | null
+          technical_specs: string | null
+          unit: string | null
           updated_at: string
           weight: number | null
           wholesale_only: boolean | null
@@ -1576,23 +1588,31 @@ export type Database = {
           width: number | null
         }
         Insert: {
+          allow_negative_stock?: boolean | null
           available_stock?: number
+          barcode?: string | null
           brand_id?: string | null
           category_id?: string | null
           cfop?: string | null
           cofins_rate?: number | null
+          color?: string | null
           cost?: number | null
           created_at?: string
           description?: string | null
+          dimensions_info?: string | null
+          finish?: string | null
           height?: number | null
           icms_rate?: number | null
           id?: string
           internal_code?: string | null
           ipi_rate?: number | null
           is_active?: boolean | null
+          is_customized?: boolean | null
           is_featured?: boolean | null
           is_new?: boolean | null
+          is_on_demand?: boolean | null
           last_stock_sync_at?: string | null
+          lead_time?: string | null
           length?: number | null
           meta_description?: string | null
           meta_title?: string | null
@@ -1606,10 +1626,14 @@ export type Database = {
           original_price?: number | null
           pis_rate?: number | null
           price?: number
+          product_class?: string | null
           short_description?: string | null
           sku?: string | null
           slug: string
           stock?: number
+          target_audience?: string | null
+          technical_specs?: string | null
+          unit?: string | null
           updated_at?: string
           weight?: number | null
           wholesale_only?: boolean | null
@@ -1617,23 +1641,31 @@ export type Database = {
           width?: number | null
         }
         Update: {
+          allow_negative_stock?: boolean | null
           available_stock?: number
+          barcode?: string | null
           brand_id?: string | null
           category_id?: string | null
           cfop?: string | null
           cofins_rate?: number | null
+          color?: string | null
           cost?: number | null
           created_at?: string
           description?: string | null
+          dimensions_info?: string | null
+          finish?: string | null
           height?: number | null
           icms_rate?: number | null
           id?: string
           internal_code?: string | null
           ipi_rate?: number | null
           is_active?: boolean | null
+          is_customized?: boolean | null
           is_featured?: boolean | null
           is_new?: boolean | null
+          is_on_demand?: boolean | null
           last_stock_sync_at?: string | null
+          lead_time?: string | null
           length?: number | null
           meta_description?: string | null
           meta_title?: string | null
@@ -1647,10 +1679,14 @@ export type Database = {
           original_price?: number | null
           pis_rate?: number | null
           price?: number
+          product_class?: string | null
           short_description?: string | null
           sku?: string | null
           slug?: string
           stock?: number
+          target_audience?: string | null
+          technical_specs?: string | null
+          unit?: string | null
           updated_at?: string
           weight?: number | null
           wholesale_only?: boolean | null
