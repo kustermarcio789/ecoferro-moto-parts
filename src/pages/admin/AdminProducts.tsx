@@ -159,7 +159,7 @@ const AdminProducts = () => {
     if (typeFilter === "retail") query = query.eq("visible_site", true);
     if (typeFilter === "wholesale") query = query.eq("visible_wholesale", true);
     if (typeFilter === "marketplace") query = query.eq("visible_marketplace", true);
-    if (typeFilter === "both") query = query.and("visible_site.eq.true,visible_wholesale.eq.true");
+    if (typeFilter === "both") query = query.eq("visible_site", true).eq("visible_wholesale", true);
     if (statusFilter === "nocategory") query = query.is("category_id", null);
 
     const from = (page - 1) * ITEMS_PER_PAGE;
