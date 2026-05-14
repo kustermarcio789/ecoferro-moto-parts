@@ -117,11 +117,14 @@ const AdminProducts = () => {
       .order("created_at", { ascending: false });
 
     if (search) query = query.or(`name.ilike.%${search}%,sku.ilike.%${search}%,internal_code.ilike.%${search}%`);
-    if (categoryFilter !== "all") query = query.eq("category_id", categoryFilter);
+    if (categoryFilter !== "all") {
+      if (categoryFilter === "none") query = query.is("category_id", null);
+      else query = query.eq("category_id", categoryFilter);
+    }
     if (brandFilter !== "all") query = query.eq("brand_id", brandFilter);
     if (statusFilter === "active") query = query.eq("is_active", true);
     if (statusFilter === "inactive") query = query.eq("is_active", false);
-    if (statusFilter === "lowstock") query = query.lte("stock", 5);
+    if (statusFilter === "lowstock") query = query.or("stock.lte.5,available_stock.lte.5");
     
     if (typeFilter === "retail") query = query.or("target_audience.eq.retail,target_audience.eq.both");
     if (typeFilter === "wholesale") query = query.or("target_audience.eq.wholesale,target_audience.eq.both");
