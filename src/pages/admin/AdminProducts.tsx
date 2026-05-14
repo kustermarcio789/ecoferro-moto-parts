@@ -238,6 +238,11 @@ const AdminProducts = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
+      if (!formData.name) throw new Error("Nome é obrigatório");
+      if (Number(formData.price) < 0) throw new Error("Preço não pode ser negativo");
+      
+      const skuExists = await checkSkuExists(formData.sku, editingProduct?.id);
+      if (skuExists) throw new Error("SKU já cadastrado em outro produto");
       const payload: any = {
         name: formData.name,
         slug: formData.slug || generateSlug(formData.name),
