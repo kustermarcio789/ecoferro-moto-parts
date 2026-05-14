@@ -38,6 +38,10 @@ const emptyForm = {
   is_new: false,
   target_audience: "both",
   wholesale_price: "",
+  visible_site: true,
+  visible_wholesale: false,
+  visible_marketplace: false,
+  source: "internal",
   production_external_code: "",
   production_external_sku: "",
   production_external_product_id: "",
@@ -139,7 +143,7 @@ const AdminProducts = () => {
     setLoading(true);
     let query = supabaseAny
       .from("products")
-      .select("id, name, sku, internal_code, price, cost, stock, min_stock, is_active, wholesale_only, target_audience, categories(name), brands(name), product_images(url, is_primary)", { count: "exact" })
+      .select("id, name, sku, internal_code, price, cost, stock, min_stock, is_active, wholesale_only, target_audience, visible_site, visible_wholesale, visible_marketplace, source, categories(name), brands(name), product_images(url, is_primary)", { count: "exact" })
       .order("created_at", { ascending: false });
 
     if (search) query = query.or(`name.ilike.%${search}%,sku.ilike.%${search}%,internal_code.ilike.%${search}%`);
@@ -152,8 +156,11 @@ const AdminProducts = () => {
     if (statusFilter === "inactive") query = query.eq("is_active", false);
     if (statusFilter === "lowstock") query = query.or("stock.lte.5,available_stock.lte.5");
     
-    if (typeFilter === "retail") query = query.or("target_audience.eq.retail,target_audience.eq.both");
-    if (typeFilter === "wholesale") query = query.or("target_audience.eq.wholesale,target_audience.eq.both");
+    if (typeFilter === "retail") query = query.eq("visible_site", true);
+    if (typeFilter === "wholesale") query = query.eq("visible_wholesale", true);
+    if (typeFilter === "marketplace") query = query.eq("visible_marketplace", true);
+    if (typeFilter === "both") query = query.eq("visible_site", true).eq("visible_wholesale", true);
+    if (statusFilter === "nocategory") query = query.is("category_id", null);
 
     const from = (page - 1) * ITEMS_PER_PAGE;
     const { data, count, error } = await query.range(from, from + ITEMS_PER_PAGE - 1);
@@ -306,6 +313,10 @@ const AdminProducts = () => {
       lead_time: current.lead_time || "",
       barcode: current.barcode || "",
       product_class: current.product_class || "",
+      visible_site: current.visible_site ?? true,
+      visible_wholesale: current.visible_wholesale ?? false,
+      visible_marketplace: current.visible_marketplace ?? false,
+      source: current.source || "internal",
     });
     setShowForm(true);
   };
@@ -356,6 +367,10 @@ const AdminProducts = () => {
         lead_time: formData.lead_time || null,
         barcode: formData.barcode || null,
         product_class: formData.product_class || null,
+        visible_site: formData.visible_site,
+        visible_wholesale: formData.visible_wholesale,
+        visible_marketplace: formData.visible_marketplace,
+        source: formData.source,
       };
       if (!editingProduct) payload.stock = Number(formData.stock) || 0;
 
@@ -412,8 +427,20 @@ const AdminProducts = () => {
             <SelectTrigger className="w-32 text-xs font-body"><SelectValue placeholder="Tipo" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Tipos</SelectItem>
-              <SelectItem value="retail">Varejo</SelectItem>
+              <SelectItem value="retail">Site</SelectItem>
               <SelectItem value="wholesale">Atacado</SelectItem>
+              <SelectItem value="marketplace">Marketplace</SelectItem>
+              <SelectItem value="both">Ambos (Site e Atacado)</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-32 text-xs font-body"><SelectValue placeholder="Status" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Status</SelectItem>
+              <SelectItem value="active">Ativos</SelectItem>
+              <SelectItem value="inactive">Inativos</SelectItem>
+              <SelectItem value="lowstock">Estoque Baixo</SelectItem>
+              <SelectItem value="nocategory">Sem Categoria</SelectItem>
             </SelectContent>
           </Select>
           <Select value={photoFilter} onValueChange={setPhotoFilter}>
@@ -484,7 +511,41 @@ const AdminProducts = () => {
                   <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Categoria</label><Select value={formData.category_id || "none"} onValueChange={(value) => setFormData((current) => ({ ...current, category_id: value === "none" ? "" : value }))}><SelectTrigger className="text-sm font-body"><SelectValue placeholder="Selecione" /></SelectTrigger><SelectContent><SelectItem value="none">Nenhuma</SelectItem>{categories.map((category) => <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>)}</SelectContent></Select></div>
                   <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Marca</label><Select value={formData.brand_id || "none"} onValueChange={(value) => setFormData((current) => ({ ...current, brand_id: value === "none" ? "" : value }))}><SelectTrigger className="text-sm font-body"><SelectValue placeholder="Selecione" /></SelectTrigger><SelectContent><SelectItem value="none">Nenhuma</SelectItem>{brands.map((brand) => <SelectItem key={brand.id} value={brand.id}>{brand.name}</SelectItem>)}</SelectContent></Select></div>
                 </div>
-                <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Audiência / Tipo</label><Select value={formData.target_audience} onValueChange={(value) => setFormData((current) => ({ ...current, target_audience: value }))}><SelectTrigger className="text-sm font-body"><SelectValue placeholder="Selecione" /></SelectTrigger><SelectContent><SelectItem value="retail">Somente Varejo</SelectItem><SelectItem value="wholesale">Somente Atacado</SelectItem><SelectItem value="both">Varejo e Atacado</SelectItem></SelectContent></Select></div>
+                <div className="p-3 border border-border rounded-lg bg-muted/20">
+                  <label className="mb-2 block text-xs font-body font-bold text-foreground uppercase tracking-wider">Canais de Venda</label>
+                  <div className="flex flex-wrap gap-4">
+                    <div className="flex items-center space-x-2">
+                      <input 
+                        type="checkbox" 
+                        id="visible_site" 
+                        checked={formData.visible_site} 
+                        onChange={(e) => setFormData(prev => ({ ...prev, visible_site: e.target.checked }))} 
+                        className="h-4 w-4 rounded border-gray-300 text-primary" 
+                      />
+                      <label htmlFor="visible_site" className="text-xs font-body font-medium uppercase tracking-wider">Site público</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input 
+                        type="checkbox" 
+                        id="visible_wholesale" 
+                        checked={formData.visible_wholesale} 
+                        onChange={(e) => setFormData(prev => ({ ...prev, visible_wholesale: e.target.checked }))} 
+                        className="h-4 w-4 rounded border-gray-300 text-primary" 
+                      />
+                      <label htmlFor="visible_wholesale" className="text-xs font-body font-medium uppercase tracking-wider">Atacado</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input 
+                        type="checkbox" 
+                        id="visible_marketplace" 
+                        checked={formData.visible_marketplace} 
+                        onChange={(e) => setFormData(prev => ({ ...prev, visible_marketplace: e.target.checked }))} 
+                        className="h-4 w-4 rounded border-gray-300 text-primary" 
+                      />
+                      <label htmlFor="visible_marketplace" className="text-xs font-body font-medium uppercase tracking-wider">Marketplace</label>
+                    </div>
+                  </div>
+                </div>
                 <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Descrição Curta</label><input value={formData.short_description} onChange={(event) => setFormData((current) => ({ ...current, short_description: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
                 <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Descrição Completa</label><textarea rows={3} value={formData.description} onChange={(event) => setFormData((current) => ({ ...current, description: event.target.value }))} className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
                 <div className="flex gap-4">

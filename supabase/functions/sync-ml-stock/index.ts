@@ -122,8 +122,11 @@ serve(async (req) => {
           external_id: item.id || item.external_id || null,
           ml_permalink: item.permalink || null,
           is_active: true,
-          wholesale_only: false, // Ensure visibility on retail catalog
-          target_audience: 'both', // Ensure visibility everywhere
+          wholesale_only: false, 
+          visible_site: true,
+          visible_wholesale: false,
+          visible_marketplace: true,
+          source: 'mercadolivre',
           last_sync_at: new Date().toISOString(),
           sync_source: 'vendas-vps',
           raw_data: item

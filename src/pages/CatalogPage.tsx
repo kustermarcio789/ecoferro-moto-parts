@@ -74,7 +74,7 @@ const CatalogPage = () => {
           brands(name, slug)
         `, { count: "exact" })
         .eq("is_active", true)
-        .eq("wholesale_only", false);
+        .eq("visible_site", true);
 
       // Relaxed stock check: prioritize available_stock, fallback to stock
       if (disponivel === "sim") {

@@ -1706,12 +1706,16 @@ export type Database = {
           short_description: string | null
           sku: string | null
           slug: string
+          source: string | null
           stock: number
           sync_source: string | null
           target_audience: string | null
           technical_specs: string | null
           unit: string | null
           updated_at: string
+          visible_marketplace: boolean | null
+          visible_site: boolean | null
+          visible_wholesale: boolean | null
           weight: number | null
           wholesale_only: boolean | null
           wholesale_price: number | null
@@ -1763,12 +1767,16 @@ export type Database = {
           short_description?: string | null
           sku?: string | null
           slug: string
+          source?: string | null
           stock?: number
           sync_source?: string | null
           target_audience?: string | null
           technical_specs?: string | null
           unit?: string | null
           updated_at?: string
+          visible_marketplace?: boolean | null
+          visible_site?: boolean | null
+          visible_wholesale?: boolean | null
           weight?: number | null
           wholesale_only?: boolean | null
           wholesale_price?: number | null
@@ -1820,12 +1828,16 @@ export type Database = {
           short_description?: string | null
           sku?: string | null
           slug?: string
+          source?: string | null
           stock?: number
           sync_source?: string | null
           target_audience?: string | null
           technical_specs?: string | null
           unit?: string | null
           updated_at?: string
+          visible_marketplace?: boolean | null
+          visible_site?: boolean | null
+          visible_wholesale?: boolean | null
           weight?: number | null
           wholesale_only?: boolean | null
           wholesale_price?: number | null
