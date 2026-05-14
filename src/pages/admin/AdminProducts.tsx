@@ -64,7 +64,7 @@ const AdminProducts = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [photoFilter, setPhotoFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
-  const [lightbox, setLightbox] = useState<{ open: boolean; images: any[]; index: number }>({ open: false, images: [], index: 0 });
+  
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [showForm, setShowForm] = useState(false);
