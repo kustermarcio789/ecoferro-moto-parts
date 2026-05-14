@@ -48,6 +48,12 @@ serve(async (req) => {
     } else {
       if (!VENDAS_TOKEN) {
         console.error("[SYNC] VENDAS_ECOFERRO_TOKEN not configured for PULL")
+        // Log the failure
+        await supabaseAdmin.from('stock_sync_logs').insert({
+          status: 'failed',
+          source_url: 'pull-vps',
+          error_message: 'VENDAS_ECOFERRO_TOKEN not configured'
+        })
         throw new Error('VENDAS_ECOFERRO_TOKEN not configured')
       }
 
@@ -64,6 +70,11 @@ serve(async (req) => {
       if (!response.ok) {
         const errorText = await response.text()
         console.error(`[SYNC] External API error: ${response.status} - ${errorText}`)
+        await supabaseAdmin.from('stock_sync_logs').insert({
+          status: 'failed',
+          source_url: VENDAS_URL,
+          error_message: `API error ${response.status}: ${errorText}`
+        })
         throw new Error(`External API returned status ${response.status}: ${errorText}`)
       }
 
@@ -102,15 +113,17 @@ serve(async (req) => {
 
         const productData = {
           name: item.name || item.title || item.título,
-          price: item.price || item.preço || 0,
-          original_price: item.original_price || null,
-          stock: item.stock || item.estoque || 0,
-          available_stock: item.stock || item.estoque || 0,
-          sku: sku,
-          internal_code: sku,
+          price: Number(item.price || item.preço || 0),
+          original_price: item.original_price ? Number(item.original_price) : null,
+          stock: Number(item.stock || item.estoque || 0),
+          available_stock: Number(item.stock || item.estoque || 0),
+          sku: String(sku),
+          internal_code: String(sku),
           external_id: item.id || item.external_id || null,
           ml_permalink: item.permalink || null,
           is_active: true,
+          wholesale_only: false, // Ensure visibility on retail catalog
+          target_audience: 'both', // Ensure visibility everywhere
           last_sync_at: new Date().toISOString(),
           sync_source: 'vendas-vps',
           raw_data: item
@@ -170,6 +183,7 @@ serve(async (req) => {
           }
         }
       } catch (err) {
+        console.error(`[SYNC] Error processing item ${item.sku}:`, err)
         totalErrors++
       }
     }
