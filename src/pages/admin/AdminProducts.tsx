@@ -326,44 +326,121 @@ const AdminProducts = () => {
         <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
           <DialogHeader><DialogTitle className="font-display uppercase tracking-wider">{editingProduct ? "Editar Produto" : "Novo Produto"}</DialogTitle></DialogHeader>
           <div className="grid gap-4 py-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Nome *</label><input value={formData.name} onChange={(event) => setFormData((current) => ({ ...current, name: event.target.value, slug: generateSlug(event.target.value) }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
-              <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Slug</label><input value={formData.slug} onChange={(event) => setFormData((current) => ({ ...current, slug: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+          <Tabs defaultValue="info" className="w-full">
+            <TabsList className="grid w-full grid-cols-5 bg-muted/50 p-1">
+              <TabsTrigger value="info" className="text-[10px] uppercase font-bold tracking-tight px-1"><Package className="h-3 w-3 mr-1" />Info</TabsTrigger>
+              <TabsTrigger value="pricing" className="text-[10px] uppercase font-bold tracking-tight px-1"><DollarSign className="h-3 w-3 mr-1" />Preços</TabsTrigger>
+              <TabsTrigger value="stock" className="text-[10px] uppercase font-bold tracking-tight px-1"><Settings className="h-3 w-3 mr-1" />Estoque</TabsTrigger>
+              <TabsTrigger value="images" className="text-[10px] uppercase font-bold tracking-tight px-1"><ImageIcon className="h-3 w-3 mr-1" />Fotos</TabsTrigger>
+              <TabsTrigger value="extra" className="text-[10px] uppercase font-bold tracking-tight px-1"><Barcode className="h-3 w-3 mr-1" />Extras</TabsTrigger>
+            </TabsList>
+
+            <div className="py-4 min-h-[400px]">
+              <TabsContent value="info" className="space-y-4 mt-0">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Nome *</label><input value={formData.name} onChange={(event) => setFormData((current) => ({ ...current, name: event.target.value, slug: generateSlug(event.target.value) }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Slug</label><input value={formData.slug} onChange={(event) => setFormData((current) => ({ ...current, slug: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Categoria</label><Select value={formData.category_id || "none"} onValueChange={(value) => setFormData((current) => ({ ...current, category_id: value === "none" ? "" : value }))}><SelectTrigger className="text-sm font-body"><SelectValue placeholder="Selecione" /></SelectTrigger><SelectContent><SelectItem value="none">Nenhuma</SelectItem>{categories.map((category) => <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>)}</SelectContent></Select></div>
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Marca</label><Select value={formData.brand_id || "none"} onValueChange={(value) => setFormData((current) => ({ ...current, brand_id: value === "none" ? "" : value }))}><SelectTrigger className="text-sm font-body"><SelectValue placeholder="Selecione" /></SelectTrigger><SelectContent><SelectItem value="none">Nenhuma</SelectItem>{brands.map((brand) => <SelectItem key={brand.id} value={brand.id}>{brand.name}</SelectItem>)}</SelectContent></Select></div>
+                </div>
+                <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Audiência / Tipo</label><Select value={formData.target_audience} onValueChange={(value) => setFormData((current) => ({ ...current, target_audience: value }))}><SelectTrigger className="text-sm font-body"><SelectValue placeholder="Selecione" /></SelectTrigger><SelectContent><SelectItem value="retail">Somente Varejo</SelectItem><SelectItem value="wholesale">Somente Atacado</SelectItem><SelectItem value="both">Varejo e Atacado</SelectItem></SelectContent></Select></div>
+                <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Descrição Curta</label><input value={formData.short_description} onChange={(event) => setFormData((current) => ({ ...current, short_description: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+                <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Descrição Completa</label><textarea rows={3} value={formData.description} onChange={(event) => setFormData((current) => ({ ...current, description: event.target.value }))} className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+                <div className="flex gap-4">
+                  <div className="flex items-center space-x-2"><input type="checkbox" id="is_active" checked={formData.is_active} onChange={(e) => setFormData(prev => ({ ...prev, is_active: e.target.checked }))} className="h-4 w-4 rounded border-gray-300 text-primary" /><label htmlFor="is_active" className="text-xs font-body font-medium uppercase tracking-wider">Ativo</label></div>
+                  <div className="flex items-center space-x-2"><input type="checkbox" id="is_featured" checked={formData.is_featured} onChange={(e) => setFormData(prev => ({ ...prev, is_featured: e.target.checked }))} className="h-4 w-4 rounded border-gray-300 text-primary" /><label htmlFor="is_featured" className="text-xs font-body font-medium uppercase tracking-wider">Destaque</label></div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="pricing" className="space-y-4 mt-0">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Preço de Custo</label><input type="number" step="0.01" value={formData.cost} onChange={(event) => setFormData((current) => ({ ...current, cost: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Preço de Venda</label><input type="number" step="0.01" value={formData.price} onChange={(event) => setFormData((current) => ({ ...current, price: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+                </div>
+                <div className="bg-muted/30 p-3 rounded-lg border border-border">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs font-body font-medium uppercase tracking-wider">Margem de Lucro Automática</span>
+                    <span className={`text-sm font-bold ${marginPercentage >= 30 ? "text-green-600" : marginPercentage > 0 ? "text-amber-600" : "text-destructive"}`}>
+                      {marginPercentage.toFixed(2)}%
+                    </span>
+                  </div>
+                  <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                    <div className={`h-full transition-all ${marginPercentage >= 30 ? "bg-green-500" : marginPercentage > 0 ? "bg-amber-500" : "bg-destructive"}`} style={{ width: `${Math.min(Math.max(marginPercentage, 0), 100)}%` }}></div>
+                  </div>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Preço Atacado</label><input type="number" step="0.01" value={formData.wholesale_price} onChange={(event) => setFormData((current) => ({ ...current, wholesale_price: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Preço Promocional</label><input type="number" step="0.01" value={formData.original_price} onChange={(event) => setFormData((current) => ({ ...current, original_price: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="stock" className="space-y-4 mt-0">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Saldo em Estoque</label><input type="number" value={formData.stock} disabled={!!editingProduct} onChange={(event) => setFormData((current) => ({ ...current, stock: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-60" /></div>
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Estoque Mínimo</label><input type="number" value={formData.min_stock} onChange={(event) => setFormData((current) => ({ ...current, min_stock: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Unidade de Medida</label><Select value={formData.unit} onValueChange={(value) => setFormData((current) => ({ ...current, unit: value }))}><SelectTrigger className="text-sm font-body"><SelectValue placeholder="un" /></SelectTrigger><SelectContent><SelectItem value="un">Unidade (un)</SelectItem><SelectItem value="kg">Quilo (kg)</SelectItem><SelectItem value="meter">Metro (m)</SelectItem><SelectItem value="kit">Kit</SelectItem><SelectItem value="par">Par</SelectItem><SelectItem value="caixa">Caixa</SelectItem><SelectItem value="personalizado">Personalizado</SelectItem></SelectContent></Select></div>
+                  <div className="flex flex-col justify-center gap-2">
+                    <div className="flex items-center space-x-2"><input type="checkbox" id="allow_negative_stock" checked={formData.allow_negative_stock} onChange={(e) => setFormData(prev => ({ ...prev, allow_negative_stock: e.target.checked }))} className="h-4 w-4 rounded border-gray-300 text-primary" /><label htmlFor="allow_negative_stock" className="text-xs font-body font-medium uppercase tracking-wider">Permitir Estoque Negativo</label></div>
+                    <div className="flex items-center space-x-2"><input type="checkbox" id="is_on_demand" checked={formData.is_on_demand} onChange={(e) => setFormData(prev => ({ ...prev, is_on_demand: e.target.checked }))} className="h-4 w-4 rounded border-gray-300 text-primary" /><label htmlFor="is_on_demand" className="text-xs font-body font-medium uppercase tracking-wider">Produto Sob Demanda</label></div>
+                  </div>
+                </div>
+                <div className="bg-muted/30 p-3 rounded-lg border border-border space-y-3">
+                  <h3 className="font-display text-xs font-bold uppercase tracking-wider text-foreground">Mapeamento Produção ({PRODUCTION_SOURCE_SYSTEM})</h3>
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    <input value={formData.production_external_code} onChange={(event) => setFormData((current) => ({ ...current, production_external_code: event.target.value }))} placeholder="Código Controle" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-body" />
+                    <input value={formData.production_external_sku} onChange={(event) => setFormData((current) => ({ ...current, production_external_sku: event.target.value }))} placeholder="SKU Controle" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-body" />
+                    <input value={formData.production_external_product_id} onChange={(event) => setFormData((current) => ({ ...current, production_external_product_id: event.target.value }))} placeholder="ID Externo" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-body" />
+                  </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="images" className="space-y-4 mt-0">
+                {editingProduct ? (
+                  <ProductImageUpload productId={editingProduct.id} />
+                ) : (
+                  <div className="text-center py-12 border-2 border-dashed border-border rounded-lg bg-muted/20">
+                    <ImageIcon className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+                    <p className="font-body text-sm text-foreground font-medium">Cadastre o produto primeiro para enviar as imagens</p>
+                    <p className="font-body text-xs text-muted-foreground mt-1">Após salvar, você poderá gerenciar as fotos na edição do item.</p>
+                  </div>
+                )}
+              </TabsContent>
+
+              <TabsContent value="extra" className="space-y-4 mt-0">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">SKU</label><input value={formData.sku} onChange={(event) => setFormData((current) => ({ ...current, sku: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Código Interno</label><input value={formData.internal_code} onChange={(event) => setFormData((current) => ({ ...current, internal_code: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Código de Barras (EAN)</label><input value={formData.barcode} onChange={(event) => setFormData((current) => ({ ...current, barcode: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+                  <div><label className="mb-1 block text-xs font-body font-medium text-foreground uppercase tracking-wider">Classe do Produto</label><input value={formData.product_class} onChange={(event) => setFormData((current) => ({ ...current, product_class: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
+                </div>
+                <div className="p-3 border border-border rounded-lg space-y-3">
+                  <div className="flex items-center space-x-2"><input type="checkbox" id="is_customized" checked={formData.is_customized} onChange={(e) => setFormData(prev => ({ ...prev, is_customized: e.target.checked }))} className="h-4 w-4 rounded border-gray-300 text-primary" /><label htmlFor="is_customized" className="text-xs font-body font-medium uppercase tracking-wider">Produto Personalizado / Sob Medida</label></div>
+                  {formData.is_customized && (
+                    <div className="grid gap-3 pt-2">
+                      <div className="grid grid-cols-2 gap-3">
+                        <input value={formData.color} onChange={(event) => setFormData((current) => ({ ...current, color: event.target.value }))} placeholder="Cor" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-body" />
+                        <input value={formData.finish} onChange={(event) => setFormData((current) => ({ ...current, finish: event.target.value }))} placeholder="Acabamento" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-body" />
+                      </div>
+                      <input value={formData.lead_time} onChange={(event) => setFormData((current) => ({ ...current, lead_time: event.target.value }))} placeholder="Prazo de Fabricação (Ex: 10 dias)" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-body" />
+                      <textarea rows={2} value={formData.technical_specs} onChange={(event) => setFormData((current) => ({ ...current, technical_specs: event.target.value }))} placeholder="Observações Técnicas" className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-xs font-body" />
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div><label className="mb-1 block text-xs font-body font-medium text-foreground">SKU</label><input value={formData.sku} onChange={(event) => setFormData((current) => ({ ...current, sku: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
-              <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Codigo interno</label><input value={formData.internal_code} onChange={(event) => setFormData((current) => ({ ...current, internal_code: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
-              <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Estoque minimo</label><input type="number" value={formData.min_stock} onChange={(event) => setFormData((current) => ({ ...current, min_stock: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
-            </div>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Preco</label><input type="number" step="0.01" value={formData.price} onChange={(event) => setFormData((current) => ({ ...current, price: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
-              <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Custo</label><input type="number" step="0.01" value={formData.cost} onChange={(event) => setFormData((current) => ({ ...current, cost: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
-              <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Preco original</label><input type="number" step="0.01" value={formData.original_price} onChange={(event) => setFormData((current) => ({ ...current, original_price: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
-              <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Saldo inicial</label><input type="number" value={formData.stock} disabled={!!editingProduct} onChange={(event) => setFormData((current) => ({ ...current, stock: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-60" /></div>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Categoria</label><Select value={formData.category_id || "none"} onValueChange={(value) => setFormData((current) => ({ ...current, category_id: value === "none" ? "" : value }))}><SelectTrigger className="text-sm font-body"><SelectValue placeholder="Selecione" /></SelectTrigger><SelectContent><SelectItem value="none">Nenhuma</SelectItem>{categories.map((category) => <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>)}</SelectContent></Select></div>
-              <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Marca</label><Select value={formData.brand_id || "none"} onValueChange={(value) => setFormData((current) => ({ ...current, brand_id: value === "none" ? "" : value }))}><SelectTrigger className="text-sm font-body"><SelectValue placeholder="Selecione" /></SelectTrigger><SelectContent><SelectItem value="none">Nenhuma</SelectItem>{brands.map((brand) => <SelectItem key={brand.id} value={brand.id}>{brand.name}</SelectItem>)}</SelectContent></Select></div>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="grid grid-cols-2 gap-4">
-                <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Audiência</label><Select value={formData.target_audience} onValueChange={(value) => setFormData((current) => ({ ...current, target_audience: value }))}><SelectTrigger className="text-sm font-body"><SelectValue placeholder="Selecione" /></SelectTrigger><SelectContent><SelectItem value="retail">Varejo</SelectItem><SelectItem value="wholesale">Atacado</SelectItem><SelectItem value="both">Ambos</SelectItem></SelectContent></Select></div>
-                <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Preço de Atacado</label><input type="number" step="0.01" value={formData.wholesale_price} onChange={(e) => setFormData(prev => ({ ...prev, wholesale_price: e.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
-              </div>
-            </div>
-            <div className="rounded-xl border border-border bg-muted/30 p-4">
-              <h3 className="font-display text-sm font-bold uppercase tracking-wider text-foreground">Mapeamento com a producao</h3>
-              <p className="mt-1 text-xs font-body text-muted-foreground">Origem esperada: {PRODUCTION_SOURCE_SYSTEM}. Estes campos permitem o match por codigo, SKU ou ID externo.</p>
-              <div className="mt-3 grid gap-4 sm:grid-cols-3">
-                <input value={formData.production_external_code} onChange={(event) => setFormData((current) => ({ ...current, production_external_code: event.target.value }))} placeholder="Codigo no controle" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" />
-                <input value={formData.production_external_sku} onChange={(event) => setFormData((current) => ({ ...current, production_external_sku: event.target.value }))} placeholder="SKU no controle" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" />
-                <input value={formData.production_external_product_id} onChange={(event) => setFormData((current) => ({ ...current, production_external_product_id: event.target.value }))} placeholder="ID externo do produto" className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" />
-              </div>
-            </div>
-            <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Descricao curta</label><input value={formData.short_description} onChange={(event) => setFormData((current) => ({ ...current, short_description: event.target.value }))} className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
-            <div><label className="mb-1 block text-xs font-body font-medium text-foreground">Descricao</label><textarea rows={4} value={formData.description} onChange={(event) => setFormData((current) => ({ ...current, description: event.target.value }))} className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" /></div>
-            {editingProduct && <div className="border-t border-border pt-4"><ProductImageUpload productId={editingProduct.id} /></div>}
-            <div className="flex justify-end gap-3 border-t border-border pt-4"><Button variant="outline" onClick={() => setShowForm(false)}>Cancelar</Button><Button onClick={handleSave} disabled={saving}>{saving ? "Salvando..." : "Salvar"}</Button></div>
+          </Tabs>
+          <div className="flex justify-end gap-3 border-t border-border pt-4 mt-2">
+            <Button variant="outline" className="font-display uppercase tracking-wider text-xs" onClick={() => setShowForm(false)}>Cancelar</Button>
+            <Button className="font-display uppercase tracking-wider text-xs px-8" onClick={handleSave} disabled={saving}>
+              {saving ? <><Loader2 className="mr-2 h-3 w-3 animate-spin" /> Salvando...</> : editingProduct ? "Atualizar Produto" : "Salvar Produto"}
+            </Button>
+          </div>
           </div>
         </DialogContent>
       </Dialog>
