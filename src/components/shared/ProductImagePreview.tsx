@@ -90,7 +90,7 @@ export const ProductImagePreview = ({
         isOpen={isLightboxOpen}
         onClose={() => setIsLightboxOpen(false)}
         images={images}
-        initialIndex={0}
+        initialIndex={initialIndex}
       />
     </>
   );
