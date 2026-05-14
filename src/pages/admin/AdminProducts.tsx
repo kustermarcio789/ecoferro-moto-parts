@@ -100,15 +100,33 @@ const AdminProducts = () => {
       const { data, error } = await supabaseAny.functions.invoke("mercadolivre-auto-sync");
       if (error) throw error;
       toast({ 
-        title: "Sincronização concluída", 
+        title: "Sincronização ML concluída", 
         description: `${data.created} criados, ${data.updated} atualizados.` 
       });
       fetchSyncStatus();
       fetchProducts();
     } catch (error: any) {
-      toast({ title: "Erro na sincronização", description: error.message, variant: "destructive" });
+      toast({ title: "Erro na sincronização ML", description: error.message, variant: "destructive" });
     } finally {
       setSyncingMl(false);
+    }
+  };
+
+  const handleVpsSync = async () => {
+    setSyncingVps(true);
+    try {
+      const { data, error } = await supabaseAny.functions.invoke("sync-ml-stock");
+      if (error) throw error;
+      toast({ 
+        title: "Sincronização VPS concluída", 
+        description: `${data.created} novos produtos, ${data.updated} atualizados.` 
+      });
+      fetchSyncStatus();
+      fetchProducts();
+    } catch (error: any) {
+      toast({ title: "Erro na sincronização VPS", description: error.message, variant: "destructive" });
+    } finally {
+      setSyncingVps(false);
     }
   };
 
