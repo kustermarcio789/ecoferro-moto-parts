@@ -78,10 +78,16 @@ const AdminProducts = () => {
   const [saving, setSaving] = useState(false);
   const [syncingMl, setSyncingMl] = useState(false);
   const [lastSyncInfo, setLastSyncInfo] = useState<any>(null);
+  const [syncingVps, setSyncingVps] = useState(false);
 
   const fetchSyncStatus = async () => {
-    const { data } = await supabase.from("site_settings").select("value").eq("key", "ml_auto_sync_last_run").maybeSingle();
-    if (data?.value) setLastSyncInfo(data.value);
+    const { data: mlRun } = await supabase.from("site_settings").select("value").eq("key", "ml_auto_sync_last_run").maybeSingle();
+    const { data: vpsRun } = await supabase.from("stock_sync_logs").select("*").order("started_at", { ascending: false }).limit(1).maybeSingle();
+    
+    setLastSyncInfo({
+      ml: mlRun?.value,
+      vps: vpsRun
+    });
   };
 
   useEffect(() => {
@@ -94,15 +100,33 @@ const AdminProducts = () => {
       const { data, error } = await supabaseAny.functions.invoke("mercadolivre-auto-sync");
       if (error) throw error;
       toast({ 
-        title: "Sincronização concluída", 
+        title: "Sincronização ML concluída", 
         description: `${data.created} criados, ${data.updated} atualizados.` 
       });
       fetchSyncStatus();
       fetchProducts();
     } catch (error: any) {
-      toast({ title: "Erro na sincronização", description: error.message, variant: "destructive" });
+      toast({ title: "Erro na sincronização ML", description: error.message, variant: "destructive" });
     } finally {
       setSyncingMl(false);
+    }
+  };
+
+  const handleVpsSync = async () => {
+    setSyncingVps(true);
+    try {
+      const { data, error } = await supabaseAny.functions.invoke("sync-ml-stock");
+      if (error) throw error;
+      toast({ 
+        title: "Sincronização VPS concluída", 
+        description: `${data.created} novos produtos, ${data.updated} atualizados.` 
+      });
+      fetchSyncStatus();
+      fetchProducts();
+    } catch (error: any) {
+      toast({ title: "Erro na sincronização VPS", description: error.message, variant: "destructive" });
+    } finally {
+      setSyncingVps(false);
     }
   };
 
@@ -117,11 +141,14 @@ const AdminProducts = () => {
       .order("created_at", { ascending: false });
 
     if (search) query = query.or(`name.ilike.%${search}%,sku.ilike.%${search}%,internal_code.ilike.%${search}%`);
-    if (categoryFilter !== "all") query = query.eq("category_id", categoryFilter);
+    if (categoryFilter !== "all") {
+      if (categoryFilter === "none") query = query.is("category_id", null);
+      else query = query.eq("category_id", categoryFilter);
+    }
     if (brandFilter !== "all") query = query.eq("brand_id", brandFilter);
     if (statusFilter === "active") query = query.eq("is_active", true);
     if (statusFilter === "inactive") query = query.eq("is_active", false);
-    if (statusFilter === "lowstock") query = query.lte("stock", 5);
+    if (statusFilter === "lowstock") query = query.or("stock.lte.5,available_stock.lte.5");
     
     if (typeFilter === "retail") query = query.or("target_audience.eq.retail,target_audience.eq.both");
     if (typeFilter === "wholesale") query = query.or("target_audience.eq.wholesale,target_audience.eq.both");
@@ -369,7 +396,7 @@ const AdminProducts = () => {
         <div className="flex flex-wrap gap-2">
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
             <SelectTrigger className="w-32 text-xs font-body"><SelectValue placeholder="Categoria" /></SelectTrigger>
-            <SelectContent><SelectItem value="all">Categorias</SelectItem>{categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+            <SelectContent><SelectItem value="all">Categorias</SelectItem><SelectItem value="none">Sem Categoria</SelectItem>{categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
           </Select>
           <Select value={brandFilter} onValueChange={setBrandFilter}>
             <SelectTrigger className="w-32 text-xs font-body"><SelectValue placeholder="Marca" /></SelectTrigger>
@@ -400,7 +427,11 @@ const AdminProducts = () => {
           </Button>
           <Button variant="outline" onClick={handleManualSync} disabled={syncingMl} className="text-xs font-display uppercase tracking-wider h-10 px-3">
             <RefreshCw className={`mr-2 h-4 w-4 ${syncingMl ? "animate-spin" : ""}`} />
-            {syncingMl ? "Sincronizando..." : "Sincronizar ML"}
+            {syncingMl ? "Sync ML" : "Sync ML"}
+          </Button>
+          <Button variant="outline" onClick={handleVpsSync} disabled={syncingVps} className="text-xs font-display uppercase tracking-wider h-10 px-3">
+            <RefreshCw className={`mr-2 h-4 w-4 ${syncingVps ? "animate-spin" : ""}`} />
+            {syncingVps ? "Sync VPS" : "Sync VPS"}
           </Button>
           <Button variant="outline" onClick={() => { setShowMlImport(true); fetchMlProducts(); }} className="text-xs font-display uppercase tracking-wider h-10 px-3"><ShoppingBag className="mr-2 h-4 w-4" />Importar</Button>
           <Button onClick={() => { setEditingProduct(null); setFormData(emptyForm); setShowForm(true); }} className="text-xs font-display uppercase tracking-wider h-10 px-3 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"><Plus className="mr-2 h-4 w-4" />Novo</Button>

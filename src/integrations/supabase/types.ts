@@ -558,6 +558,20 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "integration_logs_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_low_stock"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "integration_logs_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_no_category"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "integration_logs_product_mapping_id_fkey"
             columns: ["product_mapping_id"]
             isOneToOne: false
@@ -603,6 +617,20 @@ export type Database = {
             columns: ["product_id"]
             isOneToOne: true
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_balances_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: true
+            referencedRelation: "vw_products_low_stock"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_balances_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: true
+            referencedRelation: "vw_products_no_category"
             referencedColumns: ["id"]
           },
         ]
@@ -701,6 +729,20 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "inventory_movements_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_low_stock"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_movements_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_no_category"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "inventory_movements_variation_id_fkey"
             columns: ["variation_id"]
             isOneToOne: false
@@ -792,6 +834,20 @@ export type Database = {
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "moq_rules_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_low_stock"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "moq_rules_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_no_category"
             referencedColumns: ["id"]
           },
         ]
@@ -906,6 +962,20 @@ export type Database = {
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_low_stock"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_no_category"
             referencedColumns: ["id"]
           },
           {
@@ -1366,6 +1436,20 @@ export type Database = {
             referencedRelation: "products"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "product_applications_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_low_stock"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_applications_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_no_category"
+            referencedColumns: ["id"]
+          },
         ]
       }
       product_external_mappings: {
@@ -1413,6 +1497,20 @@ export type Database = {
             referencedRelation: "products"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "product_external_mappings_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_low_stock"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_external_mappings_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_no_category"
+            referencedColumns: ["id"]
+          },
         ]
       }
       product_images: {
@@ -1451,6 +1549,20 @@ export type Database = {
             referencedRelation: "products"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "product_images_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_low_stock"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_images_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_no_category"
+            referencedColumns: ["id"]
+          },
         ]
       }
       product_variations: {
@@ -1487,6 +1599,20 @@ export type Database = {
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_variations_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_low_stock"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_variations_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_no_category"
             referencedColumns: ["id"]
           },
         ]
@@ -1547,6 +1673,7 @@ export type Database = {
           created_at: string
           description: string | null
           dimensions_info: string | null
+          external_id: string | null
           finish: string | null
           height: number | null
           icms_rate: number | null
@@ -1559,6 +1686,7 @@ export type Database = {
           is_new: boolean | null
           is_on_demand: boolean | null
           last_stock_sync_at: string | null
+          last_sync_at: string | null
           lead_time: string | null
           length: number | null
           meta_description: string | null
@@ -1574,10 +1702,12 @@ export type Database = {
           pis_rate: number | null
           price: number
           product_class: string | null
+          raw_data: Json | null
           short_description: string | null
           sku: string | null
           slug: string
           stock: number
+          sync_source: string | null
           target_audience: string | null
           technical_specs: string | null
           unit: string | null
@@ -1600,6 +1730,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           dimensions_info?: string | null
+          external_id?: string | null
           finish?: string | null
           height?: number | null
           icms_rate?: number | null
@@ -1612,6 +1743,7 @@ export type Database = {
           is_new?: boolean | null
           is_on_demand?: boolean | null
           last_stock_sync_at?: string | null
+          last_sync_at?: string | null
           lead_time?: string | null
           length?: number | null
           meta_description?: string | null
@@ -1627,10 +1759,12 @@ export type Database = {
           pis_rate?: number | null
           price?: number
           product_class?: string | null
+          raw_data?: Json | null
           short_description?: string | null
           sku?: string | null
           slug: string
           stock?: number
+          sync_source?: string | null
           target_audience?: string | null
           technical_specs?: string | null
           unit?: string | null
@@ -1653,6 +1787,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           dimensions_info?: string | null
+          external_id?: string | null
           finish?: string | null
           height?: number | null
           icms_rate?: number | null
@@ -1665,6 +1800,7 @@ export type Database = {
           is_new?: boolean | null
           is_on_demand?: boolean | null
           last_stock_sync_at?: string | null
+          last_sync_at?: string | null
           lead_time?: string | null
           length?: number | null
           meta_description?: string | null
@@ -1680,10 +1816,12 @@ export type Database = {
           pis_rate?: number | null
           price?: number
           product_class?: string | null
+          raw_data?: Json | null
           short_description?: string | null
           sku?: string | null
           slug?: string
           stock?: number
+          sync_source?: string | null
           target_audience?: string | null
           technical_specs?: string | null
           unit?: string | null
@@ -1861,6 +1999,20 @@ export type Database = {
             referencedRelation: "products"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_low_stock"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_no_category"
+            referencedColumns: ["id"]
+          },
         ]
       }
       site_settings: {
@@ -2000,6 +2152,20 @@ export type Database = {
             referencedRelation: "products"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "volume_discounts_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_low_stock"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "volume_discounts_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vw_products_no_category"
+            referencedColumns: ["id"]
+          },
         ]
       }
       wholesale_customers: {
@@ -2096,6 +2262,270 @@ export type Database = {
       }
     }
     Views: {
+      vw_products_low_stock: {
+        Row: {
+          allow_negative_stock: boolean | null
+          available_stock: number | null
+          barcode: string | null
+          brand_id: string | null
+          category_id: string | null
+          cfop: string | null
+          cofins_rate: number | null
+          color: string | null
+          cost: number | null
+          created_at: string | null
+          description: string | null
+          dimensions_info: string | null
+          external_id: string | null
+          finish: string | null
+          height: number | null
+          icms_rate: number | null
+          id: string | null
+          internal_code: string | null
+          ipi_rate: number | null
+          is_active: boolean | null
+          is_customized: boolean | null
+          is_featured: boolean | null
+          is_new: boolean | null
+          is_on_demand: boolean | null
+          last_stock_sync_at: string | null
+          last_sync_at: string | null
+          lead_time: string | null
+          length: number | null
+          meta_description: string | null
+          meta_title: string | null
+          min_stock: number | null
+          ml_id: string | null
+          ml_permalink: string | null
+          moq: number | null
+          name: string | null
+          ncm: string | null
+          origin: string | null
+          original_price: number | null
+          pis_rate: number | null
+          price: number | null
+          product_class: string | null
+          raw_data: Json | null
+          short_description: string | null
+          sku: string | null
+          slug: string | null
+          stock: number | null
+          sync_source: string | null
+          target_audience: string | null
+          technical_specs: string | null
+          unit: string | null
+          updated_at: string | null
+          weight: number | null
+          wholesale_only: boolean | null
+          wholesale_price: number | null
+          width: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brands"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vw_products_no_category: {
+        Row: {
+          allow_negative_stock: boolean | null
+          available_stock: number | null
+          barcode: string | null
+          brand_id: string | null
+          category_id: string | null
+          cfop: string | null
+          cofins_rate: number | null
+          color: string | null
+          cost: number | null
+          created_at: string | null
+          description: string | null
+          dimensions_info: string | null
+          external_id: string | null
+          finish: string | null
+          height: number | null
+          icms_rate: number | null
+          id: string | null
+          internal_code: string | null
+          ipi_rate: number | null
+          is_active: boolean | null
+          is_customized: boolean | null
+          is_featured: boolean | null
+          is_new: boolean | null
+          is_on_demand: boolean | null
+          last_stock_sync_at: string | null
+          last_sync_at: string | null
+          lead_time: string | null
+          length: number | null
+          meta_description: string | null
+          meta_title: string | null
+          min_stock: number | null
+          ml_id: string | null
+          ml_permalink: string | null
+          moq: number | null
+          name: string | null
+          ncm: string | null
+          origin: string | null
+          original_price: number | null
+          pis_rate: number | null
+          price: number | null
+          product_class: string | null
+          raw_data: Json | null
+          short_description: string | null
+          sku: string | null
+          slug: string | null
+          stock: number | null
+          sync_source: string | null
+          target_audience: string | null
+          technical_specs: string | null
+          unit: string | null
+          updated_at: string | null
+          weight: number | null
+          wholesale_only: boolean | null
+          wholesale_price: number | null
+          width: number | null
+        }
+        Insert: {
+          allow_negative_stock?: boolean | null
+          available_stock?: number | null
+          barcode?: string | null
+          brand_id?: string | null
+          category_id?: string | null
+          cfop?: string | null
+          cofins_rate?: number | null
+          color?: string | null
+          cost?: number | null
+          created_at?: string | null
+          description?: string | null
+          dimensions_info?: string | null
+          external_id?: string | null
+          finish?: string | null
+          height?: number | null
+          icms_rate?: number | null
+          id?: string | null
+          internal_code?: string | null
+          ipi_rate?: number | null
+          is_active?: boolean | null
+          is_customized?: boolean | null
+          is_featured?: boolean | null
+          is_new?: boolean | null
+          is_on_demand?: boolean | null
+          last_stock_sync_at?: string | null
+          last_sync_at?: string | null
+          lead_time?: string | null
+          length?: number | null
+          meta_description?: string | null
+          meta_title?: string | null
+          min_stock?: number | null
+          ml_id?: string | null
+          ml_permalink?: string | null
+          moq?: number | null
+          name?: string | null
+          ncm?: string | null
+          origin?: string | null
+          original_price?: number | null
+          pis_rate?: number | null
+          price?: number | null
+          product_class?: string | null
+          raw_data?: Json | null
+          short_description?: string | null
+          sku?: string | null
+          slug?: string | null
+          stock?: number | null
+          sync_source?: string | null
+          target_audience?: string | null
+          technical_specs?: string | null
+          unit?: string | null
+          updated_at?: string | null
+          weight?: number | null
+          wholesale_only?: boolean | null
+          wholesale_price?: number | null
+          width?: number | null
+        }
+        Update: {
+          allow_negative_stock?: boolean | null
+          available_stock?: number | null
+          barcode?: string | null
+          brand_id?: string | null
+          category_id?: string | null
+          cfop?: string | null
+          cofins_rate?: number | null
+          color?: string | null
+          cost?: number | null
+          created_at?: string | null
+          description?: string | null
+          dimensions_info?: string | null
+          external_id?: string | null
+          finish?: string | null
+          height?: number | null
+          icms_rate?: number | null
+          id?: string | null
+          internal_code?: string | null
+          ipi_rate?: number | null
+          is_active?: boolean | null
+          is_customized?: boolean | null
+          is_featured?: boolean | null
+          is_new?: boolean | null
+          is_on_demand?: boolean | null
+          last_stock_sync_at?: string | null
+          last_sync_at?: string | null
+          lead_time?: string | null
+          length?: number | null
+          meta_description?: string | null
+          meta_title?: string | null
+          min_stock?: number | null
+          ml_id?: string | null
+          ml_permalink?: string | null
+          moq?: number | null
+          name?: string | null
+          ncm?: string | null
+          origin?: string | null
+          original_price?: number | null
+          pis_rate?: number | null
+          price?: number | null
+          product_class?: string | null
+          raw_data?: Json | null
+          short_description?: string | null
+          sku?: string | null
+          slug?: string | null
+          stock?: number | null
+          sync_source?: string | null
+          target_audience?: string | null
+          technical_specs?: string | null
+          unit?: string | null
+          updated_at?: string | null
+          weight?: number | null
+          wholesale_only?: boolean | null
+          wholesale_price?: number | null
+          width?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brands"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wholesale_orders_summary: {
         Row: {
           cnpj: string | null

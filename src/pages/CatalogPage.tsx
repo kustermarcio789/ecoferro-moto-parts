@@ -67,21 +67,29 @@ const CatalogPage = () => {
       
       let query = supabase
         .from("products")
-        .select("id, name, slug, price, original_price, stock, available_stock, is_new, sku, brand_id, product_images(url, is_primary), categories(id, name, slug, parent_id), brands(name, slug)", { count: "exact" })
+        .select(`
+          id, name, slug, price, original_price, stock, available_stock, is_new, sku, brand_id, sync_source, last_sync_at,
+          product_images(url, is_primary), 
+          categories(id, name, slug, parent_id), 
+          brands(name, slug)
+        `, { count: "exact" })
         .eq("is_active", true)
         .eq("wholesale_only", false);
 
-      // Relaxed stock check: if sync hasn't populated available_stock yet, allow products with legacy 'stock' > 0
-      // or simply show all active products if the user explicitly didn't filter by availability
+      // Relaxed stock check: prioritize available_stock, fallback to stock
       if (disponivel === "sim") {
         query = query.or("available_stock.gt.0,stock.gt.0");
       }
 
-      if (q) query = query.ilike("name", `%${q}%`);
+      if (q) {
+        query = query.or(`name.ilike.%${q}%,sku.ilike.%${q}%,internal_code.ilike.%${q}%`);
+      }
+      
       if (marca) {
         const brandObj = brands.find(b => b.slug === marca);
         if (brandObj) query = query.eq("brand_id", brandObj.id);
       }
+      
       if (precoMin) query = query.gte("price", Number(precoMin));
       if (precoMax) query = query.lte("price", Number(precoMax));
 
@@ -120,7 +128,13 @@ const CatalogPage = () => {
     if ((allCategories.length > 0 && brands.length > 0) || (!classe && !subclasse && !marca)) fetchProducts();
   }, [q, marca, classe, subclasse, disponivel, precoMin, precoMax, sort, page, allCategories, brands]);
 
-  const getImage = (p: Product) => p.product_images?.find(i => i.is_primary)?.url || p.product_images?.[0]?.url || "/placeholder.svg";
+  const getImage = (p: Product) => {
+    if (p.product_images && p.product_images.length > 0) {
+      const primary = p.product_images.find(i => i.is_primary);
+      return primary?.url || p.product_images[0].url;
+    }
+    return "/placeholder.svg";
+  };
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
 
   const updateParam = (key: string, value: string) => {
