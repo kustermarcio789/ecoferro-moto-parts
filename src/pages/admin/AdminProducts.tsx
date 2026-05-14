@@ -427,7 +427,11 @@ const AdminProducts = () => {
           </Button>
           <Button variant="outline" onClick={handleManualSync} disabled={syncingMl} className="text-xs font-display uppercase tracking-wider h-10 px-3">
             <RefreshCw className={`mr-2 h-4 w-4 ${syncingMl ? "animate-spin" : ""}`} />
-            {syncingMl ? "Sincronizando..." : "Sincronizar ML"}
+            {syncingMl ? "Sync ML" : "Sync ML"}
+          </Button>
+          <Button variant="outline" onClick={handleVpsSync} disabled={syncingVps} className="text-xs font-display uppercase tracking-wider h-10 px-3">
+            <RefreshCw className={`mr-2 h-4 w-4 ${syncingVps ? "animate-spin" : ""}`} />
+            {syncingVps ? "Sync VPS" : "Sync VPS"}
           </Button>
           <Button variant="outline" onClick={() => { setShowMlImport(true); fetchMlProducts(); }} className="text-xs font-display uppercase tracking-wider h-10 px-3"><ShoppingBag className="mr-2 h-4 w-4" />Importar</Button>
           <Button onClick={() => { setEditingProduct(null); setFormData(emptyForm); setShowForm(true); }} className="text-xs font-display uppercase tracking-wider h-10 px-3 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"><Plus className="mr-2 h-4 w-4" />Novo</Button>
