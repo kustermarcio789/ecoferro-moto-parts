@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, ShoppingBag, Loader2, Check, Package, Image as ImageIcon, Settings, DollarSign, Barcode, X, ChevronRight as ChevronRightIcon, ChevronLeft as ChevronLeftIcon, FilterX, Eye, ImagePlus, AlertCircle } from "lucide-react";
+import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, ShoppingBag, Loader2, Check, Package, Image as ImageIcon, Settings, DollarSign, Barcode, X, ChevronRight as ChevronRightIcon, ChevronLeft as ChevronLeftIcon, FilterX, Eye, ImagePlus, AlertCircle, RefreshCw, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -76,6 +76,35 @@ const AdminProducts = () => {
   const [mlSelected, setMlSelected] = useState<Set<string>>(new Set());
   const [mlImporting, setMlImporting] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [syncingMl, setSyncingMl] = useState(false);
+  const [lastSyncInfo, setLastSyncInfo] = useState<any>(null);
+
+  const fetchSyncStatus = async () => {
+    const { data } = await supabase.from("site_settings").select("value").eq("key", "ml_auto_sync_last_run").maybeSingle();
+    if (data?.value) setLastSyncInfo(data.value);
+  };
+
+  useEffect(() => {
+    fetchSyncStatus();
+  }, []);
+
+  const handleManualSync = async () => {
+    setSyncingMl(true);
+    try {
+      const { data, error } = await supabaseAny.functions.invoke("mercadolivre-auto-sync");
+      if (error) throw error;
+      toast({ 
+        title: "Sincronização concluída", 
+        description: `${data.created} criados, ${data.updated} atualizados.` 
+      });
+      fetchSyncStatus();
+      fetchProducts();
+    } catch (error: any) {
+      toast({ title: "Erro na sincronização", description: error.message, variant: "destructive" });
+    } finally {
+      setSyncingMl(false);
+    }
+  };
 
   const generateSlug = (name: string) =>
     name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -369,10 +398,28 @@ const AdminProducts = () => {
           <Button variant="ghost" size="icon" onClick={clearFilters} title="Limpar Filtros" className="h-10 w-10 text-muted-foreground hover:text-foreground">
             <FilterX className="h-4 w-4" />
           </Button>
+          <Button variant="outline" onClick={handleManualSync} disabled={syncingMl} className="text-xs font-display uppercase tracking-wider h-10 px-3">
+            <RefreshCw className={`mr-2 h-4 w-4 ${syncingMl ? "animate-spin" : ""}`} />
+            {syncingMl ? "Sincronizando..." : "Sincronizar ML"}
+          </Button>
           <Button variant="outline" onClick={() => { setShowMlImport(true); fetchMlProducts(); }} className="text-xs font-display uppercase tracking-wider h-10 px-3"><ShoppingBag className="mr-2 h-4 w-4" />Importar</Button>
           <Button onClick={() => { setEditingProduct(null); setFormData(emptyForm); setShowForm(true); }} className="text-xs font-display uppercase tracking-wider h-10 px-3 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"><Plus className="mr-2 h-4 w-4" />Novo</Button>
         </div>
       </div>
+
+      {lastSyncInfo && (
+        <div className="mb-6 flex items-center gap-4 text-xs font-body text-muted-foreground bg-muted/30 p-3 rounded-lg border border-border">
+          <div className="flex items-center gap-1.5">
+            <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+            <span>Última Sincronização ML: <strong>{new Date(lastSyncInfo.timestamp).toLocaleString("pt-BR")}</strong></span>
+          </div>
+          <div className="flex items-center gap-4 ml-auto">
+            <span>Itens: <strong>{lastSyncInfo.total_ml_items}</strong></span>
+            <span>Novos: <strong className="text-primary">{lastSyncInfo.created}</strong></span>
+            <span>Atualizados: <strong className="text-foreground">{lastSyncInfo.updated}</strong></span>
+          </div>
+        </div>
+      )}
 
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
