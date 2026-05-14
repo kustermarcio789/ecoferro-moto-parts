@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatCurrency } from "@/lib/tracking";
 import ProductImageUpload from "@/components/admin/ProductImageUpload";
 import { getProductionMapping, PRODUCTION_SOURCE_SYSTEM, upsertProductionMapping } from "@/services/inventoryService";
+import { ProductImagePreview } from "@/components/shared/ProductImagePreview";
 
 const ITEMS_PER_PAGE = 20;
 const supabaseAny = supabase as any;
