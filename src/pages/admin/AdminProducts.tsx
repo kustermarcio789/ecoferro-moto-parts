@@ -405,11 +405,39 @@ const AdminProducts = () => {
 
   return (
     <AdminLayout title="Produtos">
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative max-w-md flex-1">
-          <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar produtos..." className="w-full rounded-lg border border-border bg-background px-4 py-2.5 pr-10 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" />
-          <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <div className="mb-6 flex flex-col gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="relative max-w-md flex-1">
+            <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar produtos..." className="w-full rounded-lg border border-border bg-background px-4 py-2.5 pr-10 text-sm font-body focus:outline-none focus:ring-2 focus:ring-ring" />
+            <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleVpsSync}
+              disabled={syncingVps}
+              className="gap-2"
+            >
+              {syncingVps ? <RefreshCw className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+              Puxar da VPS (PULL)
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleManualSync}
+              disabled={syncingMl}
+              className="gap-2"
+            >
+              {syncingMl ? <RefreshCw className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+              Sync ML
+            </Button>
+            <Button onClick={() => { setEditingProduct(null); setFormData(emptyForm); setShowForm(true); }} className="gap-2">
+              <Plus className="h-4 w-4" /> Novo Produto
+            </Button>
+          </div>
         </div>
+
         <div className="flex flex-wrap gap-2">
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
             <SelectTrigger className="w-32 text-xs font-body"><SelectValue placeholder="Categoria" /></SelectTrigger>
