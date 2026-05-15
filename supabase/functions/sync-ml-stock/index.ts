@@ -79,8 +79,8 @@ serve(async (req) => {
       }
 
       const data = await response.json()
-      items = data.items || data.products || []
-      console.log(`[SYNC] Pulled ${items.length} items from external API`)
+      items = Array.isArray(data.items) ? data.items : []
+      console.log(`[SYNC] VPS payload: generated_at=${data.generated_at}, total=${data.total}, items=${items.length}`)
     }
 
     // Create log entry
@@ -111,23 +111,27 @@ serve(async (req) => {
           continue
         }
 
+        const itemStatus = String(item.status || 'active').toLowerCase()
+        const isActive = itemStatus === 'active'
+
         const productData = {
           name: item.name || item.title || item.título,
           price: Number(item.price || item.preço || 0),
           original_price: item.original_price ? Number(item.original_price) : null,
-          stock: Number(item.stock || item.estoque || 0),
-          available_stock: Number(item.stock || item.estoque || 0),
+          stock: Number(item.stock ?? item.estoque ?? 0),
+          available_stock: Number(item.stock ?? item.estoque ?? 0),
           sku: String(sku),
           internal_code: String(sku),
           external_id: item.id || item.external_id || null,
           ml_permalink: item.permalink || null,
-          is_active: true,
-          wholesale_only: false, 
-          visible_site: true,
+          is_active: isActive,
+          wholesale_only: false,
+          visible_site: isActive,
           visible_wholesale: false,
-          visible_marketplace: true,
+          visible_marketplace: isActive,
           source: 'mercadolivre',
           last_sync_at: new Date().toISOString(),
+          last_stock_sync_at: new Date().toISOString(),
           sync_source: 'vendas-vps',
           raw_data: item
         }
