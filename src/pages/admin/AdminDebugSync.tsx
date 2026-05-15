@@ -35,7 +35,7 @@ const AdminDebugSync = () => {
         .from("products")
         .select("*", { count: 'exact', head: true })
         .eq("is_active", true)
-        .eq("wholesale_only", false);
+        .eq("source", "mercadolivre");
 
       setStats({
         total: totalProducts,
