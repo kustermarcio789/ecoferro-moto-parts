@@ -90,13 +90,13 @@ const AdminDebugSync = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">{stats?.active || 0}</div>
-              <p className="text-xs text-muted-foreground">is_active=true && wholesale_only=false</p>
+              <p className="text-xs text-muted-foreground">source='mercadolivre' && is_active=true</p>
             </CardContent>
           </Card>
           <Card className="flex flex-col justify-center px-6">
             <Button onClick={handleSync} disabled={syncing} className="w-full">
               {syncing ? <RefreshCw className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
-              Sincronizar Agora (VPS)
+              Puxar Produtos da VPS (PULL)
             </Button>
           </Card>
         </div>
