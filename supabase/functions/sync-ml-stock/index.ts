@@ -57,7 +57,7 @@ serve(async (req) => {
         throw new Error('VENDAS_ECOFERRO_TOKEN not configured')
       }
 
-      const VENDAS_URL = Deno.env.get('VENDAS_ECOFERRO_URL') || 'https://vendas.ecoferro.com.br/api/public/stock-export'
+      const VENDAS_URL = Deno.env.get('VENDAS_ECOFERRO_URL') || 'https://vendas.ecoferro.com.br/api/public/products-export'
       console.log(`[SYNC] Pulling data from ${VENDAS_URL}...`)
       
       const response = await fetch(VENDAS_URL, {
@@ -105,9 +105,9 @@ serve(async (req) => {
 
     for (const item of items) {
       try {
-        const sku = item.sku || item.internal_code || item.SKU || item.item_id
+        const sku = item.sku || item.internal_code || item.SKU || item.item_id || item.id
         if (!sku) {
-          console.warn("[SYNC] Item skipped: No SKU found", item)
+          console.warn("[SYNC] Item skipped: No SKU/item_id found", item)
           continue
         }
 
@@ -122,7 +122,8 @@ serve(async (req) => {
           available_stock: Number(item.stock ?? item.estoque ?? 0),
           sku: String(sku),
           internal_code: String(sku),
-          external_id: item.id || item.external_id || null,
+          external_id: item.item_id || item.id || item.external_id || null,
+          ml_id: item.item_id || item.id || null,
           ml_permalink: item.permalink || null,
           is_active: isActive,
           wholesale_only: false,
@@ -173,7 +174,7 @@ serve(async (req) => {
         }
 
         // Handle images
-        const images = item.images || item.imagens || item.pictures
+        const images = item.images || item.imagens || item.pictures || item.thumbnail
         if (images) {
           const imageList = Array.isArray(images) ? images : [images]
           const productId = existing?.id || (await supabaseAdmin.from('products').select('id').eq('sku', sku).single()).data?.id
