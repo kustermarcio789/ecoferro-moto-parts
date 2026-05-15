@@ -151,6 +151,7 @@ const AdminSettings = () => {
     { key: "google_ads_id", label: "Google Ads ID", placeholder: "AW-123456789" },
     { key: "free_shipping_min", label: "Frete Grátis (valor mín.)", placeholder: "299" },
     { key: "pix_discount", label: "Desconto Pix (%)", placeholder: "5" },
+    { key: "vendas_ecoferro_token", label: "Token API VPS (vendas.ecoferro.com.br)", placeholder: "Insira o token de segurança da sua VPS" },
   ];
 
   const formatDate = (iso: string) => {
