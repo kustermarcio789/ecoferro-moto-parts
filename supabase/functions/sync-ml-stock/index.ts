@@ -105,9 +105,9 @@ serve(async (req) => {
 
     for (const item of items) {
       try {
-        const sku = item.sku || item.internal_code || item.SKU || item.item_id
+        const sku = item.sku || item.internal_code || item.SKU || item.item_id || item.id
         if (!sku) {
-          console.warn("[SYNC] Item skipped: No SKU found", item)
+          console.warn("[SYNC] Item skipped: No SKU/item_id found", item)
           continue
         }
 
