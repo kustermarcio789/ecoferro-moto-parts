@@ -174,7 +174,7 @@ serve(async (req) => {
         }
 
         // Handle images
-        const images = item.images || item.imagens || item.pictures
+        const images = item.images || item.imagens || item.pictures || item.thumbnail
         if (images) {
           const imageList = Array.isArray(images) ? images : [images]
           const productId = existing?.id || (await supabaseAdmin.from('products').select('id').eq('sku', sku).single()).data?.id
