@@ -79,8 +79,8 @@ serve(async (req) => {
       }
 
       const data = await response.json()
-      items = data.items || data.products || []
-      console.log(`[SYNC] Pulled ${items.length} items from external API`)
+      items = Array.isArray(data.items) ? data.items : []
+      console.log(`[SYNC] VPS payload: generated_at=${data.generated_at}, total=${data.total}, items=${items.length}`)
     }
 
     // Create log entry
