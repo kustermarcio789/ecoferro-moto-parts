@@ -69,9 +69,9 @@ const CatalogPage = () => {
         .from("products")
         .select(`
           id, name, slug, price, original_price, stock, available_stock, is_new, sku, brand_id, sync_source, last_sync_at,
-          product_images(url, is_primary), 
-          categories(id, name, slug, parent_id), 
-          brands(name, slug)
+          product_images(url, is_primary),
+          category:categories(id, name, slug, parent_id),
+          brand:brands(name, slug)
         `, { count: "exact" })
         .eq("is_active", true)
         .eq("source", "mercadolivre");
