@@ -57,7 +57,7 @@ serve(async (req) => {
         throw new Error('VENDAS_ECOFERRO_TOKEN not configured')
       }
 
-      const VENDAS_URL = Deno.env.get('VENDAS_ECOFERRO_URL') || 'https://vendas.ecoferro.com.br/api/public/stock-export'
+      const VENDAS_URL = Deno.env.get('VENDAS_ECOFERRO_URL') || 'https://vendas.ecoferro.com.br/api/public/products-export'
       console.log(`[SYNC] Pulling data from ${VENDAS_URL}...`)
       
       const response = await fetch(VENDAS_URL, {
