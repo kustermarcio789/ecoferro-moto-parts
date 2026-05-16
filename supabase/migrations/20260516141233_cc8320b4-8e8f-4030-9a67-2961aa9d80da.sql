@@ -1,0 +1,1 @@
+DROP FUNCTION IF EXISTS public.create_wholesale_order(jsonb, date, text);
