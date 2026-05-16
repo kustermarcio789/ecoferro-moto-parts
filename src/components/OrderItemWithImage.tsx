@@ -10,6 +10,7 @@ interface OrderItem {
   total: number;
   confirmed_quantity: number | null;
   delivered_quantity?: number;
+  priority?: string;
   product_id?: string;
   product?: {
     product_images?: {
@@ -49,6 +50,7 @@ const OrderItemsTableWithImages = ({
           <tr className={`border-b border-border ${isAdmin ? 'bg-muted/10' : 'text-xs font-display uppercase tracking-wider text-muted-foreground'}`}>
             <th className="text-left p-2 sm:p-4 w-16 sm:w-24">Imagem</th>
             <th className="text-left p-2 sm:p-4">Produto</th>
+            {isAdmin && <th className="text-center p-2 sm:p-4">Prioridade</th>}
             <th className="text-center p-2 sm:p-4">Solicitada</th>
             <th className="text-center p-2 sm:p-4">Confirmada</th>
             {showDelivered && <th className="text-center p-2 sm:p-4">Entregue</th>}
@@ -79,6 +81,23 @@ const OrderItemsTableWithImages = ({
                   <div className={`font-medium ${isAdmin ? '' : 'text-foreground'}`}>{item.product_name}</div>
                   {item.sku && <div className="text-xs text-muted-foreground">SKU: {item.sku}</div>}
                 </td>
+                {isAdmin && (
+                  <td className="p-2 sm:p-4 text-center font-body">
+                    {item.priority === "urgente" ? (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">
+                        Urgente
+                      </span>
+                    ) : item.priority === "critica" ? (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200">
+                        Crítica
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200">
+                        Normal
+                      </span>
+                    )}
+                  </td>
+                )}
                 <td className="p-2 sm:p-4 text-center font-body">{item.quantity}</td>
                 <td className="p-2 sm:p-4 text-center font-body">
                   {isAdmin && onUpdateQuantity ? (
