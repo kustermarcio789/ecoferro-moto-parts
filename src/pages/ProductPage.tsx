@@ -29,6 +29,7 @@ const ProductPage = () => {
         .select("*, product_images(url, is_primary, sort_order), categories(id, name, slug, parent_id), brands(name, slug), reviews(rating, customer_name, comment, title, photos, created_at)")
         .eq("slug", slug)
         .eq("is_active", true)
+        .gt("price", 0)
         .eq("wholesale_only", false)
         .maybeSingle();
 
@@ -43,6 +44,7 @@ const ProductPage = () => {
           .select("*, product_images(url, is_primary, sort_order), categories(id, name, slug, parent_id), brands(name, slug), reviews(rating, customer_name, comment, title, photos, created_at)")
           .ilike("name", `%${keywords}%`)
           .eq("is_active", true)
+          .gt("price", 0)
           .eq("wholesale_only", false)
           .limit(1)
           .maybeSingle();

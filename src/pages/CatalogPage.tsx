@@ -75,7 +75,7 @@ const CatalogPage = () => {
         `, { count: "exact" })
         .eq("is_active", true)
         .gt("price", 0)
-        .eq("source", "mercadolivre");
+        .eq("visible_site", true);
 
       // Relaxed stock check: prioritize available_stock, fallback to stock
       if (disponivel === "sim") {
