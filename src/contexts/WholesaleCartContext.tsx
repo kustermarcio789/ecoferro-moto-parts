@@ -8,11 +8,13 @@ export interface WholesaleCartItem {
   quantity: number;
   moq: number;
   image_url?: string | null;
+  priority: "normal" | "urgent" | "critical";
 }
 
 interface WholesaleCartCtx {
   items: WholesaleCartItem[];
   setQuantity: (productId: string, qty: number) => void;
+  setPriority: (productId: string, priority: "normal" | "urgent" | "critical") => void;
   add: (item: WholesaleCartItem) => void;
   remove: (productId: string) => void;
   clear: () => void;
@@ -45,6 +47,12 @@ export const WholesaleCartProvider = ({ children }: { children: React.ReactNode 
     });
   }, []);
 
+  const setPriority = useCallback((productId: string, priority: "normal" | "urgent" | "critical") => {
+    setItems((prev) => {
+      return prev.map((i) => (i.product_id === productId ? { ...i, priority } : i));
+    });
+  }, []);
+
   const add = useCallback((item: WholesaleCartItem) => {
     setItems((prev) => {
       const exists = prev.find((i) => i.product_id === item.product_id);
@@ -67,13 +75,14 @@ export const WholesaleCartProvider = ({ children }: { children: React.ReactNode 
     () => ({
       items,
       setQuantity,
+      setPriority,
       add,
       remove,
       clear,
       totalUnits: items.reduce((s, i) => s + i.quantity, 0),
       totalValue: items.reduce((s, i) => s + i.quantity * i.unit_price, 0),
     }),
-    [items, setQuantity, add, remove, clear],
+    [items, setQuantity, setPriority, add, remove, clear],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

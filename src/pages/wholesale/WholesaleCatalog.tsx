@@ -44,7 +44,6 @@ const WholesaleCatalog = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [requestedDate, setRequestedDate] = useState<string>("");
-  const [priority, setPriority] = useState<"normal" | "urgent" | "critical">("normal");
   const [notes, setNotes] = useState("");
 
   useEffect(() => {
@@ -117,6 +116,7 @@ const WholesaleCatalog = () => {
         quantity: moq,
         moq,
         image_url: p.primary_image,
+        priority: "normal",
       });
     }
   };
@@ -128,12 +128,15 @@ const WholesaleCatalog = () => {
     }
     setSubmitting(true);
     try {
-      const items = cart.items.map((i) => ({ product_id: i.product_id, quantity: i.quantity }));
+      const items = cart.items.map((i) => ({ 
+        product_id: i.product_id, 
+        quantity: i.quantity,
+        priority: i.priority
+      }));
       const { data, error } = await supabase.rpc("create_wholesale_order", {
         p_items: items,
         p_requested_delivery_date: requestedDate || null,
         p_atacadista_notes: notes || null,
-        p_priority: priority,
       });
       if (error) throw error;
       const orderId = (data as any)?.order_id;
@@ -274,21 +277,43 @@ const WholesaleCatalog = () => {
               </p>
             ) : (
               <>
-                <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                <div className="space-y-4 max-h-72 overflow-y-auto pr-1">
                   {cart.items.map((i) => (
-                    <div key={i.product_id} className="flex items-center justify-between gap-2 text-sm">
-                      <div className="min-w-0">
-                        <div className="font-body truncate text-foreground">{i.name}</div>
-                        <div className="text-xs text-muted-foreground font-body">
-                          {i.quantity} × {formatBRL(i.unit_price)}
+                    <div key={i.product_id} className="space-y-1.5">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <div className="font-body text-sm truncate text-foreground">{i.name}</div>
+                          <div className="text-xs text-muted-foreground font-body">
+                            {i.quantity} × {formatBRL(i.unit_price)}
+                          </div>
                         </div>
+                        <button
+                          onClick={() => cart.remove(i.product_id)}
+                          className="text-muted-foreground hover:text-destructive"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
                       </div>
-                      <button
-                        onClick={() => cart.remove(i.product_id)}
-                        className="text-muted-foreground hover:text-destructive"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <Select value={i.priority} onValueChange={(val: any) => cart.setPriority(i.product_id, val)}>
+                          <SelectTrigger 
+                            className={`h-7 px-2 text-[10px] font-body w-28 ${
+                              i.priority === 'urgent' 
+                                ? 'text-orange-600 border-orange-200 focus:ring-orange-500' 
+                                : i.priority === 'critical'
+                                ? 'text-red-600 border-red-200 focus:ring-red-500'
+                                : 'text-muted-foreground'
+                            }`}
+                          >
+                            <SelectValue placeholder="Prioridade" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="normal" className="text-xs font-body">Normal</SelectItem>
+                            <SelectItem value="urgent" className="text-xs font-body text-orange-600">Urgente</SelectItem>
+                            <SelectItem value="critical" className="text-xs font-body text-red-600">Crítica</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -309,39 +334,10 @@ const WholesaleCatalog = () => {
             )}
 
             <div className="space-y-4">
-              <div className="border border-border rounded-lg overflow-hidden">
-                <div className="bg-muted/50 px-3 py-2 border-b border-border flex items-center gap-2">
-                  <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span className="text-[10px] font-display font-bold uppercase tracking-wider text-foreground">
-                    Status e Prioridade
-                  </span>
-                </div>
-                <div className="p-3 space-y-3">
-                  <div>
-                    <label className="text-xs font-body text-foreground mb-1 block">Prioridade do Pedido</label>
-                    <Select value={priority} onValueChange={(val: any) => setPriority(val)}>
-                      <SelectTrigger 
-                        className={`w-full h-9 text-xs font-body ${
-                          priority === 'urgent' 
-                            ? 'bg-orange-100 text-orange-800 border-orange-200 focus:ring-orange-500' 
-                            : priority === 'critical'
-                            ? 'bg-red-100 text-red-800 border-red-200 focus:ring-red-500'
-                            : 'bg-background'
-                        }`}
-                      >
-                        <SelectValue placeholder="Selecione a prioridade" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="normal" className="text-xs font-body">Normal</SelectItem>
-                        <SelectItem value="urgent" className="text-xs font-body text-orange-800 focus:bg-orange-50 focus:text-orange-900">Urgente</SelectItem>
-                        <SelectItem value="critical" className="text-xs font-body text-red-800 focus:bg-red-50 focus:text-red-900">Crítica</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <p className="text-[10px] text-muted-foreground mt-1.5 font-body leading-tight">
-                      A equipe pode revisar a prioridade conforme disponibilidade.
-                    </p>
-                  </div>
-                </div>
+              <div className="pt-2">
+                <p className="text-[10px] text-muted-foreground font-body leading-tight">
+                  A equipe pode revisar a prioridade dos itens conforme disponibilidade.
+                </p>
               </div>
 
               <div>
