@@ -74,6 +74,7 @@ const CatalogPage = () => {
           brand:brands(name, slug)
         `, { count: "exact" })
         .eq("is_active", true)
+        .gt("price", 0)
         .eq("source", "mercadolivre");
 
       // Relaxed stock check: prioritize available_stock, fallback to stock

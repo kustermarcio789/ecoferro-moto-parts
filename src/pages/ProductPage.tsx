@@ -22,13 +22,36 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       if (!slug) return;
-      const { data } = await supabase
+      
+      // First try to find by exact slug
+      let { data, error } = await supabase
         .from("products")
         .select("*, product_images(url, is_primary, sort_order), categories(id, name, slug, parent_id), brands(name, slug), reviews(rating, customer_name, comment, title, photos, created_at)")
         .eq("slug", slug)
         .eq("is_active", true)
         .eq("wholesale_only", false)
-        .single();
+        .maybeSingle();
+
+      // Fallback: try to find by name similarity if slug doesn't match
+      if (!data && !error) {
+        console.log("Product not found by slug, trying fallback search for:", slug);
+        // Extract keywords from slug (removing numbers and common short words can help, but let's keep it simple first)
+        const keywords = slug.split("-").filter(k => k.length > 2).join("%");
+        
+        const { data: fallbackData } = await supabase
+          .from("products")
+          .select("*, product_images(url, is_primary, sort_order), categories(id, name, slug, parent_id), brands(name, slug), reviews(rating, customer_name, comment, title, photos, created_at)")
+          .ilike("name", `%${keywords}%`)
+          .eq("is_active", true)
+          .eq("wholesale_only", false)
+          .limit(1)
+          .maybeSingle();
+        
+        if (fallbackData) {
+          data = fallbackData;
+        }
+      }
+
       if (data) {
         setProduct(data);
         const imgs = (data.product_images || [])
