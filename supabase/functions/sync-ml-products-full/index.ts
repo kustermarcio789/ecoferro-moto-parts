@@ -43,6 +43,7 @@ serve(async (req) => {
     let updated = 0
     let created = 0
     let imagesSynced = 0
+    const errors: string[] = []
     
     // Process in batches
     const batchSize = 50
@@ -51,97 +52,104 @@ serve(async (req) => {
       console.log(`Processing batch ${Math.floor(i / batchSize) + 1} (${batch.length} items)...`)
       
       for (const item of batch) {
-        const { item_id, title, price, thumbnail, permalink, status, stock } = item
-        const isActive = status === 'active'
+        try {
+          const { item_id, title, price, thumbnail, permalink, status, stock } = item
+          const isActive = status === 'active'
 
-        // Check if product exists by ml_id
-        const { data: existingProduct } = await supabase
-          .from('products')
-          .select('id, ml_id')
-          .eq('ml_id', item_id)
-          .maybeSingle()
-
-        let productId: string
-
-        if (existingProduct) {
-          // UPDATE
-          const { error: updateError } = await supabase
+          // Check if product exists by ml_id
+          const { data: existingProduct, error: fetchError } = await supabase
             .from('products')
-            .update({
-              price: Number(price),
-              ml_permalink: permalink,
-              is_active: isActive,
-              visible_site: isActive,
-              stock: Number(stock),
-              available_stock: Number(stock),
-              last_sync_at: new Date().toISOString()
-            })
-            .eq('id', existingProduct.id)
-          
-          if (updateError) console.error(`Error updating ${item_id}:`, updateError)
-          productId = existingProduct.id
-          updated++
-        } else if (isActive) {
-          // INSERT only if active
-          const slug = `${item_id}-${slugify(title)}`
-          const { data: newProduct, error: insertError } = await supabase
-            .from('products')
-            .insert({
-              name: title,
-              slug: slug,
-              price: Number(price),
-              ml_id: item_id,
-              ml_permalink: permalink,
-              is_active: true,
-              visible_site: true,
-              visible_marketplace: true,
-              source: "mercadolivre",
-              sync_source: "vendas-vps",
-              stock: Number(stock),
-              available_stock: Number(stock),
-              last_sync_at: new Date().toISOString()
-            })
-            .select('id')
-            .single()
+            .select('id, ml_id')
+            .eq('ml_id', item_id)
+            .maybeSingle()
 
-          if (insertError) {
-            console.error(`Error inserting ${item_id}:`, insertError)
-            continue
+          if (fetchError) throw fetchError
+
+          let productId: string | null = null
+
+          if (existingProduct) {
+            // UPDATE
+            const { error: updateError } = await supabase
+              .from('products')
+              .update({
+                price: Number(price),
+                ml_permalink: permalink,
+                is_active: isActive,
+                visible_site: isActive,
+                stock: Number(stock),
+                available_stock: Number(stock),
+                last_sync_at: new Date().toISOString()
+              })
+              .eq('id', existingProduct.id)
+            
+            if (updateError) throw updateError
+            productId = existingProduct.id
+            updated++
+          } else if (isActive) {
+            // INSERT only if active
+            const baseSlug = slugify(title).substring(0, 100 - item_id.length - 1)
+            const slug = `${item_id}-${baseSlug}`
+            
+            const { data: newProduct, error: insertError } = await supabase
+              .from('products')
+              .insert({
+                name: title,
+                slug: slug,
+                price: Number(price),
+                original_price: Number(price),
+                ml_id: item_id,
+                ml_permalink: permalink,
+                is_active: true,
+                visible_site: true,
+                visible_marketplace: true,
+                source: "mercadolivre",
+                sync_source: "vendas-vps",
+                stock: Number(stock),
+                available_stock: Number(stock),
+                last_sync_at: new Date().toISOString()
+              })
+              .select('id')
+              .single()
+
+            if (insertError) throw insertError
+            productId = newProduct.id
+            created++
           }
-          productId = newProduct.id
-          created++
-        } else {
-          // Not active and doesn't exist, skip
-          continue
-        }
 
-        // Sync images if active and has thumbnail
-        if (isActive && thumbnail && productId) {
-          // In product_images table, column is sort_order not position (from DB check)
-          const { error: imageError } = await supabase
-            .from('product_images')
-            .upsert({
-              product_id: productId,
-              url: thumbnail,
-              sort_order: 0,
-              is_primary: true
-            }, { onConflict: 'product_id,url' })
-          
-          if (!imageError) imagesSynced++
-          else console.error(`Error syncing image for ${item_id}:`, imageError)
+          // Sync images if active/exists and has thumbnail
+          if (thumbnail && productId) {
+            // Check for existing primary image or same URL to avoid duplicates if constraints allow
+            const { error: imageError } = await supabase
+              .from('product_images')
+              .upsert({
+                product_id: productId,
+                url: thumbnail,
+                sort_order: 0,
+                is_primary: true
+              }, { 
+                onConflict: 'product_id,url',
+                ignoreDuplicates: true 
+              })
+            
+            if (!imageError) imagesSynced++
+            else console.error(`Error syncing image for ${item_id}:`, imageError)
+          }
+        } catch (itemError) {
+          console.error(`Error processing item ${item.item_id}:`, itemError)
+          errors.push(`${item.item_id}: ${itemError.message}`)
         }
       }
     }
 
     return new Response(
-      JSON.stringify({ success: true, updated, created, images: imagesSynced }),
+      JSON.stringify({ success: true, updated, created, images: imagesSynced, errors }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
 
   } catch (error) {
     console.error("Critical error:", error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ success: false, error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   }
