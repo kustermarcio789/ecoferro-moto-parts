@@ -12,11 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import OrderItemsTableWithImages from "@/components/OrderItemWithImage";
 import OrderPrintView from "@/components/admin/OrderPrintView";
 
-const priorityConfig: Record<string, { label: string; color: string; border: string }> = {
-  normal: { label: "Normal", color: "bg-gray-100 text-gray-700", border: "border-gray-200" },
-  urgent: { label: "Urgente", color: "bg-orange-100 text-orange-800", border: "border-orange-300" },
-  critical: { label: "Crítica", color: "bg-red-100 text-red-800", border: "border-red-300" },
-};
+// Priority configuration removed as it's now per item
 
 const AdminOrderDetail = () => {
   const { id } = useParams();
@@ -46,7 +42,7 @@ const AdminOrderDetail = () => {
 
       const { data: itemsData, error: itemsError } = await supabase
         .from("order_items")
-        .select("*, product:product_id(product_images(url, is_primary))")
+        .select("*, priority, product:product_id(product_images(url, is_primary))")
         .eq("order_id", id)
         .order("created_at");
 
@@ -68,7 +64,6 @@ const AdminOrderDetail = () => {
       const { error: orderError } = await supabase
         .from("orders")
         .update({
-          priority: order.priority,
           internal_notes: order.internal_notes,
         })
         .eq("id", id);
@@ -151,23 +146,7 @@ const AdminOrderDetail = () => {
               <h3 className="font-display text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" /> Status e Prioridade
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-xs font-body font-medium mb-1 block">Prioridade do Pedido</label>
-                  <Select 
-                    value={order.priority || "normal"} 
-                    onValueChange={(val) => setOrder({...order, priority: val})}
-                  >
-                    <SelectTrigger className={`font-body ${priorityConfig[order.priority || "normal"].color} ${priorityConfig[order.priority || "normal"].border}`}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="normal">Normal</SelectItem>
-                      <SelectItem value="urgent">Urgente</SelectItem>
-                      <SelectItem value="critical">Crítica</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+              <div className="grid grid-cols-1 gap-4">
                 <div>
                   <label className="text-xs font-body font-medium mb-1 block">Status de Atendimento</label>
                   <div className="mt-2">
