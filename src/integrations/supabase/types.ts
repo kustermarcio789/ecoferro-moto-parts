@@ -901,6 +901,7 @@ export type Database = {
           discount: number | null
           id: string
           order_id: string
+          priority: string | null
           product_id: string | null
           product_name: string
           quantity: number
@@ -917,6 +918,7 @@ export type Database = {
           discount?: number | null
           id?: string
           order_id: string
+          priority?: string | null
           product_id?: string | null
           product_name: string
           quantity?: number
@@ -933,6 +935,7 @@ export type Database = {
           discount?: number | null
           id?: string
           order_id?: string
+          priority?: string | null
           product_id?: string | null
           product_name?: string
           quantity?: number
